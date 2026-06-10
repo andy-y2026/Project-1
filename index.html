@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #f8f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
+            padding: 40px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+            padding-left: 30px;
+        }
+
+        nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left-color: white;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        section {
+            width: 100%;
+            min-height: 100vh;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            scroll-behavior: smooth;
+        }
+
+        section:nth-child(odd) {
+            background-color: #f8f9fc;
+        }
+
+        section:nth-child(even) {
+            background-color: white;
+        }
+
+        section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            color: #7095db;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        section p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+            max-width: 900px;
+            line-height: 1.8;
+        }
+
+        .content-block {
+            max-width: 900px;
+        }
+
+        .highlight {
+            color: #1147ab;
+            font-weight: 500;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            max-width: 900px;
+        }
+
+        li {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        li strong {
+            color: #1147ab;
+        }
+
+        .accent-line {
+            width: 60px;
+            height: 4px;
+            background-color: #1147ab;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+
+            .sidebar-header {
+                margin-bottom: 20px;
+            }
+
+            nav ul {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            nav li {
+                flex: 1 1 50%;
+            }
+
+            nav a {
+                padding: 10px 15px;
+                text-align: center;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+
+            nav a:hover {
+                border-left: none;
+                border-bottom-color: white;
+            }
+
+            nav a.active {
+                border-left: none;
+                border-bottom-color: white;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            section {
+                min-height: auto;
+                padding: 60px 30px;
+            }
+
+            section h2 {
+                font-size: 36px;
+            }
+
+            section p,
+            li {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 40px 20px;
+            }
+
+            section h2 {
+                font-size: 28px;
+            }
+
+            section p,
+            li {
+                font-size: 15px;
+            }
+
+            nav a {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>My Portfolio</h1>
+            <p>Personal Website</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#about" class="nav-link active">About Me</a></li>
+                <li><a href="#interests" class="nav-link">Interests & Hobbies</a></li>
+                <li><a href="#favorites" class="nav-link">Favorite Things</a></li>
+                <li><a href="#proud" class="nav-link">Something Proud Of</a></li>
+                <li><a href="#goals" class="nav-link">My Goals</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- About Me Section -->
+        <section id="about">
+            <div class="accent-line"></div>
+            <h2>About Me</h2>
+            <div class="content-block">
+                <p>
+                    Welcome to my personal space on the web. I'm a passionate individual dedicated to continuous growth and self-discovery. 
+                    This website is a reflection of who I am, what I value, and where I'm headed.
+                </p>
+                <p>
+                    I believe in the power of creativity, learning, and meaningful connections. Whether it's through my work, hobbies, or personal projects, 
+                    I strive to make a positive impact while enjoying the journey along the way.
+                </p>
+                <p>
+                    Feel free to explore the different sections of this site to get to know me better. I'm always open to new opportunities and connections!
+                </p>
+            </div>
+        </section>
+
+        <!-- Interests and Hobbies Section -->
+        <section id="interests">
+            <div class="accent-line"></div>
+            <h2>Interests & Hobbies</h2>
+            <div class="content-block">
+                <p>
+                    I have a diverse range of interests that keep me engaged and inspired. Here's what I love to spend my time on:
+                </p>
+                <ul>
+                    <li><strong>Creative Projects:</strong> Whether it's design, writing, or any creative endeavor, I love bringing ideas to life</li>
+                    <li><strong>Technology & Innovation:</strong> Staying updated with the latest tech trends and exploring how they can improve our lives</li>
+                    <li><strong>Reading:</strong> I'm an avid reader who enjoys exploring different genres and learning new perspectives</li>
+                    <li><strong>Outdoor Activities:</strong> Hiking, exploring nature, and enjoying the outdoors is my way of staying grounded</li>
+                    <li><strong>Personal Development:</strong> Continuous learning through courses, books, and real-world experiences</li>
+                    <li><strong>Community:</strong> Contributing to causes I care about and making a difference in people's lives</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Favorite Things Section -->
+        <section id="favorites">
+            <div class="accent-line"></div>
+            <h2>Favorite Things</h2>
+            <div class="content-block">
+                <p>
+                    Life is made beautiful by the little things that bring us joy. Here are some of my favorite things:
+                </p>
+                <ul>
+                    <li><strong>Morning Coffee:</strong> There's nothing quite like a perfect cup of coffee to start the day</li>
+                    <li><strong>Good Conversations:</strong> Deep, meaningful conversations with friends and mentors are incredibly enriching</li>
+                    <li><strong>Sunsets:</strong> Those golden hour moments that remind us to slow down and appreciate beauty</li>
+                    <li><strong>Learning Something New:</strong> The excitement of mastering a new skill or understanding a complex concept</li>
+                    <li><strong>Quiet Moments:</strong> Finding peace in solitude and reflection</li>
+                    <li><strong>Helping Others:</strong> There's a special kind of satisfaction in making someone's day better</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Something Proud Of Section -->
+        <section id="proud">
+            <div class="accent-line"></div>
+            <h2>Something I'm Proud Of</h2>
+            <div class="content-block">
+                <p>
+                    Throughout my journey, I've worked on several projects and initiatives that I'm genuinely proud of. 
+                    One of my greatest accomplishments is...
+                </p>
+                <p>
+                    <span class="highlight">Successfully completing a challenging project that required growth beyond my comfort zone.</span> 
+                    This experience taught me the value of persistence, collaboration, and believing in oneself. 
+                </p>
+                <p>
+                    What made it particularly meaningful was not just the end result, but the relationships I built, the skills I developed, 
+                    and how it positively impacted others. It reinforced my belief that with determination and the right support system, 
+                    anything is achievable.
+                </p>
+                <p>
+                    This experience continues to inspire me to take on new challenges and push my boundaries further. I'm excited about what's next!
+                </p>
+            </div>
+        </section>
+
+        <!-- My Goals Section -->
+        <section id="goals">
+            <div class="accent-line"></div>
+            <h2>My Goals</h2>
+            <div class="content-block">
+                <p>
+                    I believe in setting intentional goals that align with my values and aspirations. Here's what I'm working towards:
+                </p>
+                <ul>
+                    <li><strong>Short-term:</strong> Master new skills in my field and contribute meaningfully to projects I care about</li>
+                    <li><strong>Medium-term:</strong> Build a strong professional network and establish myself as a thought leader in my area of interest</li>
+                    <li><strong>Long-term:</strong> Create a lasting positive impact on my community and inspire others to pursue their passions</li>
+                    <li><strong>Personal Growth:</strong> Continue developing emotionally, intellectually, and spiritually</li>
+                    <li><strong>Relationships:</strong> Nurture meaningful connections with family, friends, and colleagues</li>
+                    <li><strong>Making a Difference:</strong> Use my skills and knowledge to contribute to causes that matter</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('a.nav-link').forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('a.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if (current) {
+                document.querySelector(`a.nav-link[href="#${current}"]`)?.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
