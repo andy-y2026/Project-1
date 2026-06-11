@@ -678,6 +678,28 @@
             margin: 4px 0;
             line-height: 1.6;
         }
+
+        /* Falling LEGO Bricks Animation */
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .falling-brick {
+            position: fixed;
+            font-size: 50px;
+            animation: fall 5s linear forwards;
+            pointer-events: none;
+            z-index: 100;
+            user-select: none;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -742,16 +764,11 @@
             <h2>Favorite Things</h2>
             <div class="content-block">
                 <p>
-                    Life is made beautiful by the little things that bring us joy. Here are some of my favorite things:
+                    My favorite company is Apple because of their amazing design choices and excellent software and hardware (it appears that Kinkaid agrees with me!).
                 </p>
-                <ul>
-                    <li><strong>Morning Coffee:</strong> There's nothing quite like a perfect cup of coffee to start the day</li>
-                    <li><strong>Good Conversations:</strong> Deep, meaningful conversations with friends and mentors are incredibly enriching</li>
-                    <li><strong>Sunsets:</strong> Those golden hour moments that remind us to slow down and appreciate beauty</li>
-                    <li><strong>Learning Something New:</strong> The excitement of mastering a new skill or understanding a complex concept</li>
-                    <li><strong>Quiet Moments:</strong> Finding peace in solitude and reflection</li>
-                    <li><strong>Helping Others:</strong> There's a special kind of satisfaction in making someone's day better</li>
-                </ul>
+                <p>
+                    My favorite movie is Wall-E because of its message about enjoying life and its visually stunning animation.
+                </p>
             </div>
         </section>
 
@@ -761,20 +778,7 @@
             <h2>Something I'm Proud Of</h2>
             <div class="content-block">
                 <p>
-                    Throughout my journey, I've worked on several projects and initiatives that I'm genuinely proud of. 
-                    One of my greatest accomplishments is...
-                </p>
-                <p>
-                    <span class="highlight">Successfully completing a challenging project that required growth beyond my comfort zone.</span> 
-                    This experience taught me the value of persistence, collaboration, and believing in oneself. 
-                </p>
-                <p>
-                    What made it particularly meaningful was not just the end result, but the relationships I built, the skills I developed, 
-                    and how it positively impacted others. It reinforced my belief that with determination and the right support system, 
-                    anything is achievable.
-                </p>
-                <p>
-                    This experience continues to inspire me to take on new challenges and push my boundaries further. I'm excited about what's next!
+                    I am proud of my achievements in debate. I have attended multiple tournaments and even reached semifinals in the HUDL City Championships. Debate has allowed me to view the world with a more open mind and consider multiple perspectives.
                 </p>
             </div>
         </section>
@@ -785,16 +789,8 @@
             <h2>My Goals</h2>
             <div class="content-block">
                 <p>
-                    I believe in setting intentional goals that align with my values and aspirations. Here's what I'm working towards:
+                    My dream is to someday become a neuroradiologist, or a lawyer, since both careers tap into my passions, including math, science, and debate, with neuroradiology focusing on the STEM side of my passions and law focusing on my debate passions.
                 </p>
-                <ul>
-                    <li><strong>Short-term:</strong> Master new skills in my field and contribute meaningfully to projects I care about</li>
-                    <li><strong>Medium-term:</strong> Build a strong professional network and establish myself as a thought leader in my area of interest</li>
-                    <li><strong>Long-term:</strong> Create a lasting positive impact on my community and inspire others to pursue their passions</li>
-                    <li><strong>Personal Growth:</strong> Continue developing emotionally, intellectually, and spiritually</li>
-                    <li><strong>Relationships:</strong> Nurture meaningful connections with family, friends, and colleagues</li>
-                    <li><strong>Making a Difference:</strong> Use my skills and knowledge to contribute to causes that matter</li>
-                </ul>
             </div>
         </section>
 
@@ -938,6 +934,43 @@
                 contactCircle.classList.remove('morphing');
             }
         });
+
+        // Falling LEGO bricks: appears once when scrolling to Interests & Hobbies section
+        const interestsSection = document.querySelector('#interests');
+        let bricksAnimated = false;
+
+        console.log('Interests section found:', interestsSection);
+
+        const legoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                console.log('Observer triggered:', entry.isIntersecting, bricksAnimated);
+                if (entry.isIntersecting && !bricksAnimated) {
+                    bricksAnimated = true;
+                    createFallingBricks();
+                    legoObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0 });
+
+        if (interestsSection) {
+            legoObserver.observe(interestsSection);
+        }
+
+        function createFallingBricks() {
+            console.log('Creating falling bricks!');
+            const brickCount = 30;
+            for (let i = 0; i < brickCount; i++) {
+                const brick = document.createElement('div');
+                brick.className = 'falling-brick';
+                brick.textContent = '🧱';
+                brick.style.left = Math.random() * 100 + '%';
+                brick.style.top = '-100px';
+                brick.style.animationDelay = Math.random() * 1 + 's';
+                document.body.appendChild(brick);
+                
+                setTimeout(() => brick.remove(), 6000);
+            }
+        }
 
         // Rhino runner: runs once when the user first scrolls a bit
         const rhino = document.getElementById('rhino');
