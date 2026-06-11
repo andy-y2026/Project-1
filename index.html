@@ -171,7 +171,10 @@
         .hero-section {
             width: 100%;
             min-height: 200px;
-            background: linear-gradient(135deg, #f8f9fc 0%, #e8ecf8 100%);
+            background-image: url('Photos/IMG_1431.heic');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -181,6 +184,19 @@
             transition: all 0.6s ease;
         }
 
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.2) 100%),
+                        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.1) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .hero-section.with-sidebar {
             margin-left: 0;
         }
@@ -188,6 +204,8 @@
         .hero-content {
             text-align: center;
             max-width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .hero-section h1 {
@@ -700,6 +718,133 @@
             user-select: none;
             line-height: 1;
         }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode section:nth-child(odd) {
+            background-color: #1a1a1a;
+        }
+
+        body.dark-mode section:nth-child(even) {
+            background-color: #2d2d2d;
+        }
+
+        body.dark-mode section h2 {
+            color: #7095db;
+        }
+
+        body.dark-mode section p,
+        body.dark-mode li {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .sidebar {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0a2847 100%);
+        }
+
+        body.dark-mode nav a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode nav a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .timeline-track {
+            background: #3d3d3d;
+        }
+
+        body.dark-mode .timeline-card {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+
+        body.dark-mode .timeline-summary,
+        body.dark-mode .timeline-detail {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .timeline-detail {
+            background: #1a1a1a;
+            border-color: #3d3d3d;
+        }
+
+        body.dark-mode .contact-squircle {
+            background: #2d2d2d;
+            border-color: #7095db;
+        }
+
+        body.dark-mode .contact-squircle h3 {
+            color: #7095db;
+        }
+
+        body.dark-mode .form-group label {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: #1a1a1a;
+            border-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .form-group input:focus,
+        body.dark-mode .form-group textarea:focus {
+            border-color: #7095db;
+            box-shadow: 0 0 0 3px rgba(112, 149, 219, 0.2);
+        }
+
+        body.dark-mode .close-btn {
+            background: #3d3d3d;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .close-btn:hover {
+            background: #4d4d4d;
+        }
+
+        body.dark-mode .site-footer {
+            background: #2d2d2d;
+            color: #b0b0b0;
+            border-top-color: #3d3d3d;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.2);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-info p {
+            margin: 4px 0;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -856,8 +1001,13 @@
     </main>
 
     <footer class="site-footer">
-        <p>Andrew Yin</p>
-        <p>Carnegie Vanguard High School</p>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>Andrew Yin</p>
+                <p>Carnegie Vanguard High School</p>
+            </div>
+            <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        </div>
     </footer>
 
     <!-- Contact Button -->
@@ -1076,6 +1226,25 @@
                     detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             });
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Check for saved dark mode preference
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            body.classList.add('dark-mode');
+            darkModeToggle.textContent = '☀️';
+        }
+
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
         });
     </script>
 </body>
