@@ -29,15 +29,36 @@
             background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
             padding: 40px 0;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 40;
+            z-index: 60;
             opacity: 0;
-            transition: opacity 0.6s ease;
+            transform: translateX(-24px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
             pointer-events: none;
         }
 
         .sidebar.visible {
             opacity: 1;
+            transform: translateX(0);
             pointer-events: auto;
+        }
+
+        .sidebar.genie-arrive {
+            animation: sidebar-genie-arrive 0.46s cubic-bezier(0.25, 0.82, 0.3, 1) forwards;
+        }
+
+        @keyframes sidebar-genie-arrive {
+            from {
+                opacity: 0;
+                transform: translateX(-58px) scaleX(0.82);
+            }
+            55% {
+                opacity: 1;
+                transform: translateX(8px) scaleX(1.03);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scaleX(1);
+            }
         }
 
         .sidebar-header {
@@ -89,11 +110,34 @@
             font-weight: 500;
         }
 
+        .nav-toggle-item {
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .dark-mode-toggle {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 10px 14px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-1px);
+        }
+
         /* Main Content */
         .main-content {
             margin-left: 0;
             min-height: 100vh;
-            transition: margin-left 0.6s ease;
+            transition: margin-left 0.52s cubic-bezier(0.25, 0.82, 0.3, 1);
         }
 
         .main-content.with-sidebar {
@@ -182,23 +226,93 @@
             position: relative;
             z-index: 50;
             transition: all 0.6s ease;
+            transform-origin: left top;
+            overflow: hidden;
         }
 
-        .hero-section.morphing {
-            min-height: 80px;
-            position: sticky;
-            top: 0;
-            background-attachment: scroll;
-        }
-
-        .hero-section.morphing .hero-content {
-            opacity: 0;
+        .hero-section.genie-suck {
+            animation: hero-genie-suck 0.82s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
             pointer-events: none;
         }
 
-        .hero-section.morphing .hero-content h1 {
-            font-size: 24px;
-            letter-spacing: 2px;
+        .hero-section.genie-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .hero-section.genie-suck .hero-content {
+            animation: hero-content-genie-fade 0.46s ease forwards;
+        }
+
+        .hero-section.genie-suck::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 42%),
+                radial-gradient(circle at 10% 10%, rgba(17, 71, 171, 0.58) 0%, rgba(17, 71, 171, 0) 34%);
+            mix-blend-mode: screen;
+            animation: hero-genie-swirl 0.82s ease forwards;
+        }
+
+        @keyframes hero-genie-suck {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1, 1) skewX(0deg);
+                clip-path: inset(0 0 0 0 round 0);
+                filter: blur(0px) saturate(1);
+            }
+            18% {
+                transform: translate(1.2%, 0) scale(1.02, 0.97) skewX(1deg);
+                clip-path: inset(0 0 0 0 round 0 0 8px 0);
+                filter: blur(0.2px) saturate(1.04);
+            }
+            40% {
+                transform: translate(-7%, -3%) scale(1.03, 0.86) skewX(-3deg);
+                clip-path: inset(0 14% 0 0 round 0 0 52px 0);
+                filter: blur(0.4px) saturate(1.1);
+            }
+            72% {
+                transform: translate(-18%, -8%) scale(0.56, 0.36) skewX(-8deg);
+                clip-path: inset(0 76% 50% 0 round 0 0 88px 0);
+                filter: blur(1.2px) saturate(1.18);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-29%, -16%) scale(0.045, 0.03) skewX(-12deg);
+                clip-path: inset(0 96% 92% 0 round 0 0 120px 0);
+                filter: blur(3px) saturate(1.2);
+            }
+        }
+
+        @keyframes hero-content-genie-fade {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+
+        @keyframes hero-genie-swirl {
+            0% {
+                opacity: 0;
+                transform: rotate(0deg) scale(1);
+            }
+            45% {
+                opacity: 0.82;
+                transform: rotate(-6deg) scale(1.13);
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(-13deg) scale(1.28);
+            }
         }
 
         .hero-section::before {
@@ -208,8 +322,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.2) 100%),
-                        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.1) 100%);
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0.18) 18%, rgba(0, 0, 0, 0.18) 82%, rgba(0, 0, 0, 0.52) 100%),
+                        linear-gradient(to bottom, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.1) 45%, rgba(0, 0, 0, 0.34) 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -223,17 +337,22 @@
             max-width: 100%;
             position: relative;
             z-index: 2;
+            background: rgba(7, 23, 53, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 18px;
+            padding: 18px 28px;
+            backdrop-filter: blur(2px);
         }
 
         .hero-section h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 120px;
             font-weight: 700;
-            color: #7095db;
+            color: #f4f8ff;
             letter-spacing: 8px;
             line-height: 1.1;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(17, 71, 171, 0.1);
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.62), 0 1px 0 rgba(255, 255, 255, 0.22);
         }
 
         @media (max-width: 768px) {
@@ -271,6 +390,12 @@
                 height: auto;
                 position: relative;
                 padding: 20px;
+                transform: none;
+                transition: opacity 0.35s ease;
+            }
+
+            .sidebar.genie-arrive {
+                animation: none;
             }
 
             .sidebar-header {
@@ -398,12 +523,14 @@
             border-radius: 50%;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.5s ease;
+            transition: width 0.5s ease, height 0.5s ease, border-radius 0.5s ease, transform 0.5s ease, opacity 0.35s ease;
             transform: scale(0);
             transform-origin: bottom right;
             z-index: 999;
             background: white;
-            border: none;
+            border: 2px solid #7095db;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
         }
 
         .contact-form-container.active {
@@ -411,9 +538,8 @@
             pointer-events: auto;
             transform: scale(1);
             width: 350px;
-            height: auto;
+            height: 455px;
             border-radius: 40px;
-            border: 2px solid #7095db;
         }
 
         /* Rhino runner (appears once on first scroll) */
@@ -450,12 +576,13 @@
         }
 
         .contact-squircle {
-            width: 350px;
-            background: white;
-            border-radius: 40px;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-radius: inherit;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            border: 2px solid #7095db;
+            box-shadow: none;
+            border: none;
             opacity: 0;
             transition: opacity 0.3s ease 0.25s;
         }
@@ -689,8 +816,12 @@
                 height: 50px;
             }
 
-            .contact-squircle {
+            .contact-form-container.active {
                 width: 280px;
+                height: 430px;
+            }
+
+            .contact-squircle {
                 padding: 20px;
             }
 
@@ -751,12 +882,21 @@
         }
 
         body.dark-mode section h2 {
-            color: #7095db;
+            color: #9fbcff;
         }
 
         body.dark-mode section p,
         body.dark-mode li {
-            color: #b0b0b0;
+            color: #d1d7e2;
+        }
+
+        body.dark-mode .highlight,
+        body.dark-mode li strong {
+            color: #b9cdff;
+        }
+
+        body.dark-mode .accent-line {
+            background-color: #9fbcff;
         }
 
         body.dark-mode .sidebar {
@@ -765,6 +905,16 @@
 
         body.dark-mode nav a {
             color: #e0e0e0;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            border-color: rgba(224, 224, 224, 0.45);
+            background: rgba(224, 224, 224, 0.12);
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background: rgba(224, 224, 224, 0.2);
         }
 
         body.dark-mode nav a:hover {
@@ -782,7 +932,11 @@
 
         body.dark-mode .timeline-summary,
         body.dark-mode .timeline-detail {
-            color: #b0b0b0;
+            color: #d1d7e2;
+        }
+
+        body.dark-mode .timeline-year {
+            color: #b9cdff;
         }
 
         body.dark-mode .timeline-detail {
@@ -810,6 +964,11 @@
             color: #e0e0e0;
         }
 
+        body.dark-mode .form-group input::placeholder,
+        body.dark-mode .form-group textarea::placeholder {
+            color: #a9b1c2;
+        }
+
         body.dark-mode .form-group input:focus,
         body.dark-mode .form-group textarea:focus {
             border-color: #7095db;
@@ -827,22 +986,8 @@
 
         body.dark-mode .site-footer {
             background: #2d2d2d;
-            color: #b0b0b0;
+            color: #d1d7e2;
             border-top-color: #3d3d3d;
-        }
-
-        .dark-mode-toggle {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-
-        .dark-mode-toggle:hover {
-            transform: scale(1.2);
         }
 
         .footer-content {
@@ -881,6 +1026,7 @@
                 <li><a href="#favorites" class="nav-link">Favorite Things</a></li>
                 <li><a href="#proud" class="nav-link">Something Proud Of</a></li>
                 <li><a href="#goals" class="nav-link">My Goals</a></li>
+                <li class="nav-toggle-item"><button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">Toggle Dark Mode 🌙</button></li>
             </ul>
         </nav>
     </aside>
@@ -1023,7 +1169,6 @@
                 <p>Andrew Yin</p>
                 <p>Carnegie Vanguard High School</p>
             </div>
-            <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
         </div>
     </footer>
 
@@ -1067,14 +1212,30 @@
         const closeBtn = document.getElementById('closeBtn');
         const contactForm = document.getElementById('contactForm');
 
+        function closeContactForm() {
+            if (!contactFormContainer.classList.contains('active')) {
+                contactCircle.classList.remove('morphing');
+                return;
+            }
+
+            contactFormContainer.classList.remove('active');
+
+            const onMorphBack = (event) => {
+                if (event.target !== contactFormContainer || event.propertyName !== 'transform') return;
+                contactCircle.classList.remove('morphing');
+                contactFormContainer.removeEventListener('transitionend', onMorphBack);
+            };
+
+            contactFormContainer.addEventListener('transitionend', onMorphBack);
+        }
+
         contactCircle.addEventListener('click', () => {
             contactCircle.classList.add('morphing');
             contactFormContainer.classList.add('active');
         });
 
         closeBtn.addEventListener('click', () => {
-            contactFormContainer.classList.remove('active');
-            contactCircle.classList.remove('morphing');
+            closeContactForm();
         });
 
         contactForm.addEventListener('submit', (e) => {
@@ -1090,15 +1251,13 @@
             
             // Reset form and close
             contactForm.reset();
-            contactFormContainer.classList.remove('active');
-            contactCircle.classList.remove('morphing');
+            closeContactForm();
         });
 
         // Close form when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.contact-button')) {
-                contactFormContainer.classList.remove('active');
-                contactCircle.classList.remove('morphing');
+                closeContactForm();
             }
         });
 
@@ -1181,6 +1340,10 @@
         const sidebar = document.querySelector('.sidebar');
         const mainContent = document.querySelector('.main-content');
         const heroSection = document.getElementById('hero');
+        let genieTransitioning = false;
+        let genieTimeout = null;
+        const sidebarRevealDelay = 430;
+        const sidebarArrivalCleanupDelay = 900;
         
         window.addEventListener('scroll', () => {
             let current = '';
@@ -1188,20 +1351,39 @@
             // Get the height of the hero section to determine when to show sidebar
             const heroHeight = heroSection.offsetHeight;
             const scrollPosition = window.pageYOffset;
+            // Trigger during mid-hero so the suction morph is visible before the hero is gone.
+            const morphTriggerPoint = Math.max(100, heroHeight * 0.42);
+            const shouldShowSidebar = scrollPosition >= morphTriggerPoint;
             
-            // Show sidebar when scrolling past the hero section
-            if (scrollPosition >= heroHeight) {
-                if (!sidebar.classList.contains('visible')) {
-                    sidebar.classList.add('visible');
-                    mainContent.classList.add('with-sidebar');
-                    heroSection.classList.add('with-sidebar');
-                    heroSection.classList.add('morphing');
+            // Genie effect: hero gets sucked into the sidebar anchor zone
+            if (shouldShowSidebar) {
+                if (!sidebar.classList.contains('visible') && !genieTransitioning) {
+                    genieTransitioning = true;
+                    heroSection.classList.remove('genie-hidden');
+                    heroSection.classList.add('genie-suck');
+
+                    genieTimeout = setTimeout(() => {
+                        sidebar.classList.add('genie-arrive');
+                        sidebar.classList.add('visible');
+                        mainContent.classList.add('with-sidebar');
+                        heroSection.classList.add('with-sidebar', 'genie-hidden');
+                        heroSection.classList.remove('genie-suck');
+                        genieTransitioning = false;
+                    }, sidebarRevealDelay);
+
+                    setTimeout(() => {
+                        sidebar.classList.remove('genie-arrive');
+                    }, sidebarArrivalCleanupDelay);
                 }
             } else {
-                sidebar.classList.remove('visible');
+                if (genieTimeout) {
+                    clearTimeout(genieTimeout);
+                    genieTimeout = null;
+                }
+                genieTransitioning = false;
+                sidebar.classList.remove('visible', 'genie-arrive');
                 mainContent.classList.remove('with-sidebar');
-                heroSection.classList.remove('with-sidebar');
-                heroSection.classList.remove('morphing');
+                heroSection.classList.remove('with-sidebar', 'genie-suck', 'genie-hidden');
             }
             
             document.querySelectorAll('section').forEach(section => {
@@ -1255,7 +1437,7 @@
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
         if (savedDarkMode) {
             body.classList.add('dark-mode');
-            darkModeToggle.textContent = '☀️';
+            darkModeToggle.textContent = 'Toggle Light Mode ☀️';
         }
 
         // Toggle dark mode
@@ -1263,7 +1445,7 @@
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDarkMode);
-            darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+            darkModeToggle.textContent = isDarkMode ? 'Toggle Light Mode ☀️' : 'Toggle Dark Mode 🌙';
         });
     </script>
 </body>
