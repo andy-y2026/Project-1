@@ -169,6 +169,19 @@
             height: 28px;
             color: #082B56;
             flex: 0 0 28px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .weather-icon svg {
+            pointer-events: none;
         }
 
         .daily-widget-text {
@@ -176,6 +189,10 @@
             color: #3A4557;
             font-size: 16px;
             line-height: 1.6;
+        }
+
+        .daily-widget-line {
+            display: block;
         }
 
         .daily-widget-info {
@@ -339,7 +356,7 @@
         @keyframes cloud-float {
             0% {
                 opacity: 0;
-                transform: translateX(-100px) translateY(-20px);
+                transform: translateX(0) translateY(-20px);
             }
             10% {
                 opacity: 1;
@@ -349,7 +366,7 @@
             }
             100% {
                 opacity: 0;
-                transform: translateX(100px) translateY(10px);
+                transform: translateX(calc(100vw + 220px)) translateY(10px);
             }
         }
 
@@ -358,7 +375,7 @@
             font-size: 60px;
             z-index: 1150;
             pointer-events: none;
-            animation: cloud-float 5s ease-in-out forwards;
+            animation: cloud-float 7s ease-in-out forwards;
         }
 
         @keyframes star-twinkle {
@@ -424,7 +441,8 @@
         }
 
         .content-block {
-            max-width: 900px;
+            width: min(100%, 1200px);
+            max-width: none;
             background: rgba(255, 255, 255, 0.88);
             border: 1px solid rgba(8, 43, 86, 0.14);
             border-radius: 22px;
@@ -493,6 +511,12 @@
             background: #C5D5E8;
             border: 1px solid rgba(8, 43, 86, 0.28);
             box-shadow: 0 10px 28px rgba(8, 43, 86, 0.16);
+            cursor: pointer;
+        }
+
+        .section-photo:focus-visible {
+            outline: 3px solid #2A4F8A;
+            outline-offset: 3px;
         }
 
         .section-photo::after {
@@ -510,6 +534,100 @@
             height: 200px;
             object-fit: cover;
             object-position: center;
+            cursor: zoom-in;
+        }
+
+        .section-photo-caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #F8FAFF;
+            background: linear-gradient(to top, rgba(7, 20, 46, 0.9), rgba(7, 20, 46, 0.45));
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+        }
+
+        .section-photo.show-caption .section-photo-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .image-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 13, 30, 0.82);
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            z-index: 1400;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .image-lightbox.active {
+            opacity: 1;
+        }
+
+        .image-lightbox-panel {
+            position: relative;
+            width: min(100%, 980px);
+            max-height: calc(100vh - 48px);
+            background: rgba(10, 24, 52, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            padding: 12px 12px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .image-lightbox-image {
+            width: 100%;
+            max-height: calc(100vh - 150px);
+            object-fit: contain;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .image-lightbox-caption {
+            margin: 0;
+            color: #EAF1FF;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .image-lightbox-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(7, 20, 46, 0.75);
+            color: #FFFFFF;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-lightbox-close:hover {
+            background: rgba(7, 20, 46, 0.95);
         }
 
         .highlight {
@@ -1478,9 +1596,9 @@
 
         <div class="daily-widget" aria-live="polite">
             <div class="daily-widget-copy">
-                <span id="weatherIcon" class="weather-icon" aria-hidden="true"></span>
+                <button id="weatherIcon" class="weather-icon" type="button" aria-label="Show weather animation" title="Show weather animation"></button>
                 <div class="daily-widget-info">
-                    <p id="dayMessage" class="daily-widget-text">Good day! Today is 01/01/2026 and the time is 00:00:00. It is a clear day in Houston, TX.</p>
+                    <p id="dayMessage" class="daily-widget-text"><span class="daily-widget-line">Good day! Today is 01/01/2026 and the time is 00:00:00.</span><span class="daily-widget-line">It is a clear day in Houston, TX.</span></p>
                 </div>
             </div>
             <div class="analog-clock" aria-label="Analog clock">
@@ -1619,6 +1737,17 @@
                                     <p class="timeline-summary">I was born in the year of the tiger.</p>
                                 </div>
                             </li>
+                            <li class="timeline-item path-right">
+                                <div class="timeline-node-row">
+                                    <span class="timeline-dot" aria-hidden="true"></span>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2014</span>
+                                    </div>
+                                    <p class="timeline-summary">My younger sister Alice was born</p>
+                                </div>
+                            </li>
                             <li class="timeline-item turn-right col-4 path-left path-right">
                                 <div class="timeline-node-row">
                                     <button class="timeline-dot" data-detail="detail-4" aria-expanded="false" aria-controls="detail-4"><span class="sr-only">Expand 2016 milestone</span></button>
@@ -1634,38 +1763,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="timeline-item path-left col-4">
-                                <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-5" aria-expanded="false" aria-controls="detail-5"><span class="sr-only">Expand 2018 milestone</span></button>
-                                </div>
-                                <div class="timeline-card">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-year">2018</span>
-                                        <button class="timeline-toggle" data-detail="detail-5" aria-expanded="false" aria-controls="detail-5">View details</button>
-                                    </div>
-                                    <p class="timeline-summary">Set clearer goals and began shaping a stronger long-term direction for my future.</p>
-                                    <div class="timeline-detail" id="detail-5" hidden>
-                                        <p>I focused on balancing academics, hobbies, and personal growth.</p>
-                                        <p>Creating structure helped me stay focused while trying new opportunities.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-item path-left col-3">
-                                <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-6" aria-expanded="false" aria-controls="detail-6"><span class="sr-only">Expand 2020 milestone</span></button>
-                                </div>
-                                <div class="timeline-card">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-year">2020</span>
-                                        <button class="timeline-toggle" data-detail="detail-6" aria-expanded="false" aria-controls="detail-6">View details</button>
-                                    </div>
-                                    <p class="timeline-summary">Adapted to change and strengthened self-discipline during challenging periods.</p>
-                                    <div class="timeline-detail" id="detail-6" hidden>
-                                        <p>I learned to stay productive under changing conditions and remain consistent.</p>
-                                        <p>This period reinforced focus, independence, and perseverance.</p>
-                                    </div>
-                                </div>
-                            </li>
                             <li class="timeline-item path-left col-2">
                                 <div class="timeline-node-row">
                                     <button class="timeline-dot" data-detail="detail-7" aria-expanded="false" aria-controls="detail-7"><span class="sr-only">Expand 2022 milestone</span></button>
@@ -1678,6 +1775,7 @@
                                     <p class="timeline-summary">I embraced my art skills</p>
                                     <div class="timeline-detail" id="detail-7" hidden>
                                         <p>My 5th grade teacher Ms. Wrigglesworth gave me many opportunities to use my art skills to help the class, such as by making posters.</p>
+                                        <p>I achieved a very high rank during the HISD Rodeo Art Contest, the highest of my elementary career.</p>
                                     </div>
                                 </div>
                             </li>
@@ -1705,26 +1803,44 @@
                                         <span class="timeline-year">2024</span>
                                         <button class="timeline-toggle" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Launched a focused learning plan and aligned projects with my long-term goals.</p>
+                                    <p class="timeline-summary">I expanded my academic and extracurricular horizons.</p>
                                     <div class="timeline-detail" id="detail-9" hidden>
-                                        <p>I concentrated on skill-building, sought mentor feedback, and tracked steady progress.</p>
-                                        <p>This phase helped turn ideas into clear action steps.</p>
+                                        <p>I joined the debate team at MIMS and developed a key foundation for success in debate later.</p>
+                                        <p>I joined MIMS Calculator Applications, which helped me develop math skills for word problems and improved my skills with the TI-84 Plus CE calculator.</p>
+                                        <p>I was able to take Algebra 1 in 7th grade, which allowed me to take Geometry in 8th grade, and Algebra 2 in 9th grade.</p>
                                     </div>
                                 </div>
                             </li>
                             <li class="timeline-item col-1 path-left">
                                 <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10"><span class="sr-only">Expand 2026 milestone</span></button>
+                                    <button class="timeline-dot" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10"><span class="sr-only">Expand 2025 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2025</span>
+                                        <button class="timeline-toggle" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">I began to attend Carngie Vanguard High School</p>
+                                    <div class="timeline-detail" id="detail-10" hidden>
+                                        <p>During March, I attended TMSCA state for Calculator Applications.</p>
+                                        <p>I started my career at Carnegie Vanguard High School. Though it was, and still be, challenging, it is still a place that helps develop my academics with a supporting environment.</p>
+                                        <p>2025 was also my first time attending EMSI during the summer.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item col-1 path-left">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-11" aria-expanded="false" aria-controls="detail-11"><span class="sr-only">Expand 2026 milestone</span></button>
                                 </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2026</span>
-                                        <button class="timeline-toggle" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10">View details</button>
+                                        <button class="timeline-toggle" data-detail="detail-11" aria-expanded="false" aria-controls="detail-11">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Focused on sharing impact, leading initiatives, and making a positive difference in my community.</p>
-                                    <div class="timeline-detail" id="detail-10" hidden>
-                                        <p>I continued developing leadership while setting higher goals for my next chapter.</p>
-                                        <p>Each milestone built momentum toward my future in medicine or law.</p>
+                                    <p class="timeline-summary">I achieved high ranks in debate and art</p>
+                                    <div class="timeline-detail" id="detail-11" hidden>
+                                        <p>During February, I attended HUDL's City Championship at Bob Casey Federal Courthouse and reached semi-finals.</p>
+                                        <p>I obtain both a silver and a gold key in the Scholastic Art and Writing contest.</p>
                                     </div>
                                 </div>
                             </li>
@@ -2066,7 +2182,7 @@
             const time = `${padTime(now.getHours())}:${padTime(now.getMinutes())}:${padTime(now.getSeconds())}`;
             const weather = weatherState.icon ? weatherState : weatherByLabel('clear');
 
-            dayMessage.textContent = `${greeting}! Today is ${date} and the time is ${time}. It is a ${weather.label} day in Houston, TX.`;
+            dayMessage.innerHTML = `<span class="daily-widget-line">${greeting}! Today is ${date} and the time is ${time}.</span><span class="daily-widget-line">It is a ${weather.label} day in Houston, TX.</span>`;
             weatherIcon.innerHTML = weather.icon;
 
             const seconds = now.getSeconds();
@@ -2085,6 +2201,10 @@
         }
 
         // Weather reward animations
+        weatherIcon.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+        });
+
         weatherIcon.addEventListener('click', () => {
             const weather = weatherState.label.toLowerCase();
             const isNight = sunTimes.sunrise && sunTimes.sunset && (new Date() < sunTimes.sunrise || new Date() >= sunTimes.sunset);
@@ -2145,7 +2265,7 @@
         }
 
         function createCloudAnimation() {
-            const clouds = ['☁️', '🌥️', '⛅'];
+            const clouds = ['☁️', '☁️', '⛅'];
             const count = 3;
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
@@ -2153,10 +2273,10 @@
                     cloud.className = 'reward-cloud';
                     cloud.textContent = clouds[i % clouds.length];
                     cloud.style.top = Math.random() * 200 + 'px';
-                    cloud.style.left = '-100px';
+                    cloud.style.left = '-120px';
                     document.body.appendChild(cloud);
-                    setTimeout(() => cloud.remove(), 5000);
-                }, i * 400);
+                    setTimeout(() => cloud.remove(), 7000);
+                }, i * 550);
             }
         }
 
@@ -2180,6 +2300,84 @@
                 : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z"></path></svg>';
             darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
             darkModeToggle.setAttribute('title', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        function initializeImageLightbox() {
+            const photoFigures = document.querySelectorAll('.section-photo');
+            if (!photoFigures.length) return;
+
+            const lightbox = document.createElement('div');
+            lightbox.className = 'image-lightbox';
+            lightbox.hidden = true;
+            lightbox.innerHTML = `
+                <div class="image-lightbox-panel" role="dialog" aria-modal="true" aria-label="Expanded image view">
+                    <button class="image-lightbox-close" type="button" aria-label="Close image">&times;</button>
+                    <img class="image-lightbox-image" alt="">
+                    <p class="image-lightbox-caption"></p>
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+
+            const lightboxImage = lightbox.querySelector('.image-lightbox-image');
+            const lightboxCaption = lightbox.querySelector('.image-lightbox-caption');
+            const closeButton = lightbox.querySelector('.image-lightbox-close');
+
+            const closeLightbox = () => {
+                if (lightbox.hidden) return;
+                lightbox.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+                window.setTimeout(() => {
+                    lightbox.hidden = true;
+                }, 250);
+            };
+
+            const openLightbox = (image, captionText) => {
+                lightboxImage.src = image.src;
+                lightboxImage.alt = image.alt || captionText || 'Expanded photo';
+                lightboxCaption.textContent = captionText || image.alt || 'Photo';
+                lightbox.hidden = false;
+                document.body.classList.add('no-scroll');
+                window.requestAnimationFrame(() => {
+                    lightbox.classList.add('active');
+                });
+            };
+
+            photoFigures.forEach((figure) => {
+                const image = figure.querySelector('img');
+                if (!image) return;
+
+                const captionText = image.dataset.caption || image.alt || 'Photo';
+                figure.setAttribute('tabindex', '0');
+                figure.setAttribute('role', 'button');
+                figure.setAttribute('aria-label', `Expand photo: ${captionText}`);
+
+                figure.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openLightbox(image, captionText);
+                    }
+                });
+            });
+
+            document.addEventListener('click', (event) => {
+                const image = event.target.closest('.section-photo img');
+                if (!image) return;
+                const captionText = image.dataset.caption || image.alt || 'Photo';
+                openLightbox(image, captionText);
+            });
+
+            closeButton.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeLightbox();
+                }
+            });
         }
 
         // Check for saved dark mode preference
@@ -2206,6 +2404,7 @@
             }
         });
 
+        initializeImageLightbox();
         fetchHoustonWeatherAndSun();
         setInterval(fetchHoustonWeatherAndSun, 15 * 60 * 1000);
         updateDailyWidget();
