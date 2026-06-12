@@ -26,7 +26,7 @@
             flex: 0 0 250px;
             width: 250px;
             height: 100vh;
-            background: linear-gradient(135deg, #536A9C 0%, #082B56 100%);
+            background: linear-gradient(135deg, #536A9C 0%, #063574 100%);
             padding: 40px 0;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 60;
@@ -950,6 +950,10 @@
             background: #082B56;
         }
 
+        .timeline-dot[aria-hidden="true"] {
+            cursor: default;
+        }
+
         .timeline-card {
             background: #fff;
             border-radius: 24px;
@@ -1599,57 +1603,20 @@
             <h2>Timeline of Me</h2>
             <div class="content-block">
                 <p>
-                    This timeline highlights key moments that follow my goals. Click each dot to explore what happened during that time period.
+                    This is a timeline of the key events in my life. Click on the dots to learn more.
                 </p>
                 <div class="timeline-section">
                     <div class="timeline-wrapper">
                         <ul class="timeline-items">
                             <li class="timeline-item path-right">
                                 <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1"><span class="sr-only">Expand 2010 milestone</span></button>
+                                    <span class="timeline-dot" aria-hidden="true"></span>
                                 </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2010</span>
-                                        <button class="timeline-toggle" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Began my journey with curiosity, creativity, and a strong interest in building and exploring new ideas.</p>
-                                    <div class="timeline-detail" id="detail-1" hidden>
-                                        <p>This was the starting point where I learned to ask questions, try new activities, and enjoy the process of learning.</p>
-                                        <p>Small wins during this period set the tone for my long-term goals.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-item path-right">
-                                <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2"><span class="sr-only">Expand 2012 milestone</span></button>
-                                </div>
-                                <div class="timeline-card">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-year">2012</span>
-                                        <button class="timeline-toggle" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2">View details</button>
-                                    </div>
-                                    <p class="timeline-summary">Started taking on bigger challenges in school and building habits around consistency and effort.</p>
-                                    <div class="timeline-detail" id="detail-2" hidden>
-                                        <p>I practiced sticking with difficult tasks and learned how steady progress creates strong results over time.</p>
-                                        <p>These habits became an important foundation for later achievements.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-item path-right">
-                                <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3"><span class="sr-only">Expand 2014 milestone</span></button>
-                                </div>
-                                <div class="timeline-card">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-year">2014</span>
-                                        <button class="timeline-toggle" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3">View details</button>
-                                    </div>
-                                    <p class="timeline-summary">Expanded my interests in reading, sketching, and problem-solving with more independent projects.</p>
-                                    <div class="timeline-detail" id="detail-3" hidden>
-                                        <p>I explored different ways to express ideas and learned from both successes and mistakes.</p>
-                                        <p>That experimentation made me more creative and resilient.</p>
-                                    </div>
+                                    <p class="timeline-summary">I was born in the year of the tiger.</p>
                                 </div>
                             </li>
                             <li class="timeline-item turn-right col-4 path-left path-right">
@@ -1661,10 +1628,9 @@
                                         <span class="timeline-year">2016</span>
                                         <button class="timeline-toggle" data-detail="detail-4" aria-expanded="false" aria-controls="detail-4">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Began presenting ideas more confidently and collaborating more often with classmates.</p>
+                                    <p class="timeline-summary">I started elementary school at Mark Twain Elementary school</p>
                                     <div class="timeline-detail" id="detail-4" hidden>
-                                        <p>Teamwork and communication became larger parts of my growth.</p>
-                                        <p>I learned how to listen, adjust, and contribute more effectively in group settings.</p>
+                                        <p>Mark Twain Elementary gave me a very strong foundation for higher education. I will forever be a Twain Tiger.</p>
                                     </div>
                                 </div>
                             </li>
@@ -1709,24 +1675,38 @@
                                         <span class="timeline-year">2022</span>
                                         <button class="timeline-toggle" data-detail="detail-7" aria-expanded="false" aria-controls="detail-7">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Became more involved in leadership, communication, and high-impact school activities.</p>
+                                    <p class="timeline-summary">I embraced my art skills</p>
                                     <div class="timeline-detail" id="detail-7" hidden>
-                                        <p>I started taking initiative, helping organize projects, and sharing ideas more openly.</p>
-                                        <p>These experiences developed my confidence and sense of responsibility.</p>
+                                        <p>My 5th grade teacher Ms. Wrigglesworth gave me many opportunities to use my art skills to help the class, such as by making posters.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-left col-1">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8"><span class="sr-only">Expand 2023 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2023</span>
+                                        <button class="timeline-toggle" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">I went to Mandarin Immersion Magnet School</p>
+                                    <div class="timeline-detail" id="detail-8" hidden>
+                                        <p>In order for me to improve my mandarin skills, my parents sent me to Mandarin Immersion Magnet School, or MIMS, a choice that I am very grateful for.</p>
                                     </div>
                                 </div>
                             </li>
                             <li class="timeline-item turn-left col-1 path-left path-right">
                                 <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8"><span class="sr-only">Expand 2024 milestone</span></button>
+                                    <button class="timeline-dot" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9"><span class="sr-only">Expand 2024 milestone</span></button>
                                 </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2024</span>
-                                        <button class="timeline-toggle" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8">View details</button>
+                                        <button class="timeline-toggle" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9">View details</button>
                                     </div>
                                     <p class="timeline-summary">Launched a focused learning plan and aligned projects with my long-term goals.</p>
-                                    <div class="timeline-detail" id="detail-8" hidden>
+                                    <div class="timeline-detail" id="detail-9" hidden>
                                         <p>I concentrated on skill-building, sought mentor feedback, and tracked steady progress.</p>
                                         <p>This phase helped turn ideas into clear action steps.</p>
                                     </div>
@@ -1734,15 +1714,15 @@
                             </li>
                             <li class="timeline-item col-1 path-left">
                                 <div class="timeline-node-row">
-                                    <button class="timeline-dot" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9"><span class="sr-only">Expand 2026 milestone</span></button>
+                                    <button class="timeline-dot" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10"><span class="sr-only">Expand 2026 milestone</span></button>
                                 </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2026</span>
-                                        <button class="timeline-toggle" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9">View details</button>
+                                        <button class="timeline-toggle" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10">View details</button>
                                     </div>
                                     <p class="timeline-summary">Focused on sharing impact, leading initiatives, and making a positive difference in my community.</p>
-                                    <div class="timeline-detail" id="detail-9" hidden>
+                                    <div class="timeline-detail" id="detail-10" hidden>
                                         <p>I continued developing leadership while setting higher goals for my next chapter.</p>
                                         <p>Each milestone built momentum toward my future in medicine or law.</p>
                                     </div>
