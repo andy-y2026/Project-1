@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Raleway', sans-serif;
-            background-color: #f8f9fc;
+            background-color: #EFF1F5;
             color: #333;
             line-height: 1.6;
         }
@@ -26,7 +26,7 @@
             flex: 0 0 250px;
             width: 250px;
             height: 100vh;
-            background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
+            background: linear-gradient(135deg, #536A9C 0%, #082B56 100%);
             padding: 40px 0;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 60;
@@ -82,7 +82,7 @@
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         nav a:hover {
@@ -141,6 +141,253 @@
             min-height: 100vh;
         }
 
+        .daily-widget {
+            max-width: 900px;
+            margin: 48px auto 0;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(8, 43, 86, 0.14);
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(8, 43, 86, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 18px 22px;
+        }
+
+        .daily-widget-copy {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .weather-icon {
+            width: 28px;
+            height: 28px;
+            color: #082B56;
+            flex: 0 0 28px;
+        }
+
+        .daily-widget-text {
+            margin: 0;
+            color: #3A4557;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .daily-widget-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .auto-theme-setting {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #474D5F;
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .auto-theme-setting input {
+            accent-color: #082B56;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .analog-clock {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            border: 3px solid #082B56;
+            background: #EEF2F8;
+            position: relative;
+            flex: 0 0 86px;
+            box-shadow: inset 0 0 0 5px rgba(8, 43, 86, 0.08);
+        }
+
+        .clock-center {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            background: #082B56;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .clock-hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: center bottom;
+            transform: translateX(-50%) rotate(0deg);
+            border-radius: 999px;
+        }
+
+        .clock-hand.hour {
+            width: 4px;
+            height: 22px;
+            background: #082B56;
+            z-index: 4;
+        }
+
+        .clock-hand.minute {
+            width: 3px;
+            height: 30px;
+            background: #2A4F8A;
+            z-index: 3;
+        }
+
+        .clock-hand.second {
+            width: 2px;
+            height: 34px;
+            background: #ec5b43;
+            z-index: 2;
+        }
+
+        .clock-mark {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background: rgba(8, 43, 86, 0.55);
+            left: 50%;
+            top: 4px;
+            transform-origin: 50% 39px;
+        }
+
+        /* Weather Reward Animations */
+        @keyframes sun-glow {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(255, 200, 0, 0.8));
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(255, 200, 0, 1));
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+                filter: drop-shadow(0 0 20px rgba(255, 200, 0, 0));
+            }
+        }
+
+        .reward-sun {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 80px;
+            z-index: 1200;
+            pointer-events: none;
+            animation: sun-glow 4s ease-out forwards;
+        }
+
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes snow-fall {
+            0% {
+                transform: translateY(-50px) translateX(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        .reward-droplet {
+            position: fixed;
+            font-size: 24px;
+            z-index: 1150;
+            pointer-events: none;
+        }
+
+        .reward-droplet.rain {
+            animation: rain-fall 3.5s linear forwards;
+        }
+
+        .reward-droplet.snow {
+            animation: snow-fall 4s ease-in forwards;
+            font-size: 20px;
+        }
+
+        @keyframes cloud-float {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) translateY(-20px);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100px) translateY(10px);
+            }
+        }
+
+        .reward-cloud {
+            position: fixed;
+            font-size: 60px;
+            z-index: 1150;
+            pointer-events: none;
+            animation: cloud-float 5s ease-in-out forwards;
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .reward-star {
+            position: fixed;
+            font-size: 24px;
+            color: #ffeb3b;
+            z-index: 1150;
+            pointer-events: none;
+            animation: star-twinkle 3s ease-in-out forwards;
+        }
+
         section {
             width: 100%;
             min-height: 100vh;
@@ -152,7 +399,7 @@
         }
 
         section:nth-child(odd) {
-            background-color: #f8f9fc;
+            background-color: #EFF1F5;
         }
 
         section:nth-child(even) {
@@ -162,7 +409,7 @@
         section h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 48px;
-            color: #7095db;
+            color: #536A9C;
             margin-bottom: 30px;
             font-weight: 700;
             letter-spacing: -1px;
@@ -178,6 +425,32 @@
 
         .content-block {
             max-width: 900px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(8, 43, 86, 0.14);
+            border-radius: 22px;
+            padding: 28px 30px;
+            box-shadow: 0 14px 36px rgba(8, 43, 86, 0.1);
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.35s ease;
+            will-change: opacity, transform;
+        }
+
+        .content-block.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-block:hover {
+            box-shadow: 0 18px 44px rgba(8, 43, 86, 0.14);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .content-block {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
         }
 
         .icon-list {
@@ -198,7 +471,7 @@
             height: 26px;
             flex: 0 0 26px;
             margin-top: 3px;
-            color: #1147ab;
+            color: #082B56;
         }
 
         .icon-list .interest-item span {
@@ -217,9 +490,9 @@
             position: relative;
             border-radius: 18px;
             overflow: hidden;
-            background: #d8e3f8;
-            border: 1px solid rgba(17, 71, 171, 0.28);
-            box-shadow: 0 10px 28px rgba(17, 71, 171, 0.16);
+            background: #C5D5E8;
+            border: 1px solid rgba(8, 43, 86, 0.28);
+            box-shadow: 0 10px 28px rgba(8, 43, 86, 0.16);
         }
 
         .section-photo::after {
@@ -240,7 +513,7 @@
         }
 
         .highlight {
-            color: #1147ab;
+            color: #082B56;
             font-weight: 500;
         }
 
@@ -257,13 +530,13 @@
         }
 
         li strong {
-            color: #1147ab;
+            color: #082B56;
         }
 
         .accent-line {
             width: 60px;
             height: 4px;
-            background-color: #1147ab;
+            background-color: #082B56;
             margin-bottom: 20px;
         }
 
@@ -367,6 +640,17 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .daily-widget {
+                margin: 20px 30px 0;
+                margin-bottom: 24px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .daily-widget-copy {
+                width: 100%;
+            }
+
             .content-layout {
                 display: block;
             }
@@ -443,6 +727,16 @@
         }
 
         @media (max-width: 480px) {
+            .daily-widget {
+                margin: 14px 20px 0;
+                margin-bottom: 20px;
+                padding: 16px;
+            }
+
+            .daily-widget-text {
+                font-size: 15px;
+            }
+
             section {
                 padding: 40px 20px;
             }
@@ -473,7 +767,7 @@
         .contact-circle {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
+            background: linear-gradient(135deg, #536A9C 0%, #082B56 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -523,7 +817,7 @@
             transform-origin: bottom right;
             z-index: 999;
             background: white;
-            border: 2px solid #7095db;
+            border: 2px solid #536A9C;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
@@ -535,39 +829,6 @@
             width: 350px;
             height: 455px;
             border-radius: 40px;
-        }
-
-        /* Rhino runner (appears once on first scroll) */
-        .rhino {
-            position: fixed;
-            top: 8px;
-            right: 0;
-            font-size: 96px; /* larger rhino */
-            transform: translateX(40%);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1100;
-            transition: transform 0.3s ease;
-        }
-
-        .rhino.run {
-            opacity: 1;
-            animation: rhino-run 3s cubic-bezier(0.22, 0.9, 0.28, 1) forwards; /* slower */
-        }
-
-        @keyframes rhino-run {
-            0% {
-                transform: translateX(40%);
-                opacity: 1;
-            }
-            85% {
-                transform: translateX(calc(-100vw - 150px));
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(calc(-100vw - 150px));
-                opacity: 0;
-            }
         }
 
         .contact-squircle {
@@ -607,7 +868,7 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            background: #dbe5f7;
+            background: #B5C5DB;
             border-radius: 999px;
         }
 
@@ -634,15 +895,15 @@
 
         .timeline-item.turn-right::after {
             right: -10px;
-            border-right: 4px solid #dbe5f7;
-            border-bottom: 4px solid #dbe5f7;
+            border-right: 4px solid #B5C5DB;
+            border-bottom: 4px solid #B5C5DB;
             border-radius: 0 0 18px 0;
         }
 
         .timeline-item.turn-left::after {
             left: -10px;
-            border-left: 4px solid #dbe5f7;
-            border-bottom: 4px solid #dbe5f7;
+            border-left: 4px solid #B5C5DB;
+            border-bottom: 4px solid #B5C5DB;
             border-radius: 0 0 0 18px;
         }
 
@@ -674,9 +935,9 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #7095db;
+            background: #536A9C;
             border: 3px solid #fff;
-            box-shadow: 0 0 0 6px rgba(112, 149, 219, 0.1);
+            box-shadow: 0 0 0 6px rgba(83, 106, 156, 0.1);
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
@@ -685,8 +946,8 @@
         .timeline-dot:focus-visible {
             transform: scale(1.15);
             outline: none;
-            box-shadow: 0 0 0 8px rgba(112, 149, 219, 0.22);
-            background: #1147ab;
+            box-shadow: 0 0 0 8px rgba(83, 106, 156, 0.22);
+            background: #082B56;
         }
 
         .timeline-card {
@@ -694,7 +955,7 @@
             border-radius: 24px;
             padding: 24px 24px 18px;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e6ecf5;
+            border: 1px solid #D4DDE8;
             position: relative;
             z-index: 1;
         }
@@ -710,15 +971,15 @@
         .timeline-year {
             font-family: 'Montserrat', sans-serif;
             font-size: 20px;
-            color: #1147ab;
+            color: #082B56;
             font-weight: 700;
         }
 
         .timeline-toggle {
             appearance: none;
             background: transparent;
-            border: 1px solid #7095db;
-            color: #1147ab;
+            border: 1px solid #536A9C;
+            color: #082B56;
             border-radius: 999px;
             padding: 10px 16px;
             font-family: 'Raleway', sans-serif;
@@ -729,7 +990,7 @@
 
         .timeline-toggle:hover,
         .timeline-toggle:focus-visible {
-            background: #7095db;
+            background: #536A9C;
             color: white;
             transform: translateY(-1px);
             outline: none;
@@ -744,9 +1005,9 @@
 
         .timeline-detail {
             padding: 16px 18px;
-            background: #f3f7ff;
+            background: #E8EFF7;
             border-radius: 16px;
-            border: 1px solid #dfe7f7;
+            border: 1px solid #C5D0E0;
             color: #444;
             font-size: 16px;
             line-height: 1.7;
@@ -790,7 +1051,7 @@
 
         .contact-squircle h3 {
             font-family: 'Montserrat', sans-serif;
-            color: #7095db;
+            color: #536A9C;
             margin-bottom: 20px;
             text-align: center;
             font-size: 20px;
@@ -829,8 +1090,8 @@
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #7095db;
-            box-shadow: 0 0 0 3px rgba(112, 149, 219, 0.1);
+            border-color: #536A9C;
+            box-shadow: 0 0 0 3px rgba(83, 106, 156, 0.1);
         }
 
         .form-group textarea {
@@ -858,13 +1119,13 @@
         }
 
         .send-btn {
-            background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
+            background: linear-gradient(135deg, #536A9C 0%, #082B56 100%);
             color: white;
         }
 
         .send-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(112, 149, 219, 0.4);
+            box-shadow: 0 4px 12px rgba(83, 106, 156, 0.4);
         }
 
         .close-btn {
@@ -898,39 +1159,17 @@
         }
 
         .site-footer {
-            background: #f3f7ff;
+            background: #E8EFF7;
             color: #4a5568;
             text-align: center;
             padding: 24px 20px;
             font-size: 14px;
-            border-top: 1px solid #e6ecf5;
+            border-top: 1px solid #D4DDE8;
         }
 
         .site-footer p {
             margin: 4px 0;
             line-height: 1.6;
-        }
-
-        /* Falling LEGO Bricks Animation */
-        @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        .falling-brick {
-            position: fixed;
-            font-size: 50px;
-            animation: fall 5s linear forwards;
-            pointer-events: none;
-            z-index: 100;
-            user-select: none;
-            line-height: 1;
         }
 
         /* Dark Mode Styles */
@@ -948,7 +1187,7 @@
         }
 
         body.dark-mode section h2 {
-            color: #9fbcff;
+            color: #7FA8D1;
         }
 
         body.dark-mode section p,
@@ -958,19 +1197,19 @@
 
         body.dark-mode .highlight,
         body.dark-mode li strong {
-            color: #b9cdff;
+            color: #8DB8E8;
         }
 
         body.dark-mode .interest-icon {
-            color: #9fbcff;
+            color: #7FA8D1;
         }
 
         body.dark-mode .accent-line {
-            background-color: #9fbcff;
+            background-color: #7FA8D1;
         }
 
         body.dark-mode .sidebar {
-            background: linear-gradient(135deg, #1e3a5f 0%, #0a2847 100%);
+            background: linear-gradient(135deg, #1a3654 0%, #071D3D 100%);
         }
 
         body.dark-mode nav a {
@@ -991,6 +1230,28 @@
             background-color: rgba(255, 255, 255, 0.15);
         }
 
+        body.dark-mode .timeline-toggle {
+            color: #A8C5E8;
+            border-color: #7FA8D1;
+            background: rgba(127, 168, 209, 0.08);
+            font-weight: 600;
+        }
+
+        body.dark-mode .timeline-toggle:hover,
+        body.dark-mode .timeline-toggle:focus-visible {
+            background: #7FA8D1;
+            color: #081D38;
+        }
+
+        body.dark-mode .timeline-detail {
+            background: #1a1a1a;
+            border-color: #3d3d3d;
+        }
+
+        body.dark-mode .timeline-year {
+            color: #8DB8E8;
+        }
+
         body.dark-mode .timeline-card {
             background: #2d2d2d;
             border-color: #3d3d3d;
@@ -1001,22 +1262,13 @@
             color: #d1d7e2;
         }
 
-        body.dark-mode .timeline-year {
-            color: #b9cdff;
-        }
-
-        body.dark-mode .timeline-detail {
-            background: #1a1a1a;
-            border-color: #3d3d3d;
-        }
-
         body.dark-mode .contact-squircle {
             background: #2d2d2d;
-            border-color: #7095db;
+            border-color: #536A9C;
         }
 
         body.dark-mode .contact-squircle h3 {
-            color: #7095db;
+            color: #536A9C;
         }
 
         body.dark-mode .form-group label {
@@ -1037,8 +1289,8 @@
 
         body.dark-mode .form-group input:focus,
         body.dark-mode .form-group textarea:focus {
-            border-color: #7095db;
-            box-shadow: 0 0 0 3px rgba(112, 149, 219, 0.2);
+            border-color: #536A9C;
+            box-shadow: 0 0 0 3px rgba(83, 106, 156, 0.2);
         }
 
         body.dark-mode .close-btn {
@@ -1057,13 +1309,60 @@
         }
 
         body.dark-mode .section-photo {
-            border-color: rgba(159, 188, 255, 0.38);
+            border-color: rgba(127, 168, 209, 0.38);
             box-shadow: 0 12px 28px rgba(4, 12, 28, 0.42);
             background: #22324d;
         }
 
         body.dark-mode .section-photo::after {
             box-shadow: inset 0 0 24px rgba(19, 25, 37, 0.52);
+        }
+
+        body.dark-mode .daily-widget {
+            background: rgba(39, 47, 61, 0.92);
+            border-color: rgba(127, 168, 209, 0.3);
+            box-shadow: 0 16px 36px rgba(3, 10, 24, 0.42);
+        }
+
+        body.dark-mode .daily-widget-text {
+            color: #d1d7e2;
+        }
+
+        body.dark-mode .auto-theme-setting {
+            color: #b8c6df;
+        }
+
+        body.dark-mode .weather-icon {
+            color: #8DB8E8;
+        }
+
+        body.dark-mode .analog-clock {
+            border-color: #8DB8E8;
+            background: #1a2230;
+            box-shadow: inset 0 0 0 5px rgba(141, 184, 232, 0.1);
+        }
+
+        body.dark-mode .clock-center,
+        body.dark-mode .clock-hand.hour {
+            background: #8DB8E8;
+        }
+
+        body.dark-mode .clock-hand.minute {
+            background: #7FA8D1;
+        }
+
+        body.dark-mode .clock-mark {
+            background: rgba(141, 184, 232, 0.55);
+        }
+
+        body.dark-mode .content-block {
+            background: rgba(39, 47, 61, 0.86);
+            border-color: rgba(127, 168, 209, 0.26);
+            box-shadow: 0 16px 36px rgba(3, 10, 24, 0.45);
+        }
+
+        body.dark-mode .content-block:hover {
+            box-shadow: 0 20px 44px rgba(3, 10, 24, 0.55);
         }
 
         .footer-content {
@@ -1083,12 +1382,67 @@
             margin: 4px 0;
             line-height: 1.6;
         }
+
+        .footer-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .dark-mode-toggle {
+            width: 32px;
+            height: 32px;
+            border: 1.5px solid rgba(8, 43, 86, 0.3);
+            background: transparent;
+            color: #082B56;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(83, 106, 156, 0.15);
+            transform: scale(1.05);
+            border-color: #082B56;
+        }
+
+        .dark-mode-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            border-color: rgba(141, 184, 232, 0.4);
+            color: #8DB8E8;
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background: rgba(141, 184, 232, 0.15);
+        }
+
+        .footer-controls .auto-theme-setting {
+            margin: 0;
+        }
+
+        @media (max-width: 640px) {
+            .footer-content {
+                justify-content: center;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Rhino animation (runs once on first scroll) -->
-    <div id="rhino" class="rhino" aria-hidden="true">🦏</div>
-
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
         <div class="hero-content">
@@ -1111,13 +1465,39 @@
                     <li><a href="#proud" class="nav-link">Something I'm Proud Of</a></li>
                     <li><a href="#goals" class="nav-link">My Goals</a></li>
                     <li><a href="#timeline" class="nav-link">Timeline of Me</a></li>
-                    <li class="nav-toggle-item"><button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button></li>
                 </ul>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
+
+        <div class="daily-widget" aria-live="polite">
+            <div class="daily-widget-copy">
+                <span id="weatherIcon" class="weather-icon" aria-hidden="true"></span>
+                <div class="daily-widget-info">
+                    <p id="dayMessage" class="daily-widget-text">Good day! Today is 01/01/2026 and the time is 00:00:00. It is a clear day in Houston, TX.</p>
+                </div>
+            </div>
+            <div class="analog-clock" aria-label="Analog clock">
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(0deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(30deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(60deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(90deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(120deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(150deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(180deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(210deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(240deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(270deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(300deg);"></span>
+                <span class="clock-mark" style="transform: translateX(-50%) rotate(330deg);"></span>
+                <span class="clock-hand hour" id="hourHand"></span>
+                <span class="clock-hand minute" id="minuteHand"></span>
+                <span class="clock-hand second" id="secondHand"></span>
+                <span class="clock-center"></span>
+            </div>
+        </div>
 
         <!-- About Me Section -->
         <section id="about">
@@ -1378,6 +1758,13 @@
 
     <footer class="site-footer">
         <div class="footer-content">
+            <div class="footer-controls">
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
+                <label class="auto-theme-setting" for="autoThemeToggle">
+                    <input type="checkbox" id="autoThemeToggle">
+                    Auto theme by Houston sunrise/sunset
+                </label>
+            </div>
             <div class="footer-info">
                 <p>Andrew Yin</p>
                 <p>Carnegie Vanguard High School</p>
@@ -1474,63 +1861,6 @@
             }
         });
 
-        // Falling LEGO bricks: appears once when scrolling to Interests & Hobbies section
-        const interestsSection = document.querySelector('#interests');
-        let bricksAnimated = false;
-
-        console.log('Interests section found:', interestsSection);
-
-        const legoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                console.log('Observer triggered:', entry.isIntersecting, bricksAnimated);
-                if (entry.isIntersecting && !bricksAnimated) {
-                    bricksAnimated = true;
-                    createFallingBricks();
-                    legoObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0 });
-
-        if (interestsSection) {
-            legoObserver.observe(interestsSection);
-        }
-
-        function createFallingBricks() {
-            console.log('Creating falling bricks!');
-            const brickCount = 30;
-            for (let i = 0; i < brickCount; i++) {
-                const brick = document.createElement('div');
-                brick.className = 'falling-brick';
-                brick.textContent = '🧱';
-                brick.style.left = Math.random() * 100 + '%';
-                brick.style.top = '-100px';
-                brick.style.animationDelay = Math.random() * 1 + 's';
-                document.body.appendChild(brick);
-                
-                setTimeout(() => brick.remove(), 6000);
-            }
-        }
-
-        // Rhino runner: runs once when the user first scrolls a bit
-        const rhino = document.getElementById('rhino');
-        let rhinoRun = false;
-
-        function runRhino() {
-            if (!rhino || rhinoRun) return;
-            rhinoRun = true;
-            rhino.classList.add('run');
-            rhino.addEventListener('animationend', () => rhino.remove(), { once: true });
-        }
-
-        function onFirstScrollForRhino() {
-            if (window.pageYOffset > 10) {
-                runRhino();
-                window.removeEventListener('scroll', onFirstScrollForRhino);
-            }
-        }
-
-        window.addEventListener('scroll', onFirstScrollForRhino);
-
         // Smooth scrolling for navigation links
         document.querySelectorAll('a.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -1545,6 +1875,10 @@
                 // Scroll to section
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
+                const targetCard = targetSection?.querySelector('.content-block');
+                if (targetCard) {
+                    targetCard.classList.add('revealed');
+                }
                 targetSection.scrollIntoView({ behavior: 'smooth' });
             });
         });
@@ -1596,9 +1930,269 @@
             });
         });
 
+        // Reveal section cards when they scroll into view
+        const contentCards = document.querySelectorAll('.content-block');
+
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -8% 0px'
+        });
+
+        contentCards.forEach(card => cardObserver.observe(card));
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
+        const dayMessage = document.getElementById('dayMessage');
+        const weatherIcon = document.getElementById('weatherIcon');
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        const autoThemeToggle = document.getElementById('autoThemeToggle');
+
+        const HOUSTON_LAT = 29.7604;
+        const HOUSTON_LON = -95.3698;
+        const HOUSTON_TZ = 'America/Chicago';
+
+        const weatherState = {
+            label: 'clear',
+            icon: ''
+        };
+
+        const sunTimes = {
+            sunrise: null,
+            sunset: null
+        };
+
+        const weatherOptions = [
+            {
+                label: 'clear',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line><line x1="4.9" y1="4.9" x2="7" y2="7"></line><line x1="17" y1="17" x2="19.1" y2="19.1"></line><line x1="17" y1="7" x2="19.1" y2="4.9"></line><line x1="4.9" y1="19.1" x2="7" y2="17"></line></svg>'
+            },
+            {
+                label: 'cloudy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h9a4 4 0 0 0 .3-8A5.5 5.5 0 0 0 6 11.2 3.6 3.6 0 0 0 7 18z"></path></svg>'
+            },
+            {
+                label: 'foggy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18"></path><path d="M5 14h14"></path><path d="M7 18h10"></path></svg>'
+            },
+            {
+                label: 'rainy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h9a4 4 0 0 0 .3-8A5.5 5.5 0 0 0 6 7.2 3.6 3.6 0 0 0 7 14z"></path><line x1="8" y1="17" x2="8" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line><line x1="16" y1="17" x2="16" y2="21"></line></svg>'
+            },
+            {
+                label: 'stormy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h9a4 4 0 0 0 .3-8A5.5 5.5 0 0 0 6 7.2 3.6 3.6 0 0 0 7 14z"></path><path d="M11 14l-2 5h3l-1 4 4-6h-3l2-3z"></path></svg>'
+            },
+            {
+                label: 'snowy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13h9a4 4 0 0 0 .3-8A5.5 5.5 0 0 0 6 6.2 3.6 3.6 0 0 0 7 13z"></path><path d="M9 17h.01"></path><path d="M12 19h.01"></path><path d="M15 17h.01"></path></svg>'
+            },
+            {
+                label: 'windy',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h11a2 2 0 1 0-2-2"></path><path d="M3 13h16a2 2 0 1 1-2 2"></path><path d="M3 17h8"></path></svg>'
+            },
+            {
+                label: 'clear night',
+                icon: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z"></path></svg>'
+            }
+        ];
+
+        function padTime(value) {
+            return String(value).padStart(2, '0');
+        }
+
+        function getGreeting(hours) {
+            if (hours < 12) return 'Good morning';
+            if (hours < 18) return 'Good afternoon';
+            return 'Good evening';
+        }
+
+        function weatherByLabel(label) {
+            return weatherOptions.find(option => option.label === label) || weatherOptions[0];
+        }
+
+        function mapWeatherCodeToLabel(code, isDay) {
+            if (code === 0) return isDay ? 'clear' : 'clear night';
+            if (code === 1 || code === 2 || code === 3) return 'cloudy';
+            if (code === 45 || code === 48) return 'foggy';
+            if (code === 51 || code === 53 || code === 55 || code === 56 || code === 57) return 'rainy';
+            if (code === 61 || code === 63 || code === 65 || code === 66 || code === 67) return 'rainy';
+            if (code === 71 || code === 73 || code === 75 || code === 77) return 'snowy';
+            if (code === 80 || code === 81 || code === 82) return 'rainy';
+            if (code === 85 || code === 86) return 'snowy';
+            if (code === 95 || code === 96 || code === 99) return 'stormy';
+            return 'windy';
+        }
+
+        function applyTheme(isDarkMode, persist = true) {
+            body.classList.toggle('dark-mode', isDarkMode);
+            if (persist) {
+                localStorage.setItem('darkMode', String(isDarkMode));
+            }
+            setDarkModeIcon(isDarkMode);
+        }
+
+        function shouldUseDarkTheme(now) {
+            if (!sunTimes.sunrise || !sunTimes.sunset) return null;
+            return now < sunTimes.sunrise || now >= sunTimes.sunset;
+        }
+
+        function applyAutoThemeIfEnabled(now) {
+            if (!autoThemeToggle.checked) return;
+            const useDark = shouldUseDarkTheme(now);
+            if (useDark === null) return;
+            applyTheme(useDark, false);
+        }
+
+        async function fetchHoustonWeatherAndSun() {
+            const endpoint = `https://api.open-meteo.com/v1/forecast?latitude=${HOUSTON_LAT}&longitude=${HOUSTON_LON}&current=weather_code,is_day&daily=sunrise,sunset&timezone=${encodeURIComponent(HOUSTON_TZ)}`;
+
+            try {
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error('Weather request failed');
+                const data = await response.json();
+
+                const weatherCode = data?.current?.weather_code;
+                const isDay = data?.current?.is_day === 1;
+                const weatherLabel = mapWeatherCodeToLabel(weatherCode, isDay);
+                const weather = weatherByLabel(weatherLabel);
+                weatherState.label = weather.label;
+                weatherState.icon = weather.icon;
+
+                const sunriseValue = data?.daily?.sunrise?.[0];
+                const sunsetValue = data?.daily?.sunset?.[0];
+                sunTimes.sunrise = sunriseValue ? new Date(sunriseValue) : null;
+                sunTimes.sunset = sunsetValue ? new Date(sunsetValue) : null;
+
+                updateDailyWidget();
+                applyAutoThemeIfEnabled(new Date());
+            } catch (error) {
+                console.error('Unable to fetch Houston weather data:', error);
+            }
+        }
+
+        function updateDailyWidget() {
+            const now = new Date();
+            const greeting = getGreeting(now.getHours());
+            const date = `${padTime(now.getMonth() + 1)}/${padTime(now.getDate())}/${now.getFullYear()}`;
+            const time = `${padTime(now.getHours())}:${padTime(now.getMinutes())}:${padTime(now.getSeconds())}`;
+            const weather = weatherState.icon ? weatherState : weatherByLabel('clear');
+
+            dayMessage.textContent = `${greeting}! Today is ${date} and the time is ${time}. It is a ${weather.label} day in Houston, TX.`;
+            weatherIcon.innerHTML = weather.icon;
+
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours() % 12;
+
+            const secondDeg = seconds * 6;
+            const minuteDeg = minutes * 6 + seconds * 0.1;
+            const hourDeg = hours * 30 + minutes * 0.5;
+
+            secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+            minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+            hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+
+            applyAutoThemeIfEnabled(now);
+        }
+
+        // Weather reward animations
+        weatherIcon.addEventListener('click', () => {
+            const weather = weatherState.label.toLowerCase();
+            const isNight = sunTimes.sunrise && sunTimes.sunset && (new Date() < sunTimes.sunrise || new Date() >= sunTimes.sunset);
+
+            if (weather.includes('clear')) {
+                if (isNight) {
+                    createStarAnimation();
+                } else {
+                    createSunAnimation();
+                }
+            } else if (weather.includes('rain')) {
+                createRainAnimation();
+            } else if (weather.includes('snow')) {
+                createSnowAnimation();
+            } else if (weather.includes('cloud')) {
+                createCloudAnimation();
+            }
+        });
+
+        function createSunAnimation() {
+            const sun = document.createElement('div');
+            sun.className = 'reward-sun';
+            sun.textContent = '☀️';
+            document.body.appendChild(sun);
+            setTimeout(() => sun.remove(), 4000);
+        }
+
+        function createRainAnimation() {
+            const count = 20;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const droplet = document.createElement('div');
+                    droplet.className = 'reward-droplet rain';
+                    droplet.textContent = '💧';
+                    droplet.style.left = Math.random() * 100 + '%';
+                    droplet.style.top = '-50px';
+                    droplet.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(droplet);
+                    setTimeout(() => droplet.remove(), 4000);
+                }, i * 50);
+            }
+        }
+
+        function createSnowAnimation() {
+            const count = 16;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'reward-droplet snow';
+                    snowflake.textContent = '❄️';
+                    snowflake.style.left = Math.random() * 100 + '%';
+                    snowflake.style.top = '-50px';
+                    snowflake.style.animationDelay = Math.random() * 0.3 + 's';
+                    document.body.appendChild(snowflake);
+                    setTimeout(() => snowflake.remove(), 4500);
+                }, i * 60);
+            }
+        }
+
+        function createCloudAnimation() {
+            const clouds = ['☁️', '🌥️', '⛅'];
+            const count = 3;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const cloud = document.createElement('div');
+                    cloud.className = 'reward-cloud';
+                    cloud.textContent = clouds[i % clouds.length];
+                    cloud.style.top = Math.random() * 200 + 'px';
+                    cloud.style.left = '-100px';
+                    document.body.appendChild(cloud);
+                    setTimeout(() => cloud.remove(), 5000);
+                }, i * 400);
+            }
+        }
+
+        function createStarAnimation() {
+            const count = 12;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'reward-star';
+                star.textContent = '⭐';
+                star.style.left = Math.random() * 90 + 5 + '%';
+                star.style.top = Math.random() * 200 + 50 + 'px';
+                star.style.animationDelay = i * 0.15 + 's';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 3500);
+            }
+        }
 
         function setDarkModeIcon(isDarkMode) {
             darkModeToggle.innerHTML = isDarkMode
@@ -1610,19 +2204,32 @@
 
         // Check for saved dark mode preference
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (savedDarkMode) {
-            body.classList.add('dark-mode');
-        }
+        const savedAutoTheme = localStorage.getItem('autoTheme') === 'true';
+        autoThemeToggle.checked = savedAutoTheme;
 
-        setDarkModeIcon(savedDarkMode);
+        applyTheme(savedDarkMode, false);
 
         // Toggle dark mode
         darkModeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const isDarkMode = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDarkMode);
-            setDarkModeIcon(isDarkMode);
+            if (autoThemeToggle.checked) {
+                autoThemeToggle.checked = false;
+                localStorage.setItem('autoTheme', 'false');
+            }
+            const isDarkMode = !body.classList.contains('dark-mode');
+            applyTheme(isDarkMode, true);
         });
+
+        autoThemeToggle.addEventListener('change', () => {
+            localStorage.setItem('autoTheme', String(autoThemeToggle.checked));
+            if (autoThemeToggle.checked) {
+                applyAutoThemeIfEnabled(new Date());
+            }
+        });
+
+        fetchHoustonWeatherAndSun();
+        setInterval(fetchHoustonWeatherAndSun, 15 * 60 * 1000);
+        updateDailyWidget();
+        setInterval(updateDailyWidget, 1000);
     </script>
 </body>
 </html>
