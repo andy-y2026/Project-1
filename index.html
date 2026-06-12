@@ -2201,13 +2201,10 @@
         }
 
         // Weather reward animations
-        weatherIcon.addEventListener('mousedown', (event) => {
-            event.preventDefault();
-        });
-
         weatherIcon.addEventListener('click', () => {
             const weather = weatherState.label.toLowerCase();
             const isNight = sunTimes.sunrise && sunTimes.sunset && (new Date() < sunTimes.sunrise || new Date() >= sunTimes.sunset);
+            const shouldShowClouds = weather.includes('cloud') || weather.includes('overcast') || weather.includes('fog') || weather.includes('mist');
 
             if (weather.includes('clear')) {
                 if (isNight) {
@@ -2219,8 +2216,15 @@
                 createRainAnimation();
             } else if (weather.includes('snow')) {
                 createSnowAnimation();
-            } else if (weather.includes('cloud')) {
+            } else if (shouldShowClouds) {
                 createCloudAnimation();
+            }
+        });
+
+        weatherIcon.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                weatherIcon.click();
             }
         });
 
@@ -2351,19 +2355,21 @@
                 figure.setAttribute('role', 'button');
                 figure.setAttribute('aria-label', `Expand photo: ${captionText}`);
 
+                figure.addEventListener('click', () => {
+                    openLightbox(image, captionText);
+                });
+
+                image.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    openLightbox(image, captionText);
+                });
+
                 figure.addEventListener('keydown', (event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         openLightbox(image, captionText);
                     }
                 });
-            });
-
-            document.addEventListener('click', (event) => {
-                const image = event.target.closest('.section-photo img');
-                if (!image) return;
-                const captionText = image.dataset.caption || image.alt || 'Photo';
-                openLightbox(image, captionText);
             });
 
             closeButton.addEventListener('click', closeLightbox);
