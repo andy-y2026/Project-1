@@ -778,9 +778,6 @@
         }
 
         .hero-letter-bouncing,
-        .hero-letter-piling,
-        .hero-letter-pile-out,
-        .hero-letter-reform-in,
         .hero-letter-dancing,
         .hero-letter-dance-follow {
             animation-fill-mode: both;
@@ -788,19 +785,6 @@
 
         .hero-letter-bouncing {
             animation: hero-letter-bounce-energy 900ms cubic-bezier(0.18, 0.95, 0.32, 1) forwards;
-        }
-
-        .hero-letter-piling {
-            animation: hero-letter-pile-energy 900ms cubic-bezier(0.16, 0.9, 0.24, 1) forwards;
-        }
-
-        .hero-letter-pile-out {
-            animation: hero-letter-pile-out 3600ms cubic-bezier(0.16, 0.8, 0.18, 1) forwards;
-            transform-origin: center bottom;
-        }
-
-        .hero-letter-reform-in {
-            animation: hero-letter-reform-in 2400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .hero-letter-dancing {
@@ -872,99 +856,6 @@
 
             100% {
                 transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes hero-letter-pile-energy {
-            0% {
-                transform: translateY(0) scale(1) rotate(0deg);
-            }
-
-            16% {
-                transform: translate(calc(var(--pile-x, 0px) * 0.16), -18px) scale(0.94, 1.08) rotate(calc(var(--pile-tilt, 0deg) * 0.18));
-            }
-
-            34% {
-                transform: translate(var(--pile-x, 0px), calc(-1 * var(--pile-height, 96px))) scale(1.12, 0.9) rotate(var(--pile-tilt, 0deg));
-            }
-
-            52% {
-                transform: translate(calc(var(--pile-x, 0px) * 0.68), calc(-0.58 * var(--pile-height, 96px))) scale(0.98, 1.03) rotate(calc(var(--pile-tilt, 0deg) * -0.35));
-            }
-
-            68% {
-                transform: translate(calc(var(--pile-x, 0px) * 0.26), 14px) scale(1.03, 0.97) rotate(calc(var(--pile-tilt, 0deg) * 0.24));
-            }
-
-            84% {
-                transform: translate(calc(var(--pile-x, 0px) * -0.08), -6px) scale(0.99, 1.01) rotate(calc(var(--pile-tilt, 0deg) * -0.15));
-            }
-
-            100% {
-                transform: translateY(0) scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        @keyframes hero-letter-pile-out {
-            0% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-
-            18% {
-                transform: translate(calc(var(--pile-fall-x, 0px) * 0.16), -18px) rotate(calc(var(--pile-rotate, 12deg) * 0.18)) scale(1);
-            }
-
-            42% {
-                transform: translate(calc(var(--pile-fall-x, 0px) * 0.52), 28px) rotate(calc(var(--pile-rotate, 12deg) * 0.62)) scale(1);
-            }
-
-            60% {
-                transform: translate(calc(var(--pile-fall-x, 0px) * 0.74), calc(var(--pile-fall-y, 72vh) * 0.55)) rotate(calc(var(--pile-rotate, 18deg) * 0.72)) scale(1);
-                opacity: 1;
-            }
-
-            74% {
-                transform: translate(calc(var(--pile-fall-x, 0px) * 0.92), calc(var(--pile-fall-y, 72vh) * 0.9)) rotate(calc(var(--pile-rotate, 18deg) * 0.95)) scale(1);
-                opacity: 1;
-            }
-
-            92% {
-                transform: translate(var(--pile-fall-x, 0px), var(--pile-fall-y, 72vh)) rotate(var(--pile-rotate, 18deg)) scale(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(var(--pile-fall-x, 0px), var(--pile-fall-y, 72vh)) rotate(var(--pile-rotate, 18deg)) scale(0.16);
-                opacity: 0;
-                filter: blur(0.4px) brightness(0.78);
-            }
-        }
-
-        @keyframes hero-letter-reform-in {
-            0% {
-                top: calc(var(--reform-final-top, 0px) - 120vh);
-                transform: scale(0.98) rotate(-4deg);
-                opacity: 0;
-            }
-
-            40% {
-                top: calc(var(--reform-final-top, 0px) - 50vh);
-                transform: scale(0.995) rotate(-2deg);
-                opacity: 0.4;
-            }
-
-            70% {
-                top: calc(var(--reform-final-top, 0px) + 20px);
-                transform: scale(1) rotate(1deg);
-                opacity: 0.9;
-            }
-
-            100% {
-                top: var(--reform-final-top, 0px);
-                transform: scale(1) rotate(0deg);
                 opacity: 1;
             }
         }
@@ -1050,12 +941,31 @@
             .daily-widget {
                 margin: 20px 30px 0;
                 margin-bottom: 24px;
-                flex-direction: column;
-                align-items: flex-start;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                gap: 14px;
+                padding: 16px 18px;
             }
 
             .daily-widget-copy {
                 width: 100%;
+                min-width: 0;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .daily-widget-text {
+                font-size: 15px;
+                line-height: 1.45;
+            }
+
+            .analog-clock {
+                width: 74px;
+                height: 74px;
+                flex: 0 0 74px;
+                justify-self: end;
+                align-self: center;
             }
 
             .content-layout {
@@ -1138,10 +1048,31 @@
                 margin: 14px 20px 0;
                 margin-bottom: 20px;
                 padding: 16px;
+                grid-template-columns: 1fr;
+                align-items: start;
+                gap: 12px;
             }
 
             .daily-widget-text {
-                font-size: 15px;
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .daily-widget-copy {
+                align-items: flex-start;
+            }
+
+            .weather-icon {
+                width: 26px;
+                height: 26px;
+                flex: 0 0 26px;
+            }
+
+            .analog-clock {
+                width: 68px;
+                height: 68px;
+                flex: 0 0 68px;
+                justify-self: start;
             }
 
             section {
@@ -2888,48 +2819,9 @@
                 letters.push(letter);
             }
 
-            const createClone = (letter, className) => {
-                const rect = letter.getBoundingClientRect();
-                const computedStyle = window.getComputedStyle(letter);
-                const clone = document.createElement('span');
-                clone.className = `hero-letter ${className}`;
-                clone.textContent = letter.textContent;
-                clone.style.position = 'fixed';
-                clone.style.left = `${rect.left}px`;
-                clone.style.top = `${rect.top}px`;
-                clone.style.width = `${rect.width}px`;
-                clone.style.height = `${rect.height}px`;
-                clone.style.margin = '0';
-                clone.style.pointerEvents = 'none';
-                clone.style.zIndex = '9999';
-                clone.style.fontFamily = computedStyle.fontFamily;
-                clone.style.fontSize = computedStyle.fontSize;
-                clone.style.fontWeight = computedStyle.fontWeight;
-                clone.style.fontStyle = computedStyle.fontStyle;
-                clone.style.fontStretch = computedStyle.fontStretch;
-                clone.style.fontVariant = computedStyle.fontVariant;
-                clone.style.letterSpacing = computedStyle.letterSpacing;
-                clone.style.lineHeight = computedStyle.lineHeight;
-                clone.style.color = computedStyle.color;
-                clone.style.textShadow = computedStyle.textShadow;
-                clone.style.textTransform = computedStyle.textTransform;
-                clone.style.fontKerning = computedStyle.fontKerning;
-                clone.style.fontFeatureSettings = computedStyle.fontFeatureSettings;
-                clone.style.whiteSpace = 'pre';
-                clone.style.transformOrigin = 'center center';
-                document.body.appendChild(clone);
-                return clone;
-            };
-
             const restoreLetter = (letter, extraClasses = []) => {
-                letter.classList.remove('is-hidden', 'is-animating', 'hero-letter-bouncing', 'hero-letter-piling', 'hero-letter-dancing', 'hero-letter-dance-follow', 'hero-letter-dance-wake');
+                letter.classList.remove('is-hidden', 'is-animating', 'hero-letter-bouncing', 'hero-letter-dancing', 'hero-letter-dance-follow', 'hero-letter-dance-wake');
                 extraClasses.forEach((className) => letter.classList.remove(className));
-                letter.style.removeProperty('--pile-x');
-                letter.style.removeProperty('--pile-height');
-                letter.style.removeProperty('--pile-tilt');
-                letter.style.removeProperty('--pile-fall-x');
-                letter.style.removeProperty('--pile-fall-y');
-                letter.style.removeProperty('--pile-rotate');
                 letter.style.removeProperty('animation-delay');
                 letter.style.removeProperty('--spark-x');
                 letter.style.removeProperty('--spark-y');
@@ -2966,40 +2858,6 @@
                 }
             };
 
-            const createPileProjection = (letter, delayOffset = 0) => {
-                const rect = letter.getBoundingClientRect();
-                const direction = Math.random() < 0.5 ? -1 : 1;
-                const outgoing = createClone(letter, 'hero-letter-pile-out');
-                const pileX = direction * (18 + Math.random() * 36);
-                const pileY = Math.max(window.innerHeight - rect.top + 96, 540) + Math.random() * 60;
-                const pileRotate = `${direction * (10 + Math.random() * 58)}deg`;
-
-                outgoing.style.setProperty('--pile-fall-x', `${pileX}px`);
-                outgoing.style.setProperty('--pile-fall-y', `${pileY}px`);
-                outgoing.style.setProperty('--pile-rotate', pileRotate);
-
-                letter.classList.add('is-hidden');
-                outgoing.addEventListener('animationend', () => outgoing.remove(), { once: true });
-
-                window.setTimeout(() => {
-                    const restored = createClone(letter, 'hero-letter-reform-in');
-                    const finalTop = rect.top;
-                    restored.style.left = `${rect.left}px`;
-                    restored.style.top = `${finalTop - window.innerHeight * 1.2}px`;
-                    restored.style.setProperty('--reform-final-top', `${finalTop}px`);
-                    restored.addEventListener('animationend', () => {
-                        restored.remove();
-                        restoreLetter(letter);
-                    }, { once: true });
-
-                    window.setTimeout(() => {
-                        if (!restored.isConnected) return;
-                        restored.remove();
-                        restoreLetter(letter);
-                    }, 2900);
-                }, 3600 + delayOffset);
-            };
-
             const startBounceSequence = (letter) => {
                 letter.classList.add('hero-letter-bouncing');
 
@@ -3007,47 +2865,6 @@
                     restoreLetter(letter);
                     heroAnimationLocked = false;
                 }, 1000);
-            };
-
-            const startPileSequence = (letter) => {
-                const rect = letter.getBoundingClientRect();
-                const activeIndex = letters.indexOf(letter);
-
-                letter.classList.add('hero-letter-piling');
-                letter.style.setProperty('--pile-x', `${(Math.random() * 2 - 1) * 22}px`);
-                letter.style.setProperty('--pile-height', `${92 + Math.random() * 52}px`);
-                letter.style.setProperty('--pile-tilt', `${(Math.random() * 2 - 1) * 8}deg`);
-                createDanceWake(rect);
-                createDanceSparkBurst(rect);
-
-                letters.forEach((otherLetter, index) => {
-                    const distance = Math.abs(index - activeIndex);
-                    const stagger = distance * 95 + Math.random() * 220;
-                    const direction = Math.random() < 0.5 ? -1 : 1;
-
-                    window.setTimeout(() => {
-                        if (!otherLetter.isConnected) return;
-                        const otherRect = otherLetter.getBoundingClientRect();
-                        const fall = createClone(otherLetter, 'hero-letter-pile-out');
-                        const pileDistance = 28 + distance * 28 + Math.random() * 32;
-                        const fallX = direction * pileDistance;
-                        const fallY = Math.max(window.innerHeight - otherRect.top + 88, 520) + Math.random() * 70;
-                        const fallRotate = `${direction * (12 + Math.random() * 54)}deg`;
-
-                        fall.style.setProperty('--pile-fall-x', `${fallX}px`);
-                        fall.style.setProperty('--pile-fall-y', `${fallY}px`);
-                        fall.style.setProperty('--pile-rotate', fallRotate);
-                        otherLetter.classList.add('is-hidden');
-                        fall.addEventListener('animationend', () => fall.remove(), { once: true });
-                    }, stagger);
-                });
-
-                window.setTimeout(() => {
-                    letters.forEach((otherLetter) => {
-                        restoreLetter(otherLetter);
-                    });
-                    heroAnimationLocked = false;
-                }, 5200);
             };
 
             const startDanceSequence = (letter) => {
@@ -3087,16 +2904,11 @@
                 heroAnimationLocked = true;
                 letter.classList.add('is-animating');
 
-                const choices = ['bounce', 'pile', 'dance'];
+                const choices = ['bounce', 'dance'];
                 const choice = choices[Math.floor(Math.random() * choices.length)];
 
                 if (choice === 'bounce') {
                     startBounceSequence(letter);
-                    return;
-                }
-
-                if (choice === 'pile') {
-                    startPileSequence(letter);
                     return;
                 }
 
