@@ -21,44 +21,23 @@
 
         /* Sidebar Navigation */
         .sidebar {
-            position: fixed;
-            left: 0;
+            position: sticky;
             top: 0;
+            flex: 0 0 250px;
             width: 250px;
             height: 100vh;
             background: linear-gradient(135deg, #7095db 0%, #1147ab 100%);
             padding: 40px 0;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 60;
-            opacity: 0;
-            transform: translateX(-24px);
-            transition: opacity 0.35s ease, transform 0.35s ease;
-            pointer-events: none;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar.visible {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-        }
-
-        .sidebar.genie-arrive {
-            animation: sidebar-genie-arrive 0.46s cubic-bezier(0.25, 0.82, 0.3, 1) forwards;
-        }
-
-        @keyframes sidebar-genie-arrive {
-            from {
-                opacity: 0;
-                transform: translateX(-58px) scaleX(0.82);
-            }
-            55% {
-                opacity: 1;
-                transform: translateX(8px) scaleX(1.03);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scaleX(1);
-            }
+        .content-layout {
+            display: flex;
+            align-items: flex-start;
+            min-height: 100vh;
         }
 
         .sidebar-header {
@@ -82,10 +61,18 @@
 
         nav ul {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         nav li {
             margin: 0;
+        }
+
+        nav {
+            display: flex;
+            flex: 1;
         }
 
         nav a {
@@ -111,37 +98,47 @@
         }
 
         .nav-toggle-item {
-            margin-top: 20px;
+            margin-top: auto;
             padding: 0 20px;
+            padding-bottom: 18px;
+            display: flex;
+            justify-content: center;
         }
 
         .dark-mode-toggle {
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            background: rgba(255, 255, 255, 0.12);
+            width: 42px;
+            height: 42px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            background: transparent;
             color: white;
-            border-radius: 999px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+            border-radius: 50%;
             cursor: pointer;
-            padding: 10px 14px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
         }
 
         .dark-mode-toggle:hover {
-            background: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.18);
             transform: translateY(-1px);
+        }
+
+        .dark-mode-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 0;
+            flex: 1;
             min-height: 100vh;
-            transition: margin-left 0.52s cubic-bezier(0.25, 0.82, 0.3, 1);
-        }
-
-        .main-content.with-sidebar {
-            margin-left: 250px;
         }
 
         section {
@@ -181,6 +178,65 @@
 
         .content-block {
             max-width: 900px;
+        }
+
+        .icon-list {
+            list-style: none;
+            margin-left: 0;
+            padding: 0;
+        }
+
+        .icon-list .interest-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .interest-icon {
+            width: 26px;
+            height: 26px;
+            flex: 0 0 26px;
+            margin-top: 3px;
+            color: #1147ab;
+        }
+
+        .icon-list .interest-item span {
+            flex: 1;
+        }
+
+        .section-media {
+            float: right;
+            width: min(42%, 320px);
+            margin: 0 0 18px 28px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .section-photo {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #d8e3f8;
+            border: 1px solid rgba(17, 71, 171, 0.28);
+            box-shadow: 0 10px 28px rgba(17, 71, 171, 0.16);
+        }
+
+        .section-photo::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow: inset 0 0 26px rgba(248, 249, 252, 0.82);
+        }
+
+        .section-photo img {
+            display: block;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
         }
 
         .highlight {
@@ -230,91 +286,6 @@
             overflow: hidden;
         }
 
-        .hero-section.genie-suck {
-            animation: hero-genie-suck 0.82s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
-            pointer-events: none;
-        }
-
-        .hero-section.genie-hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .hero-section.genie-suck .hero-content {
-            animation: hero-content-genie-fade 0.46s ease forwards;
-        }
-
-        .hero-section.genie-suck::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background:
-                radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 42%),
-                radial-gradient(circle at 10% 10%, rgba(17, 71, 171, 0.58) 0%, rgba(17, 71, 171, 0) 34%);
-            mix-blend-mode: screen;
-            animation: hero-genie-swirl 0.82s ease forwards;
-        }
-
-        @keyframes hero-genie-suck {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1, 1) skewX(0deg);
-                clip-path: inset(0 0 0 0 round 0);
-                filter: blur(0px) saturate(1);
-            }
-            18% {
-                transform: translate(1.2%, 0) scale(1.02, 0.97) skewX(1deg);
-                clip-path: inset(0 0 0 0 round 0 0 8px 0);
-                filter: blur(0.2px) saturate(1.04);
-            }
-            40% {
-                transform: translate(-7%, -3%) scale(1.03, 0.86) skewX(-3deg);
-                clip-path: inset(0 14% 0 0 round 0 0 52px 0);
-                filter: blur(0.4px) saturate(1.1);
-            }
-            72% {
-                transform: translate(-18%, -8%) scale(0.56, 0.36) skewX(-8deg);
-                clip-path: inset(0 76% 50% 0 round 0 0 88px 0);
-                filter: blur(1.2px) saturate(1.18);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-29%, -16%) scale(0.045, 0.03) skewX(-12deg);
-                clip-path: inset(0 96% 92% 0 round 0 0 120px 0);
-                filter: blur(3px) saturate(1.2);
-            }
-        }
-
-        @keyframes hero-content-genie-fade {
-            from {
-                opacity: 1;
-                transform: scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-        }
-
-        @keyframes hero-genie-swirl {
-            0% {
-                opacity: 0;
-                transform: rotate(0deg) scale(1);
-            }
-            45% {
-                opacity: 0.82;
-                transform: rotate(-6deg) scale(1.13);
-            }
-            100% {
-                opacity: 0;
-                transform: rotate(-13deg) scale(1.28);
-            }
-        }
-
         .hero-section::before {
             content: '';
             position: absolute;
@@ -322,14 +293,24 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0.18) 18%, rgba(0, 0, 0, 0.18) 82%, rgba(0, 0, 0, 0.52) 100%),
-                        linear-gradient(to bottom, rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.1) 45%, rgba(0, 0, 0, 0.34) 100%);
+            background: linear-gradient(to right, rgba(3, 12, 30, 0.56) 0%, rgba(3, 12, 30, 0.2) 18%, rgba(3, 12, 30, 0.2) 82%, rgba(3, 12, 30, 0.56) 100%),
+                        linear-gradient(to bottom, rgba(8, 17, 38, 0.42) 0%, rgba(8, 17, 38, 0.12) 45%, rgba(8, 17, 38, 0.42) 100%);
             pointer-events: none;
             z-index: 1;
         }
 
-        .hero-section.with-sidebar {
-            margin-left: 0;
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(120% 95% at 10% 15%, rgba(255, 118, 92, 0.36) 0%, rgba(255, 118, 92, 0) 50%),
+                radial-gradient(95% 95% at 85% 18%, rgba(255, 209, 102, 0.34) 0%, rgba(255, 209, 102, 0) 55%),
+                radial-gradient(120% 100% at 50% 88%, rgba(68, 181, 255, 0.34) 0%, rgba(68, 181, 255, 0) 62%);
+            mix-blend-mode: screen;
+            opacity: 0.82;
         }
 
         .hero-content {
@@ -337,11 +318,12 @@
             max-width: 100%;
             position: relative;
             z-index: 2;
-            background: rgba(7, 23, 53, 0.42);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(7, 20, 46, 0.54);
+            border: 1px solid rgba(255, 255, 255, 0.32);
             border-radius: 18px;
             padding: 18px 28px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
+            box-shadow: 0 18px 40px rgba(4, 12, 30, 0.38);
         }
 
         .hero-section h1 {
@@ -385,6 +367,10 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .content-layout {
+                display: block;
+            }
+
             .sidebar {
                 width: 100%;
                 height: auto;
@@ -392,10 +378,6 @@
                 padding: 20px;
                 transform: none;
                 transition: opacity 0.35s ease;
-            }
-
-            .sidebar.genie-arrive {
-                animation: none;
             }
 
             .sidebar-header {
@@ -409,6 +391,12 @@
 
             nav li {
                 flex: 1 1 50%;
+            }
+
+            .nav-toggle-item {
+                flex: 1 1 100%;
+                margin-top: 8px;
+                padding: 6px 0 0;
             }
 
             nav a {
@@ -444,6 +432,13 @@
             section p,
             li {
                 font-size: 16px;
+            }
+
+            .section-media {
+                float: none;
+                width: 100%;
+                max-width: 420px;
+                margin: 0 auto 20px;
             }
         }
 
@@ -597,18 +592,22 @@
         }
 
         .timeline-wrapper {
+            --timeline-line-x: 20px;
+            --timeline-content-start: 40px;
             position: relative;
             max-width: 900px;
             margin-top: 40px;
+            padding-left: var(--timeline-content-start);
         }
 
-        .timeline-track {
+        .timeline-wrapper::before {
+            content: '';
             position: absolute;
-            left: 20px;
+            left: var(--timeline-line-x);
             top: 0;
+            bottom: 0;
             width: 4px;
-            height: 100%;
-            background: #e1e6f2;
+            background: #dbe5f7;
             border-radius: 999px;
         }
 
@@ -616,18 +615,62 @@
             list-style: none;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .timeline-item {
+            --timeline-item-pad: 10px;
             position: relative;
-            padding-left: 70px;
-            margin-bottom: 40px;
+            min-height: 0;
+            padding-left: var(--timeline-item-pad);
+        }
+
+        .timeline-item.turn-right::after,
+        .timeline-item.turn-left::after {
+            display: none;
+        }
+
+        .timeline-item.turn-right::after {
+            right: -10px;
+            border-right: 4px solid #dbe5f7;
+            border-bottom: 4px solid #dbe5f7;
+            border-radius: 0 0 18px 0;
+        }
+
+        .timeline-item.turn-left::after {
+            left: -10px;
+            border-left: 4px solid #dbe5f7;
+            border-bottom: 4px solid #dbe5f7;
+            border-radius: 0 0 0 18px;
+        }
+
+        .timeline-node-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 30px;
+            margin-bottom: 14px;
+        }
+
+        .timeline-item.path-right .timeline-node-row::after,
+        .timeline-item.path-left .timeline-node-row::before {
+            display: none;
+        }
+
+        .timeline-item.path-right .timeline-node-row::after {
+            margin-left: 10px;
+        }
+
+        .timeline-item.path-left .timeline-node-row::before {
+            margin-right: 10px;
         }
 
         .timeline-dot {
             position: absolute;
-            left: 12px;
-            top: 4px;
+            left: calc(var(--timeline-line-x) + 2px - (var(--timeline-content-start) + var(--timeline-item-pad)) - 12px);
+            top: 3px;
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -652,6 +695,8 @@
             padding: 24px 24px 18px;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
             border: 1px solid #e6ecf5;
+            position: relative;
+            z-index: 1;
         }
 
         .timeline-meta {
@@ -709,6 +754,27 @@
 
         .timeline-detail p {
             margin-bottom: 12px;
+        }
+
+        @media (max-width: 980px) {
+            .timeline-items {
+                gap: 28px;
+            }
+
+            .timeline-wrapper {
+                --timeline-content-start: 36px;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .timeline-wrapper {
+                --timeline-line-x: 14px;
+                --timeline-content-start: 30px;
+            }
+
+            .timeline-wrapper::before {
+                left: var(--timeline-line-x);
+            }
         }
 
         .sr-only {
@@ -895,6 +961,10 @@
             color: #b9cdff;
         }
 
+        body.dark-mode .interest-icon {
+            color: #9fbcff;
+        }
+
         body.dark-mode .accent-line {
             background-color: #9fbcff;
         }
@@ -908,21 +978,17 @@
         }
 
         body.dark-mode .dark-mode-toggle {
-            border-color: rgba(224, 224, 224, 0.45);
-            background: rgba(224, 224, 224, 0.12);
+            border-color: rgba(224, 224, 224, 0.9);
+            background: transparent;
             color: #e0e0e0;
         }
 
         body.dark-mode .dark-mode-toggle:hover {
-            background: rgba(224, 224, 224, 0.2);
+            background: rgba(224, 224, 224, 0.16);
         }
 
         body.dark-mode nav a:hover {
             background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        body.dark-mode .timeline-track {
-            background: #3d3d3d;
         }
 
         body.dark-mode .timeline-card {
@@ -990,6 +1056,16 @@
             border-top-color: #3d3d3d;
         }
 
+        body.dark-mode .section-photo {
+            border-color: rgba(159, 188, 255, 0.38);
+            box-shadow: 0 12px 28px rgba(4, 12, 28, 0.42);
+            background: #22324d;
+        }
+
+        body.dark-mode .section-photo::after {
+            box-shadow: inset 0 0 24px rgba(19, 25, 37, 0.52);
+        }
+
         .footer-content {
             display: flex;
             justify-content: space-between;
@@ -1013,38 +1089,49 @@
     <!-- Rhino animation (runs once on first scroll) -->
     <div id="rhino" class="rhino" aria-hidden="true">🦏</div>
 
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h1>My Portfolio</h1>
-            <p>Personal Website</p>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>ANDREW YIN</h1>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#about" class="nav-link active">About Me</a></li>
-                <li><a href="#interests" class="nav-link">Interests & Hobbies</a></li>
-                <li><a href="#favorites" class="nav-link">Favorite Things</a></li>
-                <li><a href="#proud" class="nav-link">Something Proud Of</a></li>
-                <li><a href="#goals" class="nav-link">My Goals</a></li>
-                <li class="nav-toggle-item"><button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">Toggle Dark Mode 🌙</button></li>
-            </ul>
-        </nav>
-    </aside>
+    </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section id="hero" class="hero-section">
-            <div class="hero-content">
-                <h1>ANDREW YIN</h1>
+    <div class="content-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>My Portfolio</h1>
+                <p>Andrew Yin</p>
             </div>
-        </section>
+            <nav>
+                <ul>
+                    <li><a href="#about" class="nav-link active">About Me</a></li>
+                    <li><a href="#interests" class="nav-link">Interests & Hobbies</a></li>
+                    <li><a href="#favorites" class="nav-link">Favorite Things</a></li>
+                    <li><a href="#proud" class="nav-link">Something I'm Proud Of</a></li>
+                    <li><a href="#goals" class="nav-link">My Goals</a></li>
+                    <li><a href="#timeline" class="nav-link">Timeline of Me</a></li>
+                    <li class="nav-toggle-item"><button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
 
         <!-- About Me Section -->
         <section id="about">
             <div class="accent-line"></div>
             <h2>About Me</h2>
             <div class="content-block">
+                <div class="section-media" aria-label="About me photos">
+                    <figure class="section-photo">
+                        <img src="Photos/IMG_1094.JPG" alt="Andrew participating in an activity">
+                    </figure>
+                    <figure class="section-photo">
+                        <img src="Photos/IMG_3560.jpeg" alt="Andrew smiling during a school moment">
+                    </figure>
+                </div>
                 <p>
                     I am Andrew Yin, a passionate, respectful, and creative student who is both shy and confident at the same time. 
                     I like to make people laugh by making big, funny speeches, but I am surprisingly less outgoing with people through everyday interactions. 
@@ -1058,10 +1145,29 @@
             <div class="accent-line"></div>
             <h2>Interests & Hobbies</h2>
             <div class="content-block">
-                <ul>
-                    <li>LEGOs are my favorite passtime because of the infinite number of designs and builds possible</li>
-                    <li>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings.</li>
-                    <li>A good book is always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson</li>
+                <ul class="icon-list">
+                    <li class="interest-item">
+                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="8" width="18" height="11" rx="2"></rect>
+                            <rect x="7" y="5" width="4" height="3" rx="1"></rect>
+                            <rect x="13" y="5" width="4" height="3" rx="1"></rect>
+                        </svg>
+                        <span>LEGOs are my favorite passtime because of the infinite number of designs and builds possible</span>
+                    </li>
+                    <li class="interest-item">
+                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 20l4.5-1 10-10a1.8 1.8 0 0 0 0-2.5l-1-1a1.8 1.8 0 0 0-2.5 0l-10 10L4 20z"></path>
+                            <path d="M13.5 6.5l4 4"></path>
+                        </svg>
+                        <span>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings.</span>
+                    </li>
+                    <li class="interest-item">
+                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H11v14H6.5A2.5 2.5 0 0 0 4 20.5V6.5z"></path>
+                            <path d="M20 6.5A2.5 2.5 0 0 0 17.5 4H13v14h4.5a2.5 2.5 0 0 1 2.5 2.5V6.5z"></path>
+                        </svg>
+                        <span>A good book is always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson</span>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -1083,8 +1189,13 @@
         <!-- Something Proud Of Section -->
         <section id="proud">
             <div class="accent-line"></div>
-            <h2>Something I'm Proud Of</h2>
+            <h2>Achievements</h2>
             <div class="content-block">
+                <div class="section-media" aria-label="Achievement photo">
+                    <figure class="section-photo">
+                        <img src="Photos/IMG_9779.jpeg" alt="Andrew celebrating an achievement">
+                    </figure>
+                </div>
                 <p>
                     I am proud of my achievements in debate. I have attended multiple tournaments and even reached semifinals in the HUDL City Championships. Debate has allowed me to view the world with a more open mind and consider multiple perspectives.
                 </p>
@@ -1112,47 +1223,148 @@
                 </p>
                 <div class="timeline-section">
                     <div class="timeline-wrapper">
-                        <div class="timeline-track" aria-hidden="true"></div>
                         <ul class="timeline-items">
-                            <li class="timeline-item">
-                                <button class="timeline-dot" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1"><span class="sr-only">Expand 2024 milestone</span></button>
+                            <li class="timeline-item path-right">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1"><span class="sr-only">Expand 2010 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2010</span>
+                                        <button class="timeline-toggle" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Began my journey with curiosity, creativity, and a strong interest in building and exploring new ideas.</p>
+                                    <div class="timeline-detail" id="detail-1" hidden>
+                                        <p>This was the starting point where I learned to ask questions, try new activities, and enjoy the process of learning.</p>
+                                        <p>Small wins during this period set the tone for my long-term goals.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-right">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2"><span class="sr-only">Expand 2012 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2012</span>
+                                        <button class="timeline-toggle" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Started taking on bigger challenges in school and building habits around consistency and effort.</p>
+                                    <div class="timeline-detail" id="detail-2" hidden>
+                                        <p>I practiced sticking with difficult tasks and learned how steady progress creates strong results over time.</p>
+                                        <p>These habits became an important foundation for later achievements.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-right">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3"><span class="sr-only">Expand 2014 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2014</span>
+                                        <button class="timeline-toggle" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Expanded my interests in reading, sketching, and problem-solving with more independent projects.</p>
+                                    <div class="timeline-detail" id="detail-3" hidden>
+                                        <p>I explored different ways to express ideas and learned from both successes and mistakes.</p>
+                                        <p>That experimentation made me more creative and resilient.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item turn-right col-4 path-left path-right">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-4" aria-expanded="false" aria-controls="detail-4"><span class="sr-only">Expand 2016 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2016</span>
+                                        <button class="timeline-toggle" data-detail="detail-4" aria-expanded="false" aria-controls="detail-4">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Began presenting ideas more confidently and collaborating more often with classmates.</p>
+                                    <div class="timeline-detail" id="detail-4" hidden>
+                                        <p>Teamwork and communication became larger parts of my growth.</p>
+                                        <p>I learned how to listen, adjust, and contribute more effectively in group settings.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-left col-4">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-5" aria-expanded="false" aria-controls="detail-5"><span class="sr-only">Expand 2018 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2018</span>
+                                        <button class="timeline-toggle" data-detail="detail-5" aria-expanded="false" aria-controls="detail-5">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Set clearer goals and began shaping a stronger long-term direction for my future.</p>
+                                    <div class="timeline-detail" id="detail-5" hidden>
+                                        <p>I focused on balancing academics, hobbies, and personal growth.</p>
+                                        <p>Creating structure helped me stay focused while trying new opportunities.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-left col-3">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-6" aria-expanded="false" aria-controls="detail-6"><span class="sr-only">Expand 2020 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2020</span>
+                                        <button class="timeline-toggle" data-detail="detail-6" aria-expanded="false" aria-controls="detail-6">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Adapted to change and strengthened self-discipline during challenging periods.</p>
+                                    <div class="timeline-detail" id="detail-6" hidden>
+                                        <p>I learned to stay productive under changing conditions and remain consistent.</p>
+                                        <p>This period reinforced focus, independence, and perseverance.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item path-left col-2">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-7" aria-expanded="false" aria-controls="detail-7"><span class="sr-only">Expand 2022 milestone</span></button>
+                                </div>
+                                <div class="timeline-card">
+                                    <div class="timeline-meta">
+                                        <span class="timeline-year">2022</span>
+                                        <button class="timeline-toggle" data-detail="detail-7" aria-expanded="false" aria-controls="detail-7">View details</button>
+                                    </div>
+                                    <p class="timeline-summary">Became more involved in leadership, communication, and high-impact school activities.</p>
+                                    <div class="timeline-detail" id="detail-7" hidden>
+                                        <p>I started taking initiative, helping organize projects, and sharing ideas more openly.</p>
+                                        <p>These experiences developed my confidence and sense of responsibility.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-item turn-left col-1 path-left path-right">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8"><span class="sr-only">Expand 2024 milestone</span></button>
+                                </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2024</span>
-                                        <button class="timeline-toggle" data-detail="detail-1" aria-expanded="false" aria-controls="detail-1">View details</button>
+                                        <button class="timeline-toggle" data-detail="detail-8" aria-expanded="false" aria-controls="detail-8">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Launched a focused learning plan, joined a new club, and began planning projects that align with my ambitions.</p>
-                                    <div class="timeline-detail" id="detail-1" hidden>
-                                        <p>In this period, I concentrated on skill-building, reached out to mentors, and completed the first steps toward my long-term goals.</p>
-                                        <p>The work included scheduling practice sessions, documenting progress, and celebrating small wins along the way.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-item">
-                                <button class="timeline-dot" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2"><span class="sr-only">Expand 2025 milestone</span></button>
-                                <div class="timeline-card">
-                                    <div class="timeline-meta">
-                                        <span class="timeline-year">2025</span>
-                                        <button class="timeline-toggle" data-detail="detail-2" aria-expanded="false" aria-controls="detail-2">View details</button>
-                                    </div>
-                                    <p class="timeline-summary">Completed a major project and started sharing my progress with peers to strengthen my network and confidence.</p>
-                                    <div class="timeline-detail" id="detail-2" hidden>
-                                        <p>This stage was about applying what I learned, asking for feedback, and refining my process based on real results.</p>
-                                        <p>It also included attending events, presenting ideas, and staying curious about new opportunities.</p>
+                                    <p class="timeline-summary">Launched a focused learning plan and aligned projects with my long-term goals.</p>
+                                    <div class="timeline-detail" id="detail-8" hidden>
+                                        <p>I concentrated on skill-building, sought mentor feedback, and tracked steady progress.</p>
+                                        <p>This phase helped turn ideas into clear action steps.</p>
                                     </div>
                                 </div>
                             </li>
-                            <li class="timeline-item">
-                                <button class="timeline-dot" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3"><span class="sr-only">Expand 2026 milestone</span></button>
+                            <li class="timeline-item col-1 path-left">
+                                <div class="timeline-node-row">
+                                    <button class="timeline-dot" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9"><span class="sr-only">Expand 2026 milestone</span></button>
+                                </div>
                                 <div class="timeline-card">
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2026</span>
-                                        <button class="timeline-toggle" data-detail="detail-3" aria-expanded="false" aria-controls="detail-3">View details</button>
+                                        <button class="timeline-toggle" data-detail="detail-9" aria-expanded="false" aria-controls="detail-9">View details</button>
                                     </div>
-                                    <p class="timeline-summary">Focused on sharing impact, leading new initiatives, and making a positive difference in my community.</p>
-                                    <div class="timeline-detail" id="detail-3" hidden>
-                                        <p>By this period, I was refining my leadership, contributing to collaborative efforts, and setting new stretch goals.</p>
-                                        <p>Each step helped build momentum and shaped the next chapter of my story.</p>
+                                    <p class="timeline-summary">Focused on sharing impact, leading initiatives, and making a positive difference in my community.</p>
+                                    <div class="timeline-detail" id="detail-9" hidden>
+                                        <p>I continued developing leadership while setting higher goals for my next chapter.</p>
+                                        <p>Each milestone built momentum toward my future in medicine or law.</p>
                                     </div>
                                 </div>
                             </li>
@@ -1161,7 +1373,8 @@
                 </div>
             </div>
         </section>
-    </main>
+        </main>
+    </div>
 
     <footer class="site-footer">
         <div class="footer-content">
@@ -1337,54 +1550,8 @@
         });
 
         // Update active nav link on scroll
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
-        const heroSection = document.getElementById('hero');
-        let genieTransitioning = false;
-        let genieTimeout = null;
-        const sidebarRevealDelay = 430;
-        const sidebarArrivalCleanupDelay = 900;
-        
         window.addEventListener('scroll', () => {
             let current = '';
-            
-            // Get the height of the hero section to determine when to show sidebar
-            const heroHeight = heroSection.offsetHeight;
-            const scrollPosition = window.pageYOffset;
-            // Trigger during mid-hero so the suction morph is visible before the hero is gone.
-            const morphTriggerPoint = Math.max(100, heroHeight * 0.42);
-            const shouldShowSidebar = scrollPosition >= morphTriggerPoint;
-            
-            // Genie effect: hero gets sucked into the sidebar anchor zone
-            if (shouldShowSidebar) {
-                if (!sidebar.classList.contains('visible') && !genieTransitioning) {
-                    genieTransitioning = true;
-                    heroSection.classList.remove('genie-hidden');
-                    heroSection.classList.add('genie-suck');
-
-                    genieTimeout = setTimeout(() => {
-                        sidebar.classList.add('genie-arrive');
-                        sidebar.classList.add('visible');
-                        mainContent.classList.add('with-sidebar');
-                        heroSection.classList.add('with-sidebar', 'genie-hidden');
-                        heroSection.classList.remove('genie-suck');
-                        genieTransitioning = false;
-                    }, sidebarRevealDelay);
-
-                    setTimeout(() => {
-                        sidebar.classList.remove('genie-arrive');
-                    }, sidebarArrivalCleanupDelay);
-                }
-            } else {
-                if (genieTimeout) {
-                    clearTimeout(genieTimeout);
-                    genieTimeout = null;
-                }
-                genieTransitioning = false;
-                sidebar.classList.remove('visible', 'genie-arrive');
-                mainContent.classList.remove('with-sidebar');
-                heroSection.classList.remove('with-sidebar', 'genie-suck', 'genie-hidden');
-            }
             
             document.querySelectorAll('section').forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -1433,19 +1600,28 @@
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
 
+        function setDarkModeIcon(isDarkMode) {
+            darkModeToggle.innerHTML = isDarkMode
+                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line><line x1="4.9" y1="4.9" x2="7" y2="7"></line><line x1="17" y1="17" x2="19.1" y2="19.1"></line><line x1="17" y1="7" x2="19.1" y2="4.9"></line><line x1="4.9" y1="19.1" x2="7" y2="17"></line></svg>'
+                : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z"></path></svg>';
+            darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
+            darkModeToggle.setAttribute('title', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
         // Check for saved dark mode preference
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
         if (savedDarkMode) {
             body.classList.add('dark-mode');
-            darkModeToggle.textContent = 'Toggle Light Mode ☀️';
         }
+
+        setDarkModeIcon(savedDarkMode);
 
         // Toggle dark mode
         darkModeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDarkMode);
-            darkModeToggle.textContent = isDarkMode ? 'Toggle Light Mode ☀️' : 'Toggle Dark Mode 🌙';
+            setDarkModeIcon(isDarkMode);
         });
     </script>
 </body>
