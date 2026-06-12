@@ -572,11 +572,17 @@
             padding: 24px;
             z-index: 1400;
             opacity: 0;
+            pointer-events: none;
             transition: opacity 0.25s ease;
         }
 
         .image-lightbox.active {
             opacity: 1;
+            pointer-events: auto;
+        }
+
+        .image-lightbox[hidden] {
+            display: none;
         }
 
         .image-lightbox-panel {
@@ -1521,6 +1527,7 @@
             border-radius: 50%;
             cursor: pointer;
             padding: 0;
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -1543,6 +1550,25 @@
             stroke-linejoin: round;
         }
 
+        .theme-mode-badge {
+            position: absolute;
+            right: -7px;
+            bottom: -7px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            line-height: 1;
+            color: #FFFFFF;
+            background: #082B56;
+            box-shadow: 0 2px 5px rgba(8, 43, 86, 0.25);
+            pointer-events: none;
+        }
+
         body.dark-mode .dark-mode-toggle {
             border-color: rgba(141, 184, 232, 0.4);
             color: #8DB8E8;
@@ -1552,8 +1578,10 @@
             background: rgba(141, 184, 232, 0.15);
         }
 
-        .footer-controls .auto-theme-setting {
-            margin: 0;
+        body.dark-mode .theme-mode-badge {
+            background: #8DB8E8;
+            color: #081D38;
+            box-shadow: 0 2px 5px rgba(4, 12, 28, 0.45);
         }
 
         @media (max-width: 640px) {
@@ -1628,10 +1656,10 @@
             <div class="content-block">
                 <div class="section-media" aria-label="About me photos">
                     <figure class="section-photo">
-                        <img src="Photos/IMG_1094.JPG" alt="Andrew participating in an activity">
+                        <img src="Photos/IMG_1094.JPG" alt="Andrew posing in the IKEA showroom">
                     </figure>
                     <figure class="section-photo">
-                        <img src="Photos/IMG_3560.jpeg" alt="Andrew smiling during a school moment">
+                        <img src="Photos/IMG_3560.jpeg" alt="Andrew taking a photo while holding his phone over the edge of a car garage">
                     </figure>
                 </div>
                 <p>
@@ -1695,7 +1723,7 @@
             <div class="content-block">
                 <div class="section-media" aria-label="Achievement photo">
                     <figure class="section-photo">
-                        <img src="Photos/IMG_9779.jpeg" alt="Andrew celebrating an achievement">
+                        <img src="Photos/IMG_9779.jpeg" alt="Andrew waiting for his opponent during HUDL City Championships">
                     </figure>
                 </div>
                 <p>
@@ -1855,11 +1883,7 @@
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-controls">
-                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
-                <label class="auto-theme-setting" for="autoThemeToggle">
-                    <input type="checkbox" id="autoThemeToggle">
-                    Auto theme by Houston sunrise/sunset
-                </label>
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Theme mode: Light. Click to cycle" title="Theme mode: Light (click to cycle)"></button>
             </div>
             <div class="footer-info">
                 <p>Andrew Yin</p>
@@ -2042,7 +2066,7 @@
 
         contentCards.forEach(card => cardObserver.observe(card));
 
-        // Dark Mode Toggle
+        // Theme mode toggle (light, dark, auto)
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
         const dayMessage = document.getElementById('dayMessage');
@@ -2050,7 +2074,6 @@
         const hourHand = document.getElementById('hourHand');
         const minuteHand = document.getElementById('minuteHand');
         const secondHand = document.getElementById('secondHand');
-        const autoThemeToggle = document.getElementById('autoThemeToggle');
 
         const HOUSTON_LAT = 29.7604;
         const HOUSTON_LON = -95.3698;
@@ -2065,6 +2088,9 @@
             sunrise: null,
             sunset: null
         };
+
+        const themeModes = ['light', 'dark', 'auto'];
+        let currentThemeMode = 'light';
 
         const weatherOptions = [
             {
@@ -2133,7 +2159,26 @@
             if (persist) {
                 localStorage.setItem('darkMode', String(isDarkMode));
             }
-            setDarkModeIcon(isDarkMode);
+        }
+
+        function themeModeLabel(mode) {
+            if (mode === 'dark') return 'Dark';
+            if (mode === 'auto') return 'Auto';
+            return 'Light';
+        }
+
+        function setThemeModeControl(mode) {
+            const modeLabel = themeModeLabel(mode);
+            const badge = mode === 'dark' ? 'D' : mode === 'auto' ? 'A' : 'L';
+            const icon = mode === 'dark'
+                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z"></path></svg>'
+                : mode === 'auto'
+                    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="12" x2="12" y2="7"></line><line x1="12" y1="12" x2="15.5" y2="12"></line></svg>'
+                    : '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line><line x1="4.9" y1="4.9" x2="7" y2="7"></line><line x1="17" y1="17" x2="19.1" y2="19.1"></line><line x1="17" y1="7" x2="19.1" y2="4.9"></line><line x1="4.9" y1="19.1" x2="7" y2="17"></line></svg>';
+
+            darkModeToggle.innerHTML = `${icon}<span class="theme-mode-badge" aria-hidden="true">${badge}</span>`;
+            darkModeToggle.setAttribute('aria-label', `Theme mode: ${modeLabel}. Click to cycle`);
+            darkModeToggle.setAttribute('title', `Theme mode: ${modeLabel} (click to cycle)`);
         }
 
         function shouldUseDarkTheme(now) {
@@ -2141,8 +2186,29 @@
             return now < sunTimes.sunrise || now >= sunTimes.sunset;
         }
 
+        function setThemeMode(mode, persist = true, now = new Date()) {
+            currentThemeMode = mode;
+
+            let useDark;
+            if (mode === 'auto') {
+                const autoDark = shouldUseDarkTheme(now);
+                useDark = autoDark === null ? body.classList.contains('dark-mode') : autoDark;
+            } else {
+                useDark = mode === 'dark';
+            }
+
+            applyTheme(useDark, false);
+            setThemeModeControl(mode);
+
+            if (persist) {
+                localStorage.setItem('themeMode', mode);
+                localStorage.setItem('darkMode', String(useDark));
+                localStorage.setItem('autoTheme', String(mode === 'auto'));
+            }
+        }
+
         function applyAutoThemeIfEnabled(now) {
-            if (!autoThemeToggle.checked) return;
+            if (currentThemeMode !== 'auto') return;
             const useDark = shouldUseDarkTheme(now);
             if (useDark === null) return;
             applyTheme(useDark, false);
@@ -2298,14 +2364,6 @@
             }
         }
 
-        function setDarkModeIcon(isDarkMode) {
-            darkModeToggle.innerHTML = isDarkMode
-                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line><line x1="4.9" y1="4.9" x2="7" y2="7"></line><line x1="17" y1="17" x2="19.1" y2="19.1"></line><line x1="17" y1="7" x2="19.1" y2="4.9"></line><line x1="4.9" y1="19.1" x2="7" y2="17"></line></svg>'
-                : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8z"></path></svg>';
-            darkModeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
-            darkModeToggle.setAttribute('title', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
-        }
-
         function initializeImageLightbox() {
             const photoFigures = document.querySelectorAll('.section-photo');
             if (!photoFigures.length) return;
@@ -2386,28 +2444,25 @@
             });
         }
 
-        // Check for saved dark mode preference
+        // Restore theme mode preference (with backward compatibility)
+        const savedThemeMode = localStorage.getItem('themeMode');
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
         const savedAutoTheme = localStorage.getItem('autoTheme') === 'true';
-        autoThemeToggle.checked = savedAutoTheme;
 
-        applyTheme(savedDarkMode, false);
+        const initialThemeMode = themeModes.includes(savedThemeMode)
+            ? savedThemeMode
+            : savedAutoTheme
+                ? 'auto'
+                : savedDarkMode
+                    ? 'dark'
+                    : 'light';
 
-        // Toggle dark mode
+        setThemeMode(initialThemeMode, false, new Date());
+
         darkModeToggle.addEventListener('click', () => {
-            if (autoThemeToggle.checked) {
-                autoThemeToggle.checked = false;
-                localStorage.setItem('autoTheme', 'false');
-            }
-            const isDarkMode = !body.classList.contains('dark-mode');
-            applyTheme(isDarkMode, true);
-        });
-
-        autoThemeToggle.addEventListener('change', () => {
-            localStorage.setItem('autoTheme', String(autoThemeToggle.checked));
-            if (autoThemeToggle.checked) {
-                applyAutoThemeIfEnabled(new Date());
-            }
+            const index = themeModes.indexOf(currentThemeMode);
+            const nextMode = themeModes[(index + 1) % themeModes.length];
+            setThemeMode(nextMode, true, new Date());
         });
 
         initializeImageLightbox();
