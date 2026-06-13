@@ -273,12 +273,13 @@
 
         .clock-mark {
             position: absolute;
-            width: 2px;
-            height: 8px;
+            width: 3px;
+            height: 10px;
             background: rgba(8, 43, 86, 0.55);
             left: 50%;
-            top: 4px;
-            transform-origin: 50% 39px;
+            top: 50%;
+            border-radius: 999px;
+            transform: translate(-50%, -50%) rotate(var(--mark-angle, 0deg)) translateY(-35px);
         }
 
         /* Weather Reward Animations */
@@ -1540,16 +1541,21 @@
         }
 
         .footer-weather-drop {
-            width: 10px;
-            height: 16px;
-            border-radius: 999px;
-            background: linear-gradient(180deg, rgba(132, 194, 255, 0.96) 0%, rgba(51, 145, 231, 0.95) 100%);
-            box-shadow: 0 0 10px rgba(51, 145, 231, 0.25);
-            transform-origin: center top;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            font-size: var(--drop-size, 22px);
+            line-height: 1;
+            text-shadow: 0 0 4px rgba(180, 226, 255, 0.8), 0 2px 8px rgba(38, 124, 203, 0.45);
+            filter: saturate(1.35) contrast(1.18);
+            transform-origin: center center;
             position: fixed;
             top: -20px;
             z-index: 1300;
-            animation: footer-rain-drop 0.95s ease-in forwards;
+            transform: rotate(0deg);
+            animation: footer-rain-drop var(--footer-rain-duration, 0.95s) linear forwards;
         }
 
         .footer-weather-puddle {
@@ -1561,10 +1567,10 @@
         }
 
         .footer-weather-snow {
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 24px;
             color: #F7FBFF;
-            font-size: 16px;
+            font-size: 24px;
             line-height: 1;
             text-align: center;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
@@ -1596,7 +1602,7 @@
 
         @keyframes footer-rain-drop {
             0% {
-                transform: translateY(0) scaleY(1);
+                transform: translateY(0) rotate(var(--drop-tilt, 0deg)) scale(0.92);
                 opacity: 0;
             }
 
@@ -1605,7 +1611,7 @@
             }
 
             100% {
-                transform: translateY(var(--footer-travel, 72px)) scaleY(0.82);
+                transform: translateY(var(--footer-travel, 72px)) rotate(var(--drop-tilt, 0deg)) scale(1.05);
                 opacity: 0;
             }
         }
@@ -1982,18 +1988,18 @@
                 </div>
             </div>
             <div class="analog-clock" aria-label="Analog clock">
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(0deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(30deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(60deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(90deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(120deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(150deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(180deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(210deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(240deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(270deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(300deg);"></span>
-                <span class="clock-mark" style="transform: translateX(-50%) rotate(330deg);"></span>
+                <span class="clock-mark" style="--mark-angle: 0deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 30deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 60deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 90deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 120deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 150deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 180deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 210deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 240deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 270deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 300deg;"></span>
+                <span class="clock-mark" style="--mark-angle: 330deg;"></span>
                 <span class="clock-hand hour" id="hourHand"></span>
                 <span class="clock-hand minute" id="minuteHand"></span>
                 <span class="clock-hand second" id="secondHand"></span>
@@ -2737,6 +2743,9 @@
                     droplet.className = 'footer-weather-drop';
                     droplet.textContent = '💧';
                     droplet.style.left = Math.random() * 100 + '%';
+                    droplet.style.setProperty('--drop-size', `${(18 + Math.random() * 8).toFixed(1)}px`);
+                    droplet.style.setProperty('--drop-tilt', '0deg');
+                    droplet.style.setProperty('--footer-rain-duration', `${(0.78 + Math.random() * 0.3).toFixed(2)}s`);
                     droplet.style.setProperty('--footer-travel', `${Math.max(80, window.innerHeight - 40)}px`);
                     document.body.appendChild(droplet);
                     droplet.addEventListener('animationend', () => droplet.remove(), { once: true });
