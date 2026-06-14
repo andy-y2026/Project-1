@@ -202,6 +202,13 @@
             min-width: 0;
         }
 
+        .daily-widget-sync {
+            margin: 0;
+            color: #4D5870;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
         .auto-theme-setting {
             display: inline-flex;
             align-items: center;
@@ -1819,6 +1826,10 @@
             color: #d1d7e2;
         }
 
+        body.dark-mode .daily-widget-sync {
+            color: #b8c6df;
+        }
+
         body.dark-mode .auto-theme-setting {
             color: #b8c6df;
         }
@@ -1987,6 +1998,7 @@
                 <button id="weatherIcon" class="weather-icon" type="button" aria-label="Show weather animation" title="Show weather animation"></button>
                 <div class="daily-widget-info">
                     <p id="dayMessage" class="daily-widget-text"><span class="daily-widget-line">Good day! Today is 01/01/2026 and the time is 12:00:00 AM.</span><span class="daily-widget-line">It is a clear day in Houston, TX.</span></p>
+                    <p id="weatherSync" class="daily-widget-sync">Weather last synced: Waiting for first update...</p>
                 </div>
             </div>
             <div class="analog-clock" aria-label="Analog clock">
@@ -2452,6 +2464,7 @@
         const footer = document.querySelector('.site-footer');
         const footerWeatherLayer = document.querySelector('.footer-weather-layer');
         const dayMessage = document.getElementById('dayMessage');
+        const weatherSync = document.getElementById('weatherSync');
         const weatherIcon = document.getElementById('weatherIcon');
         const hourHand = document.getElementById('hourHand');
         const minuteHand = document.getElementById('minuteHand');
@@ -2463,7 +2476,8 @@
 
         const weatherState = {
             label: 'clear',
-            icon: ''
+            icon: '',
+            lastSyncedAt: null
         };
 
         const sunTimes = {
@@ -2526,6 +2540,13 @@
             const hours12 = hours24 % 12 || 12;
             const period = hours24 < 12 ? 'AM' : 'PM';
             return `${hours12}:${padTime(date.getMinutes())}:${padTime(date.getSeconds())} ${period}`;
+        }
+
+        function formatSyncTimestamp(date) {
+            const month = padTime(date.getMonth() + 1);
+            const day = padTime(date.getDate());
+            const year = date.getFullYear();
+            return `${month}/${day}/${year} ${formatDisplayTime(date)}`;
         }
 
         function weatherByLabel(label) {
@@ -2621,6 +2642,7 @@
                 const weather = weatherByLabel(weatherLabel);
                 weatherState.label = weather.label;
                 weatherState.icon = weather.icon;
+                weatherState.lastSyncedAt = new Date();
 
                 const sunriseValue = data?.daily?.sunrise?.[0];
                 const sunsetValue = data?.daily?.sunset?.[0];
@@ -2643,6 +2665,10 @@
 
             dayMessage.innerHTML = `<span class="daily-widget-line">${greeting}! Today is ${date} and the time is ${time}.</span><span class="daily-widget-line">It is a ${weather.label} day in Houston, TX.</span>`;
             weatherIcon.innerHTML = weather.icon;
+
+            if (weatherState.lastSyncedAt) {
+                weatherSync.textContent = `Weather last synced: ${formatSyncTimestamp(weatherState.lastSyncedAt)}`;
+            }
 
             const seconds = now.getSeconds();
             const minutes = now.getMinutes();
