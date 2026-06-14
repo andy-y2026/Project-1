@@ -1543,6 +1543,7 @@
         }
 
         .footer-weather-drop,
+        .footer-weather-lightning,
         .footer-weather-puddle,
         .footer-weather-snow {
             position: absolute;
@@ -1587,6 +1588,28 @@
             top: -20px;
             z-index: 1300;
             animation: footer-snow-fall 1.1s ease-in forwards;
+        }
+
+        .footer-weather-lightning {
+            position: fixed;
+            top: 0;
+            left: -12vw;
+            font-size: var(--bolt-size, 32px);
+            line-height: 1;
+            z-index: 1350;
+            text-shadow: 0 0 10px rgba(255, 214, 64, 0.9), 0 0 18px rgba(255, 236, 140, 0.75);
+            animation: footer-lightning-zip var(--lightning-duration, 0.28s) linear forwards;
+        }
+
+        .reward-leaf {
+            position: fixed;
+            left: -14vw;
+            font-size: var(--leaf-size, 24px);
+            line-height: 1;
+            z-index: 1250;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(32, 77, 42, 0.25));
+            animation: leaf-blow-across var(--leaf-duration, 2.2s) ease-out forwards;
         }
 
         .footer-snow-pile {
@@ -1649,6 +1672,42 @@
 
             100% {
                 transform: translateY(var(--footer-travel, 74px)) scale(0.98);
+                opacity: 0;
+            }
+        }
+
+        @keyframes footer-lightning-zip {
+            0% {
+                transform: translateX(0) translateY(var(--lightning-y, 0px)) rotate(var(--lightning-angle, -12deg)) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(120vw) translateY(var(--lightning-y-end, 120px)) rotate(var(--lightning-angle, -12deg)) scale(1.08);
+                opacity: 0;
+            }
+        }
+
+        @keyframes leaf-blow-across {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            12% {
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateX(55vw) translateY(var(--leaf-drift, -20px)) rotate(180deg);
+            }
+
+            100% {
+                transform: translateX(125vw) translateY(var(--leaf-drift-end, 20px)) rotate(380deg);
                 opacity: 0;
             }
         }
@@ -2702,10 +2761,14 @@
                 } else {
                     createSunAnimation();
                 }
+            } else if (weather.includes('storm')) {
+                createStormAnimation();
             } else if (weather.includes('rain')) {
                 createRainAnimation();
             } else if (weather.includes('snow')) {
                 createSnowAnimation();
+            } else if (weather.includes('wind')) {
+                createWindAnimation();
             } else if (shouldShowClouds) {
                 createCloudAnimation();
             }
@@ -2800,6 +2863,27 @@
             }
         }
 
+        function createStormAnimation() {
+            createRainAnimation();
+
+            const boltCount = 6;
+            for (let i = 0; i < boltCount; i++) {
+                setTimeout(() => {
+                    const lightning = document.createElement('div');
+                    lightning.className = 'footer-weather-lightning';
+                    lightning.textContent = '⚡';
+                    lightning.style.top = `${(6 + Math.random() * 48).toFixed(1)}vh`;
+                    lightning.style.setProperty('--bolt-size', `${(26 + Math.random() * 22).toFixed(1)}px`);
+                    lightning.style.setProperty('--lightning-duration', `${(0.16 + Math.random() * 0.14).toFixed(2)}s`);
+                    lightning.style.setProperty('--lightning-angle', `${(-24 + Math.random() * 48).toFixed(1)}deg`);
+                    lightning.style.setProperty('--lightning-y', `${(-20 + Math.random() * 40).toFixed(1)}px`);
+                    lightning.style.setProperty('--lightning-y-end', `${(-40 + Math.random() * 180).toFixed(1)}px`);
+                    document.body.appendChild(lightning);
+                    lightning.addEventListener('animationend', () => lightning.remove(), { once: true });
+                }, i * 95);
+            }
+        }
+
         function createSnowAnimation() {
             const count = 16;
             for (let i = 0; i < count; i++) {
@@ -2842,6 +2926,26 @@
                 star.style.animationDelay = i * 0.15 + 's';
                 document.body.appendChild(star);
                 setTimeout(() => star.remove(), 3500);
+            }
+        }
+
+        function createWindAnimation() {
+            const leaves = ['🍃', '🍂', '🍁', '🍃'];
+            const count = 12;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'reward-leaf';
+                    leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+                    leaf.style.top = `${(8 + Math.random() * 70).toFixed(1)}vh`;
+                    leaf.style.setProperty('--leaf-size', `${(20 + Math.random() * 14).toFixed(1)}px`);
+                    leaf.style.setProperty('--leaf-duration', `${(1.6 + Math.random() * 1.2).toFixed(2)}s`);
+                    leaf.style.setProperty('--leaf-drift', `${(-40 + Math.random() * 80).toFixed(1)}px`);
+                    leaf.style.setProperty('--leaf-drift-end', `${(-32 + Math.random() * 100).toFixed(1)}px`);
+                    document.body.appendChild(leaf);
+                    leaf.addEventListener('animationend', () => leaf.remove(), { once: true });
+                }, i * 120);
             }
         }
 
