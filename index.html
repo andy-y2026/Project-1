@@ -191,6 +191,14 @@
             min-width: 0;
         }
 
+        .daily-widget-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 0 0 auto;
+        }
+
         .weather-icon {
             width: 28px;
             height: 28px;
@@ -241,6 +249,15 @@
             color: #4D5870;
             font-size: 13px;
             line-height: 1.4;
+        }
+
+        .weather-temp {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1F2E47;
+            line-height: 1;
         }
 
         .auto-theme-setting {
@@ -1244,17 +1261,16 @@
             }
 
             .mobile-nav-backdrop {
-                display: block;
                 position: fixed;
                 inset: 0;
                 z-index: 1390;
-                background: rgba(4, 13, 32, 0.44);
+                background: linear-gradient(135deg, #536A9C 0%, #063574 100%);
                 opacity: 0;
                 pointer-events: none;
                 transition: opacity 0.28s ease;
             }
 
-            body.mobile-nav-open .mobile-nav-backdrop {
+            .mobile-nav-backdrop.active {
                 opacity: 1;
                 pointer-events: auto;
             }
@@ -1274,6 +1290,11 @@
                 min-width: 0;
                 align-items: flex-start;
                 gap: 10px;
+            }
+
+            .daily-widget-weather {
+                align-items: flex-start;
+                gap: 5px;
             }
 
             .weather-icon {
@@ -2324,6 +2345,14 @@
             color: #b8c6df;
         }
 
+        body.dark-mode .daily-widget-emphasis {
+            color: #E4EEFF;
+        }
+
+        body.dark-mode .weather-temp {
+            color: #D6E3F8;
+        }
+
         body.dark-mode .auto-theme-setting {
             color: #b8c6df;
         }
@@ -2460,7 +2489,7 @@
 
         .settings-shell.active .settings-panel {
             width: 268px;
-            height: 186px;
+            height: 228px;
             border-radius: 28px;
             transform: scale(1);
             opacity: 1;
@@ -2525,6 +2554,28 @@
             text-transform: uppercase;
         }
 
+        .temp-unit-toggle {
+            min-width: 58px;
+            height: 32px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(8, 43, 86, 0.36);
+            background: rgba(255, 255, 255, 0.88);
+            color: #153860;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .temp-unit-toggle:hover,
+        .temp-unit-toggle:focus-visible {
+            transform: translateY(-1px);
+            background: #F2F7FF;
+            border-color: rgba(8, 43, 86, 0.56);
+            outline: none;
+        }
+
         .palette-options {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2586,6 +2637,18 @@
             background: rgba(29, 45, 68, 0.86);
             color: #C6DAF8;
             border-color: rgba(141, 184, 232, 0.3);
+        }
+
+        body.dark-mode .temp-unit-toggle {
+            border-color: rgba(141, 184, 232, 0.4);
+            background: rgba(30, 44, 66, 0.92);
+            color: #CFE2FF;
+        }
+
+        body.dark-mode .temp-unit-toggle:hover,
+        body.dark-mode .temp-unit-toggle:focus-visible {
+            background: rgba(45, 63, 89, 0.96);
+            border-color: rgba(141, 184, 232, 0.62);
         }
 
         .dark-mode-toggle {
@@ -2840,18 +2903,18 @@
             opacity: 1;
         }
 
-        .guided-tour-overlay.active .guided-tour-target {
+        body.guided-tour-active .guided-tour-target {
             z-index: 1660;
             box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.94), 0 0 0 9px rgba(var(--theme-accent-rgb), 0.42), 0 14px 24px rgba(8, 20, 42, 0.3);
             border-radius: 14px;
             animation: guided-tour-pulse 1.1s ease-in-out infinite alternate;
         }
 
-        .guided-tour-overlay.active .guided-tour-target:not(#mobileNavToggle) {
+        body.guided-tour-active .guided-tour-target:not(#mobileNavToggle):not(#contactCircle):not(#chatbotCircle):not(#settingsToggle) {
             position: relative;
         }
 
-        .guided-tour-overlay.active #mobileNavToggle.guided-tour-target {
+        body.guided-tour-active #mobileNavToggle.guided-tour-target {
             position: fixed;
             border-radius: 50%;
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.92), 0 0 0 6px rgba(var(--theme-accent-rgb), 0.26), 0 10px 18px rgba(8, 20, 42, 0.24);
@@ -3004,6 +3067,239 @@
             border-color: rgba(141, 184, 232, 0.3);
             box-shadow: 0 12px 24px rgba(4, 11, 24, 0.42);
         }
+
+        /* Chatbot */
+        .chatbot-button {
+            position: fixed;
+            left: 30px;
+            bottom: 30px;
+            z-index: 999;
+        }
+
+        .chatbot-circle {
+            width: 60px;
+            height: 60px;
+            background: #ffffff;
+            border: 1px solid rgba(83, 106, 156, 0.45);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 0 7px rgba(83, 106, 156, 0.22), 0 0 18px rgba(83, 106, 156, 0.36), 0 6px 14px rgba(8, 43, 86, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .chatbot-circle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 0 9px rgba(83, 106, 156, 0.28), 0 0 24px rgba(83, 106, 156, 0.42), 0 8px 18px rgba(8, 43, 86, 0.24);
+        }
+
+        .chatbot-circle svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        .chatbot-circle.morphing {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chatbot-panel {
+            position: fixed;
+            left: 30px;
+            bottom: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            transition: width 0.5s ease, height 0.5s ease, border-radius 0.5s ease, transform 0.5s ease, opacity 0.35s ease;
+            transform: scale(0);
+            transform-origin: bottom left;
+            z-index: 998;
+            background: white;
+            border: 2px solid #536A9C;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .chatbot-panel.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            width: min(420px, 92vw);
+            height: 460px;
+            border-radius: 40px;
+        }
+
+        .chatbot-squircle {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-radius: inherit;
+            padding: 22px 20px 18px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.25s;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 12px;
+        }
+
+        .chatbot-panel.active .chatbot-squircle {
+            opacity: 1;
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .chatbot-title {
+            margin: 0;
+            color: #153860;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 17px;
+        }
+
+        .chatbot-close {
+            width: 28px;
+            height: 28px;
+            border: 1px solid rgba(8, 43, 86, 0.24);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.75);
+            color: #1F3D67;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .chatbot-messages {
+            border: 1px solid rgba(8, 43, 86, 0.18);
+            border-radius: 18px;
+            background: rgba(246, 250, 255, 0.92);
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chatbot-msg {
+            margin: 0;
+            max-width: 88%;
+            padding: 8px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .chatbot-msg.bot {
+            align-self: flex-start;
+            background: #EAF1FB;
+            color: #1F3556;
+        }
+
+        .chatbot-msg.user {
+            align-self: flex-end;
+            background: #1F4A85;
+            color: #F8FBFF;
+        }
+
+        .chatbot-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+        }
+
+        .chatbot-input {
+            border: 1px solid rgba(8, 43, 86, 0.24);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: 'Raleway', sans-serif;
+            color: #223652;
+        }
+
+        .chatbot-send {
+            border: none;
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: linear-gradient(135deg, #536A9C 0%, #082B56 100%);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+        }
+
+        body.dark-mode .chatbot-panel {
+            background: rgba(31, 43, 62, 0.97);
+            border-color: rgba(141, 184, 232, 0.3);
+        }
+
+        body.dark-mode .chatbot-title {
+            color: #D6E3F8;
+        }
+
+        body.dark-mode .chatbot-close {
+            background: rgba(29, 45, 68, 0.86);
+            color: #C6DAF8;
+            border-color: rgba(141, 184, 232, 0.3);
+        }
+
+        body.dark-mode .chatbot-messages {
+            background: rgba(21, 31, 46, 0.86);
+            border-color: rgba(141, 184, 232, 0.24);
+        }
+
+        body.dark-mode .chatbot-msg.bot {
+            background: rgba(42, 59, 84, 0.9);
+            color: #D9E8FF;
+        }
+
+        body.dark-mode .chatbot-input {
+            background: rgba(19, 30, 45, 0.9);
+            border-color: rgba(141, 184, 232, 0.26);
+            color: #D9E8FF;
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-button {
+                left: 22px;
+                bottom: calc(22px + env(safe-area-inset-bottom));
+            }
+
+            .chatbot-panel {
+                left: 22px;
+                bottom: calc(22px + env(safe-area-inset-bottom));
+            }
+
+            .chatbot-panel.active {
+                width: min(380px, calc(100vw - 36px));
+                height: 430px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chatbot-button {
+                left: 16px;
+                bottom: calc(16px + env(safe-area-inset-bottom));
+            }
+
+            .chatbot-panel {
+                left: 16px;
+                bottom: calc(16px + env(safe-area-inset-bottom));
+            }
+
+            .chatbot-panel.active {
+                width: calc(100vw - 32px);
+                height: 400px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3048,7 +3344,10 @@
 
         <div class="daily-widget" aria-live="polite">
             <div class="daily-widget-copy">
-                <button id="weatherIcon" class="weather-icon" type="button" aria-label="Show weather animation" title="Show weather animation"></button>
+                <div class="daily-widget-weather">
+                    <button id="weatherIcon" class="weather-icon" type="button" aria-label="Show weather animation" title="Show weather animation"></button>
+                    <p id="weatherTemp" class="weather-temp">--&deg;F</p>
+                </div>
                 <div class="daily-widget-info">
                     <p id="dayMessage" class="daily-widget-text"><span class="daily-widget-line">Good day! Today is 01/01/2026 and the time is 12:00:00 AM.</span><span class="daily-widget-line">It is a clear day in Houston, TX.</span></p>
                     <p id="weatherSync" class="daily-widget-sync">Weather last synced: Waiting for first update...</p>
@@ -3395,6 +3694,10 @@
                                 <p class="settings-label">Theme Mode</p>
                                 <button class="dark-mode-toggle" id="darkModeToggle" type="button" aria-label="Theme mode: Light. Click to cycle" title="Theme mode: Light (click to cycle)"></button>
                             </div>
+                            <div class="settings-row">
+                                <p class="settings-label">Temperature</p>
+                                <button class="temp-unit-toggle" id="tempUnitToggle" type="button" aria-label="Temperature unit: Fahrenheit. Click to toggle" title="Temperature unit: Fahrenheit (click to toggle)">&deg;F</button>
+                            </div>
                             <div>
                                 <p class="settings-label">Andrew's Favorite Colors</p>
                                 <div class="palette-options" role="radiogroup" aria-label="Choose color theme">
@@ -3414,6 +3717,29 @@
             </div>
         </div>
     </footer>
+
+    <div class="chatbot-button" id="chatbotButton">
+        <div class="chatbot-circle" id="chatbotCircle" role="button" tabindex="0" aria-label="Open chatbot">
+            <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5.2 3.7A1 1 0 0 1 3 19.9V17H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" opacity="0.18"></path>
+                <path d="M6 9h12v2H6V9zm0 4h8v2H6v-2z"></path>
+            </svg>
+        </div>
+
+        <div class="chatbot-panel" id="chatbotPanel" aria-hidden="true">
+            <div class="chatbot-squircle">
+                <div class="chatbot-header">
+                    <h3 class="chatbot-title">Ask About Andrew</h3>
+                    <button type="button" class="chatbot-close" id="chatbotClose" aria-label="Close chatbot">&times;</button>
+                </div>
+                <div class="chatbot-messages" id="chatbotMessages" aria-live="polite"></div>
+                <form class="chatbot-form" id="chatbotForm">
+                    <input class="chatbot-input" id="chatbotInput" type="text" placeholder="Ask a question..." autocomplete="off" />
+                    <button class="chatbot-send" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Contact Button -->
     <div class="contact-button">
@@ -3501,6 +3827,10 @@
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.contact-button')) {
                 closeContactForm();
+            }
+
+            if (!e.target.closest('.chatbot-button')) {
+                closeChatbotPanel();
             }
         });
 
@@ -3596,6 +3926,7 @@
         const settingsCloseButton = document.getElementById('settingsCloseButton');
         const settingsPanel = document.getElementById('settingsPanel');
         const paletteSwatches = Array.from(document.querySelectorAll('.palette-swatch'));
+        const tempUnitToggle = document.getElementById('tempUnitToggle');
         const guidedTourNavButton = document.getElementById('guidedTourNavButton');
         const guidedTourPrompt = document.getElementById('guidedTourPrompt');
         const guidedTourYes = document.getElementById('guidedTourYes');
@@ -3610,12 +3941,19 @@
         const guidedTourResumeButton = document.getElementById('guidedTourResumeButton');
         const mobileNavToggle = document.getElementById('mobileNavToggle');
         const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+        const chatbotCircle = document.getElementById('chatbotCircle');
+        const chatbotPanel = document.getElementById('chatbotPanel');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotForm = document.getElementById('chatbotForm');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotMessages = document.getElementById('chatbotMessages');
         const body = document.body;
         const footer = document.querySelector('.site-footer');
         const footerWeatherLayer = document.querySelector('.footer-weather-layer');
         const dayMessage = document.getElementById('dayMessage');
         const weatherSync = document.getElementById('weatherSync');
         const weatherIcon = document.getElementById('weatherIcon');
+        const weatherTemp = document.getElementById('weatherTemp');
         const hourHand = document.getElementById('hourHand');
         const minuteHand = document.getElementById('minuteHand');
         const secondHand = document.getElementById('secondHand');
@@ -3632,6 +3970,7 @@
         const weatherState = {
             label: TEMP_WEATHER_OVERRIDE || 'clear',
             icon: '',
+            temperatureC: null,
             lastSyncedAt: null
         };
 
@@ -3641,12 +3980,14 @@
         };
 
         const themeModes = ['light', 'dark', 'auto'];
+        const temperatureUnits = ['f', 'c'];
         const favoriteColorThemes = ['blue', 'gold', 'green', 'maroon'];
         const personalQuotes = [
             'If you ever stop learning, you have just given up.',
             'Always keep a positive mindset. Mindset determines everything you do.'
         ];
         let currentThemeMode = 'light';
+        let currentTemperatureUnit = 'f';
         let currentColorTheme = 'blue';
         let currentQuoteIndex = 0;
         let guidedTourIndex = 0;
@@ -3654,6 +3995,7 @@
         let guidedTourCurrentTarget = null;
         let guidedTourStepTimer = null;
         let guidedTourFollowTimer = null;
+        let mobileNavBackdropHideTimer = null;
         const GUIDED_TOUR_PROMPT_KEY = 'guidedTourPromptSeen';
 
         const guidedTourSteps = [
@@ -3670,6 +4012,10 @@
                 message: 'Use this to quickly reach a section you would like to learn more about.',
                 mobileSelector: '#mobileNavToggle',
                 mobileMessage: 'Use this menu button to quickly reach a section you would like to learn more about.'
+            },
+            {
+                selector: '#chatbotCircle',
+                message: 'Use this chatbot to ask questions and learn more about Andrew Yin.'
             },
             {
                 selector: '#about .section-photo img[alt*="IKEA"]',
@@ -3751,6 +4097,19 @@
             const day = padTime(date.getDate());
             const year = date.getFullYear();
             return `${month}/${day}/${year} ${formatDisplayTime(date)}`;
+        }
+
+        function formatTemperature(tempC, unit = 'f') {
+            if (typeof tempC !== 'number' || Number.isNaN(tempC)) {
+                return unit === 'c' ? '--&deg;C' : '--&deg;F';
+            }
+
+            if (unit === 'c') {
+                return `${Math.round(tempC)}&deg;C`;
+            }
+
+            const fahrenheit = (tempC * 9) / 5 + 32;
+            return `${Math.round(fahrenheit)}&deg;F`;
         }
 
         function formatRelativeSyncTime(lastSyncedAt, now = new Date()) {
@@ -3877,17 +4236,369 @@
         }
 
         function setMobileNavOpen(isOpen) {
+            clearTimeout(mobileNavBackdropHideTimer);
+
             body.classList.toggle('mobile-nav-open', isOpen);
+
+            if (mobileNavBackdrop) {
+                if (isOpen) {
+                    mobileNavBackdrop.style.display = 'block';
+                    mobileNavBackdrop.setAttribute('aria-hidden', 'false');
+                    window.requestAnimationFrame(() => {
+                        mobileNavBackdrop.classList.add('active');
+                    });
+                } else {
+                    mobileNavBackdrop.classList.remove('active');
+                    mobileNavBackdrop.setAttribute('aria-hidden', 'true');
+                    mobileNavBackdropHideTimer = window.setTimeout(() => {
+                        mobileNavBackdrop.style.display = 'none';
+                    }, 300);
+                }
+            }
+
             if (mobileNavToggle) {
                 mobileNavToggle.setAttribute('aria-expanded', String(isOpen));
                 mobileNavToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
             }
         }
 
+        function setTemperatureUnitControl(unit) {
+            if (!tempUnitToggle) return;
+            const isCelsius = unit === 'c';
+            tempUnitToggle.innerHTML = isCelsius ? '&deg;C' : '&deg;F';
+            tempUnitToggle.setAttribute('aria-label', `Temperature unit: ${isCelsius ? 'Celsius' : 'Fahrenheit'}. Click to toggle`);
+            tempUnitToggle.setAttribute('title', `Temperature unit: ${isCelsius ? 'Celsius' : 'Fahrenheit'} (click to toggle)`);
+        }
+
+        function setTemperatureUnit(unit, persist = true) {
+            if (!temperatureUnits.includes(unit)) return;
+            currentTemperatureUnit = unit;
+            setTemperatureUnitControl(unit);
+            if (persist) {
+                localStorage.setItem('temperatureUnit', unit);
+            }
+            updateDailyWidget();
+        }
+
         function setGuidedTourResumeOpen(isOpen) {
             if (!guidedTourResume) return;
             guidedTourResume.classList.toggle('active', isOpen);
             guidedTourResume.setAttribute('aria-hidden', String(!isOpen));
+        }
+
+        function closeChatbotPanel() {
+            if (!chatbotPanel || !chatbotCircle) return;
+            if (!chatbotPanel.classList.contains('active')) {
+                chatbotCircle.classList.remove('morphing');
+                chatbotPanel.setAttribute('aria-hidden', 'true');
+                return;
+            }
+
+            chatbotPanel.classList.remove('active');
+            chatbotPanel.setAttribute('aria-hidden', 'true');
+
+            const onMorphBack = (event) => {
+                if (event.target !== chatbotPanel || event.propertyName !== 'transform') return;
+                chatbotCircle.classList.remove('morphing');
+                chatbotPanel.removeEventListener('transitionend', onMorphBack);
+            };
+
+            chatbotPanel.addEventListener('transitionend', onMorphBack);
+        }
+
+        function openChatbotPanel() {
+            if (!chatbotPanel || !chatbotCircle) return;
+            chatbotCircle.classList.add('morphing');
+            chatbotPanel.classList.add('active');
+            chatbotPanel.setAttribute('aria-hidden', 'false');
+            chatbotInput?.focus();
+        }
+
+        function appendChatMessage(role, text) {
+            if (!chatbotMessages) return;
+            const message = document.createElement('p');
+            message.className = `chatbot-msg ${role}`;
+            message.textContent = text;
+            chatbotMessages.appendChild(message);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function normalizeChatTokens(text) {
+            return String(text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, ' ')
+                .split(/\s+/)
+                .filter(Boolean);
+        }
+
+        function filterSemanticTokens(tokens) {
+            const stopWords = new Set([
+                'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'to', 'of', 'and', 'or', 'in', 'on', 'for', 'with',
+                'what', 'who', 'when', 'where', 'why', 'how', 'does', 'do', 'did', 'can', 'you', 'me', 'about', 'his',
+                'her', 'their', 'favorite', 'thing', 'things', 'tell', 'more', 'please'
+            ]);
+
+            return tokens.filter((token) => !stopWords.has(token));
+        }
+
+        function bestKnowledgeMatch(question, knowledgeBase) {
+            const questionTokens = filterSemanticTokens(normalizeChatTokens(question));
+            if (!questionTokens.length) return null;
+
+            let best = null;
+            let bestScore = 0;
+
+            knowledgeBase.forEach((item) => {
+                const haystackTokens = new Set(filterSemanticTokens(normalizeChatTokens(`${item.topic} ${item.answer}`)));
+                let score = 0;
+
+                questionTokens.forEach((token) => {
+                    if (haystackTokens.has(token)) score += 1;
+                });
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = item;
+                }
+            });
+
+            if (!best || bestScore < 1) return null;
+            return best;
+        }
+
+        function isGuidedTourHelpQuestion(question) {
+            const q = String(question || '').toLowerCase();
+            return /(how\s+(do|to)\s+(i|we|you)\s+(use|navigate|start))|(how\s+to\s+use\s+(this\s+)?(site|website))|(help\s+me\s+use)|(where\s+do\s+i\s+start)|(guided\s+tour|tour\s+guide)/.test(q);
+        }
+
+        function getSiteHowToReply(question) {
+            const q = String(question || '').toLowerCase();
+            const isHowTo = /(how\s+(do|can)\s+i)|(how\s+to)|(where\s+is)|(where\s+do\s+i)|(how\s+can\s+i)/.test(q);
+
+            if (!isHowTo) return null;
+
+            if (/(change|set|pick|choose|switch).*(color|theme)|color.*(change|set|pick|choose|switch)/.test(q)) {
+                return 'To change color: open Settings using the gear button, then choose a color from the palette swatches. You can also use Guided Tour to see this flow highlighted.';
+            }
+
+            if (/(dark|light|theme mode|mode)/.test(q)) {
+                return 'To switch light, dark, or auto mode: open Settings and click the theme mode button to cycle through the modes.';
+            }
+
+            if (/(temperature|temp|fahrenheit|celsius|f\/?c|c\/?f)/.test(q)) {
+                return 'To change temperature units, open Settings and tap the temperature toggle to switch between Fahrenheit and Celsius.';
+            }
+
+            if (/(contact|email|message)/.test(q)) {
+                return 'To contact Andrew, click the Contact button at the lower-right corner, fill in the form, and submit.';
+            }
+
+            if (/(chatbot|ask|question)/.test(q)) {
+                return 'Use the chatbot button at the lower-left corner to open the chat panel and ask questions.';
+            }
+
+            if (/(timeline|year|milestone)/.test(q)) {
+                return 'To use the timeline, open the Timeline section and click a year dot or the View details button to expand that milestone.';
+            }
+
+            if (/(navigation|menu|section|sidebar|three|3\s*bars|hamburger)/.test(q)) {
+                return 'Use the navigation links on desktop, or the 3-bars menu on mobile, to jump to any section.';
+            }
+
+            if (/(photo|image|picture)/.test(q)) {
+                return 'Click any section image to open it in the lightbox view, and press Escape or click outside to close it.';
+            }
+
+            return 'A quick way to learn the site is to start the Guided Tour from Settings. It walks through navigation, chatbot, timeline, contact, and settings controls.';
+        }
+
+        async function fetchInternetAnswer(question) {
+            const searchEndpoint = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(question)}&limit=1&namespace=0&format=json&origin=*`;
+
+            try {
+                const searchResponse = await fetch(searchEndpoint);
+                if (!searchResponse.ok) return null;
+                const searchData = await searchResponse.json();
+                const title = searchData?.[1]?.[0];
+                if (!title) return null;
+
+                const summaryEndpoint = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+                const summaryResponse = await fetch(summaryEndpoint);
+                if (!summaryResponse.ok) return null;
+                const summaryData = await summaryResponse.json();
+                const extract = summaryData?.extract;
+                if (!extract) return null;
+
+                return `I looked this up online: ${extract}`;
+            } catch (error) {
+                console.error('Unable to fetch internet answer:', error);
+                return null;
+            }
+        }
+
+        function getTimelineReply(question) {
+            const q = String(question || '').toLowerCase();
+            const timelineCards = Array.from(document.querySelectorAll('#timeline .timeline-card'));
+            if (!timelineCards.length) return null;
+
+            const timelineEntries = timelineCards
+                .map((card) => {
+                    const yearText = card.querySelector('.timeline-year')?.textContent?.trim() || '';
+                    const year = Number.parseInt(yearText, 10);
+                    if (!Number.isInteger(year)) return null;
+
+                    const summary = card.querySelector('.timeline-summary')?.textContent?.trim() || '';
+                    const details = Array.from(card.querySelectorAll('.timeline-detail p'))
+                        .map((detail) => detail.textContent?.trim() || '')
+                        .filter(Boolean);
+
+                    return { year, summary, details };
+                })
+                .filter(Boolean)
+                .sort((a, b) => a.year - b.year);
+
+            if (!timelineEntries.length) return null;
+
+            const yearMatch = q.match(/\b(19|20)\d{2}\b/);
+            if (yearMatch) {
+                const year = Number.parseInt(yearMatch[0], 10);
+                const match = timelineEntries.find((entry) => entry.year === year);
+
+                if (match) {
+                    const detailText = match.details.length
+                        ? ` ${match.details.join(' ')}`
+                        : '';
+                    return `In ${match.year}, Andrew ${match.summary}.${detailText}`;
+                }
+
+                const firstYear = timelineEntries[0].year;
+                const lastYear = timelineEntries[timelineEntries.length - 1].year;
+                return `I do not see a ${year} milestone on the timeline. The timeline currently covers ${firstYear} through ${lastYear}.`;
+            }
+
+            if (!/(timeline|milestone|history|year|years|what happened|when did)/.test(q)) {
+                return null;
+            }
+
+            if (/(latest|newest|most recent|recent)/.test(q)) {
+                const latest = timelineEntries[timelineEntries.length - 1];
+                return `The most recent timeline milestone is ${latest.year}: Andrew ${latest.summary}.`;
+            }
+
+            if (/(earliest|first|oldest|beginning|start)/.test(q)) {
+                const earliest = timelineEntries[0];
+                return `The earliest timeline milestone is ${earliest.year}: Andrew ${earliest.summary}.`;
+            }
+
+            const listedYears = timelineEntries.map((entry) => entry.year).join(', ');
+            return `The timeline includes these years: ${listedYears}. Ask about a specific year, like 2022 or 2025, and I will share what happened.`;
+        }
+
+        async function chatbotReplyFor(question) {
+            const q = question.toLowerCase();
+            const favoriteSpecific = q.match(/favorite\s+(food|color|sport|book|song|music|game|subject)/);
+
+            const siteHowToReply = getSiteHowToReply(q);
+            if (siteHowToReply) {
+                return siteHowToReply;
+            }
+
+            if (isGuidedTourHelpQuestion(q)) {
+                return 'For how to use this site, try the Guided Tour. Use the Guided Tour button in settings (or the tour prompt when it appears) and it will walk you through each key area.';
+            }
+
+            if (favoriteSpecific && !/favorite\s+movie/.test(q)) {
+                return `I do not see Andrew's favorite ${favoriteSpecific[1]} listed on this site yet. I can answer his favorite movie, company, goals, school, timeline, and achievements.`;
+            }
+
+            if (/favorite movie|movie|favorite song|favorite music/.test(q)) {
+                if (/wall\s*-?\s*e/.test(q)) {
+                    return 'Yes, Wall-E is listed as Andrew\'s favorite movie, mainly because of its message about enjoying life and its visually stunning animation.';
+                }
+                return 'Andrew\'s favorite movie listed on the site is Wall-E. He also mentions Hoppers and Zootopia 2 as strong contenders after building this website.';
+            }
+
+            if (/name|who is|full name/.test(q)) {
+                return 'His name is Andrew Yin.';
+            }
+
+            if (/school|carnegie|high school/.test(q)) {
+                return 'Andrew attends Carnegie Vanguard High School in Houston, Texas.';
+            }
+
+            if (/goal|future|career|dream/.test(q)) {
+                return 'Andrew\'s goals include becoming either a neuroradiologist or a lawyer.';
+            }
+
+            if (/debate|accomplishment|achievement|proud/.test(q)) {
+                return 'One of his biggest accomplishments is debate success, including reaching semifinals at HUDL City Championships.';
+            }
+
+            if (/art|scholastic/.test(q)) {
+                return 'He earned both a silver and a gold key in the Scholastic Art and Writing contest.';
+            }
+
+            const timelineReply = getTimelineReply(q);
+            if (timelineReply) {
+                return timelineReply;
+            }
+
+            if (/hobbies|interest|favorite thing|likes/.test(q)) {
+                return 'His interests include debate, calculator applications, art, and continuous learning.';
+            }
+
+            if (/weather|temperature|temp|forecast|rain|cloud|sun|storm|snow|fog|wind/.test(q)) {
+                const weatherLabel = weatherState.label || 'clear';
+                const tempText = formatTemperature(weatherState.temperatureC, currentTemperatureUnit)
+                    .replace('&deg;', ' degrees ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                const unitWord = currentTemperatureUnit === 'c' ? 'Celsius' : 'Fahrenheit';
+                return `Right now in Houston, it looks ${weatherLabel}. The latest temperature is about ${tempText} (${unitWord}).`;
+            }
+
+            if (/quote|mindset|learning|inspiration/.test(q)) {
+                return 'One of Andrew\'s quotes is: "If you ever stop learning, you have just given up." Another is about keeping a positive mindset because mindset determines everything you do.';
+            }
+
+            const knowledgeBase = [
+                {
+                    topic: 'favorite company',
+                    answer: 'His favorite company is Apple because of its design choices and software-hardware quality.'
+                },
+                {
+                    topic: 'favorite hobbies and interests',
+                    answer: 'He enjoys debate, calculator applications, art, and learning across subjects.'
+                },
+                {
+                    topic: 'favorite movie',
+                    answer: 'His favorite movie listed on the site is Wall-E, and he mentions Hoppers and Zootopia 2 as strong contenders.'
+                },
+                {
+                    topic: 'timeline 2025',
+                    answer: 'In 2025, he attended TMSCA state for Calculator Applications and started at Carnegie Vanguard High School.'
+                },
+                {
+                    topic: 'timeline 2026',
+                    answer: 'In 2026, he achieved high ranks in debate and art, including HUDL semifinal success and Scholastic recognition.'
+                },
+                {
+                    topic: 'contact',
+                    answer: 'You can contact Andrew through the Contact Me button near the lower right side of the page.'
+                }
+            ];
+
+            const best = bestKnowledgeMatch(q, knowledgeBase);
+            if (best) {
+                return `${best.answer} If you want, ask a follow-up and I can get more specific.`;
+            }
+
+            const internetAnswer = await fetchInternetAnswer(question);
+            if (internetAnswer) {
+                return `${internetAnswer} For Andrew-specific details, ask me about his school, goals, timeline, achievements, or favorites listed on this site.`;
+            }
+
+            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget.';
         }
 
         function clearGuidedTourTarget() {
@@ -3939,6 +4650,7 @@
             guidedTourOverlay.classList.remove('active');
             guidedTourOverlay.setAttribute('aria-hidden', 'true');
             guidedTourOverlay.style.display = 'none';
+            body.classList.remove('guided-tour-active');
             setGuidedTourResumeOpen(false);
             setSettingsPanelOpen(false);
 
@@ -3967,6 +4679,7 @@
             guidedTourOverlay.classList.remove('active');
             guidedTourOverlay.setAttribute('aria-hidden', 'true');
             guidedTourOverlay.style.display = 'none';
+            body.classList.remove('guided-tour-active');
             setSettingsPanelOpen(false);
             setGuidedTourResumeOpen(true);
         }
@@ -3981,6 +4694,7 @@
             guidedTourOverlay.style.display = 'block';
             guidedTourOverlay.classList.add('active');
             guidedTourOverlay.setAttribute('aria-hidden', 'false');
+            body.classList.add('guided-tour-active');
             guidedTourPausedIndex = null;
             showGuidedTourStep(indexToResume);
         }
@@ -4004,6 +4718,10 @@
             }
 
             clearGuidedTourTarget();
+
+            if (step.selector === '#chatbotCircle') {
+                closeChatbotPanel();
+            }
 
             if (step.selector === '#settingsToggle') {
                 setSettingsPanelOpen(true);
@@ -4049,6 +4767,7 @@
             guidedTourOverlay.style.display = 'block';
             guidedTourOverlay.classList.add('active');
             guidedTourOverlay.setAttribute('aria-hidden', 'false');
+            body.classList.add('guided-tour-active');
             showGuidedTourStep(0);
         }
 
@@ -4093,7 +4812,7 @@
         }
 
         async function fetchHoustonWeatherAndSun() {
-            const endpoint = `https://api.open-meteo.com/v1/forecast?latitude=${HOUSTON_LAT}&longitude=${HOUSTON_LON}&current=weather_code,is_day&daily=sunrise,sunset&timezone=${encodeURIComponent(HOUSTON_TZ)}`;
+            const endpoint = `https://api.open-meteo.com/v1/forecast?latitude=${HOUSTON_LAT}&longitude=${HOUSTON_LON}&current=weather_code,is_day,temperature_2m&daily=sunrise,sunset&timezone=${encodeURIComponent(HOUSTON_TZ)}`;
 
             try {
                 const response = await fetch(endpoint);
@@ -4106,6 +4825,7 @@
                 const weather = weatherByLabel(TEMP_WEATHER_OVERRIDE || weatherLabel);
                 weatherState.label = weather.label;
                 weatherState.icon = weather.icon;
+                weatherState.temperatureC = typeof data?.current?.temperature_2m === 'number' ? data.current.temperature_2m : null;
                 weatherState.lastSyncedAt = new Date();
 
                 const sunriseValue = data?.daily?.sunrise?.[0];
@@ -4129,6 +4849,9 @@
 
             dayMessage.innerHTML = `<span class="daily-widget-line">${greeting}! Today is <span class="daily-widget-emphasis">${date}</span> and the time is <span class="daily-widget-emphasis">${time}</span>.</span><span class="daily-widget-line">It is a <span class="daily-widget-emphasis">${weather.label}</span> day in Houston, TX.</span>`;
             weatherIcon.innerHTML = weather.icon;
+            if (weatherTemp) {
+                weatherTemp.innerHTML = formatTemperature(weatherState.temperatureC, currentTemperatureUnit);
+            }
 
             if (weatherState.lastSyncedAt) {
                 weatherSync.textContent = `Weather last synced ${formatRelativeSyncTime(weatherState.lastSyncedAt, now)}`;
@@ -4656,6 +5379,7 @@
         const savedDarkMode = localStorage.getItem('darkMode') === 'true';
         const savedAutoTheme = localStorage.getItem('autoTheme') === 'true';
         const savedColorTheme = localStorage.getItem('colorTheme');
+        const savedTemperatureUnit = localStorage.getItem('temperatureUnit');
 
         const initialThemeMode = themeModes.includes(savedThemeMode)
             ? savedThemeMode
@@ -4667,6 +5391,7 @@
 
         setThemeMode(initialThemeMode, false, new Date());
         applyColorTheme(favoriteColorThemes.includes(savedColorTheme) ? savedColorTheme : 'blue', false);
+        setTemperatureUnit(temperatureUnits.includes(savedTemperatureUnit) ? savedTemperatureUnit : 'f', false);
         setSettingsPanelOpen(false);
 
         darkModeToggle.addEventListener('click', (event) => {
@@ -4691,6 +5416,11 @@
                 event.stopPropagation();
                 applyColorTheme(swatch.dataset.theme, true);
             });
+        });
+
+        tempUnitToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            setTemperatureUnit(currentTemperatureUnit === 'f' ? 'c' : 'f', true);
         });
 
         function isEventInsideSettings(event) {
@@ -4783,6 +5513,35 @@
 
         guidedTourResumeButton.addEventListener('click', () => {
             resumeGuidedTour();
+        });
+
+        if (chatbotMessages) {
+            appendChatMessage('bot', 'Hi! Ask me anything about Andrew Yin based on this website.');
+        }
+
+        chatbotCircle?.addEventListener('click', () => {
+            openChatbotPanel();
+        });
+
+        chatbotCircle?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openChatbotPanel();
+            }
+        });
+
+        chatbotClose?.addEventListener('click', () => {
+            closeChatbotPanel();
+        });
+
+        chatbotForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const question = chatbotInput?.value.trim() || '';
+            if (!question) return;
+            appendChatMessage('user', question);
+            const reply = await chatbotReplyFor(question);
+            appendChatMessage('bot', reply);
+            if (chatbotInput) chatbotInput.value = '';
         });
 
         guidedTourNext.addEventListener('click', () => {
