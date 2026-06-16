@@ -3071,7 +3071,7 @@
         /* Chatbot */
         .chatbot-button {
             position: fixed;
-            left: 30px;
+            left: 96px;
             bottom: 30px;
             z-index: 999;
         }
@@ -3108,7 +3108,7 @@
 
         .chatbot-panel {
             position: fixed;
-            left: 30px;
+            left: 96px;
             bottom: 30px;
             width: 60px;
             height: 60px;
@@ -3269,12 +3269,12 @@
 
         @media (max-width: 768px) {
             .chatbot-button {
-                left: 22px;
+                left: 82px;
                 bottom: calc(22px + env(safe-area-inset-bottom));
             }
 
             .chatbot-panel {
-                left: 22px;
+                left: 82px;
                 bottom: calc(22px + env(safe-area-inset-bottom));
             }
 
@@ -3286,12 +3286,12 @@
 
         @media (max-width: 480px) {
             .chatbot-button {
-                left: 16px;
+                left: 72px;
                 bottom: calc(16px + env(safe-area-inset-bottom));
             }
 
             .chatbot-panel {
-                left: 16px;
+                left: 72px;
                 bottom: calc(16px + env(safe-area-inset-bottom));
             }
 
@@ -4419,30 +4419,6 @@
             return 'A quick way to learn the site is to start the Guided Tour from Settings. It walks through navigation, chatbot, timeline, contact, and settings controls.';
         }
 
-        async function fetchInternetAnswer(question) {
-            const searchEndpoint = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(question)}&limit=1&namespace=0&format=json&origin=*`;
-
-            try {
-                const searchResponse = await fetch(searchEndpoint);
-                if (!searchResponse.ok) return null;
-                const searchData = await searchResponse.json();
-                const title = searchData?.[1]?.[0];
-                if (!title) return null;
-
-                const summaryEndpoint = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
-                const summaryResponse = await fetch(summaryEndpoint);
-                if (!summaryResponse.ok) return null;
-                const summaryData = await summaryResponse.json();
-                const extract = summaryData?.extract;
-                if (!extract) return null;
-
-                return `I looked this up online: ${extract}`;
-            } catch (error) {
-                console.error('Unable to fetch internet answer:', error);
-                return null;
-            }
-        }
-
         function getTimelineReply(question) {
             const q = String(question || '').toLowerCase();
             const timelineCards = Array.from(document.querySelectorAll('#timeline .timeline-card'));
@@ -4541,6 +4517,62 @@
             ].filter(Boolean).join('\n');
         }
 
+        function rememberChatTurn(userMessage, assistantMessage) {
+            chatbotConversation.push({ role: 'user', content: userMessage });
+            chatbotConversation.push({ role: 'assistant', content: assistantMessage });
+
+            if (chatbotConversation.length > CHATBOT_MAX_HISTORY_MESSAGES) {
+                chatbotConversation.splice(0, chatbotConversation.length - CHATBOT_MAX_HISTORY_MESSAGES);
+            }
+        }
+
+        function buildLocalLLMReply(question) {
+            const trimmedQuestion = String(question || '').trim();
+            if (!trimmedQuestion) return null;
+
+            if (/^(thanks|thank\s*you|thx)\b/i.test(trimmedQuestion)) {
+                return 'You are welcome. Ask me anything else about Andrew and I can keep going.';
+            }
+
+            if (/^how\s+are\s+you\b|^how\'?s\s+it\s+going\b/i.test(trimmedQuestion)) {
+                return 'I am doing well and ready to help. What would you like to know about Andrew?';
+            }
+
+            const websiteContext = buildWebsiteKnowledgeContext();
+            const contextChunks = websiteContext
+                .split(/\n|\|/)
+                .map((chunk) => chunk.trim())
+                .filter(Boolean);
+
+            const questionTokens = filterSemanticTokens(normalizeChatTokens(trimmedQuestion));
+            if (!questionTokens.length) return null;
+
+            const scoredChunks = contextChunks
+                .map((chunk) => {
+                    const chunkTokens = new Set(filterSemanticTokens(normalizeChatTokens(chunk)));
+                    let score = 0;
+                    questionTokens.forEach((token) => {
+                        if (chunkTokens.has(token)) score += 1;
+                    });
+                    return { chunk, score };
+                })
+                .filter((item) => item.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 2)
+                .map((item) => item.chunk);
+
+            if (!scoredChunks.length) {
+                return 'I can answer questions about Andrew\'s school, goals, achievements, timeline, favorites, and Houston weather from this page.';
+            }
+
+            const previousUserTurn = [...chatbotConversation].reverse().find((turn) => turn.role === 'user');
+            const continuationTone = previousUserTurn && /(that|it|this|also|and)/i.test(trimmedQuestion)
+                ? 'Building on that, '
+                : '';
+
+            return `${continuationTone}${scoredChunks.join(' ')} Ask a follow-up if you want more detail.`;
+        }
+
         async function fetchLLMAnswer(question) {
             const { apiKey, endpoint, model } = getChatbotApiConfig();
             if (!apiKey) return null;
@@ -4603,10 +4635,15 @@
         async function chatbotReplyFor(question) {
             const q = question.toLowerCase();
             const favoriteSpecific = q.match(/favorite\s+(food|color|sport|book|song|music|game|subject)/);
+            const isGreeting = /^(hi|hello|hey|yo|good\s(morning|afternoon|evening))\b[!.\s]*$/i.test(question.trim());
 
             const llmReply = await fetchLLMAnswer(question);
             if (llmReply) {
                 return llmReply;
+            }
+
+            if (isGreeting) {
+                return 'Hello! I can help you learn about Andrew, his timeline, achievements, goals, and more.';
             }
 
             const siteHowToReply = getSiteHowToReply(q);
@@ -4704,12 +4741,12 @@
                 return `${best.answer} If you want, ask a follow-up and I can get more specific.`;
             }
 
-            const internetAnswer = await fetchInternetAnswer(question);
-            if (internetAnswer) {
-                return `${internetAnswer} For Andrew-specific details, ask me about his school, goals, timeline, achievements, or favorites listed on this site.`;
+            const localLLMReply = buildLocalLLMReply(question);
+            if (localLLMReply) {
+                return localLLMReply;
             }
 
-            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget. For more open-ended LLM-style replies, set localStorage.chatbotApiKey to your API key (optional: localStorage.chatbotApiEndpoint and localStorage.chatbotModel).';
+            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget.';
         }
 
         function clearGuidedTourTarget() {
@@ -5652,6 +5689,11 @@
             appendChatMessage('user', question);
             const reply = await chatbotReplyFor(question);
             appendChatMessage('bot', reply);
+
+            if (!getChatbotApiConfig().apiKey) {
+                rememberChatTurn(question, reply);
+            }
+
             if (chatbotInput) chatbotInput.value = '';
         });
 
