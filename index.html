@@ -127,7 +127,7 @@
         .nav-toggle-item {
             margin-top: auto;
             padding: 0 20px;
-            padding-bottom: 18px;
+            padding-bottom: 96px;
             display: flex;
             justify-content: center;
         }
@@ -980,7 +980,91 @@
             position: relative;
             cursor: pointer;
             user-select: none;
+            touch-action: none;
             will-change: transform, opacity;
+        }
+
+        .hero-letter.hero-letter-free {
+            position: fixed;
+            left: 0;
+            top: 0;
+            margin: 0;
+            z-index: 2147483647;
+            font-family: var(--hero-letter-font-family, 'Montserrat', sans-serif);
+            font-size: var(--hero-letter-font-size, 120px);
+            font-weight: var(--hero-letter-font-weight, 700);
+            font-style: var(--hero-letter-font-style, normal);
+            line-height: var(--hero-letter-line-height, 1.1);
+            letter-spacing: var(--hero-letter-letter-spacing, 8px);
+            color: var(--hero-letter-color, #f4f8ff);
+            text-shadow: var(--hero-letter-text-shadow, 0 4px 24px rgba(0, 0, 0, 0.62), 0 1px 0 rgba(255, 255, 255, 0.22));
+            text-transform: var(--hero-letter-text-transform, none);
+            white-space: pre;
+            transform: none;
+        }
+
+        .hero-letter.hero-letter-docked {
+            position: absolute;
+            margin: 0;
+            z-index: 5;
+            cursor: grab;
+            touch-action: none;
+            font-family: var(--hero-letter-font-family, 'Montserrat', sans-serif);
+            font-size: var(--hero-letter-font-size, 120px);
+            font-weight: var(--hero-letter-font-weight, 700);
+            font-style: var(--hero-letter-font-style, normal);
+            line-height: var(--hero-letter-line-height, 1.1);
+            letter-spacing: var(--hero-letter-letter-spacing, 8px);
+            color: var(--hero-letter-color, #f4f8ff);
+            text-shadow: var(--hero-letter-text-shadow, 0 4px 24px rgba(0, 0, 0, 0.62), 0 1px 0 rgba(255, 255, 255, 0.22));
+            text-transform: var(--hero-letter-text-transform, none);
+            white-space: pre;
+            transition: transform 180ms ease-out;
+            transform: none;
+        }
+
+        .hero-anagram-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .hero-anagram-layer .hero-letter-docked {
+            pointer-events: auto;
+        }
+
+        .hero-reset-button {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 10100;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(8, 43, 86, 0.94);
+            color: #f4f8ff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 10px 16px;
+            box-shadow: 0 10px 24px rgba(4, 12, 30, 0.32);
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+            transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+        }
+
+        .hero-reset-button.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .hero-reset-button:hover,
+        .hero-reset-button:focus-visible {
+            background: rgba(10, 63, 123, 0.96);
+            outline: none;
         }
 
         .hero-letter.is-hidden {
@@ -1128,6 +1212,13 @@
         }
 
         @media (max-width: 768px) {
+            .hero-reset-button {
+                top: 12px;
+                right: 12px;
+                font-size: 13px;
+                padding: 9px 14px;
+            }
+
             .hero-section h1 {
                 font-size: clamp(34px, 8.6vw, 62px);
                 letter-spacing: 1px;
@@ -3449,12 +3540,18 @@
             <h2>Favorite Things</h2>
             <div class="content-block">
                 <p>
-                    My favorite company is Apple because of their amazing design choices and excellent software and hardware (it appears that Kinkaid agrees with me!).
+                    My favorite company is Apple because of their amazing design choices and excellent software and hardware (it appears that Kinkaid agrees with me!). Apple stores are also very enjoyable because of their minimalistic design and the ability to test out all of their products in-store.
                 </p>
                 <p>
                     My favorite movie is Wall-E because of its message about enjoying life and its visually stunning animation.
 
                     <em>Note: During the making of this website, I discovered 2 amazing new movies that are giving Wall-E some competition for my number 1 spot - Hoppers and Zootopia 2 were extremely engaging movies that had fun plots, characters, and action-packed scenes.</em>
+                </p>
+                <p>
+                    I enjoy talking with friends and family, especially conversations in which we get to learn more about each others interests.
+                </p>
+                <p>
+                    My favorite food is anything and everything that is edible. I always find something delicious to eat and it is so hard to pick favorites!
                 </p>
             </div>
         </section>
@@ -3500,7 +3597,7 @@
             <h2>My Goals</h2>
             <div class="content-block">
                 <p>
-                    My dream is to someday become a neuroradiologist, or a lawyer, since both careers tap into my passions, including math, science, and debate, with neuroradiology focusing on the STEM side of my passions and law focusing on my debate passions.
+                    My dream is to someday become a neuroradiologist, or a lawyer, since both careers tap into my passions, including math, science, and debate, with neuroradiology focusing on the STEM side of my passions and law focusing on my debate passions. Another one of my goals is to be a kind and respectful person to everyone I meet, since I never want to be a negative influence to anyone.
                 </p>
             </div>
         </section>
@@ -3524,7 +3621,7 @@
                                     <div class="timeline-meta">
                                         <span class="timeline-year">2010</span>
                                     </div>
-                                    <p class="timeline-summary">I was born in the year of the tiger.</p>
+                                    <p class="timeline-summary">I was born in the year of the tiger, and I am a libra.</p>
                                 </div>
                             </li>
                             <li class="timeline-item path-right">
@@ -3596,7 +3693,7 @@
                                     <p class="timeline-summary">I expanded my academic and extracurricular horizons.</p>
                                     <div class="timeline-detail" id="detail-9" hidden>
                                         <p>I joined the debate team at MIMS and developed a key foundation for success in debate later.</p>
-                                        <p>I joined MIMS Calculator Applications, which helped me develop math skills for word problems and improved my skills with the TI-84 Plus CE calculator.</p>
+                                        <p>I joined MIMS Calculator Applications, which helped me develop math skills for word problems and improved my skills with the TI-84 Plus CE calculator. To this day, I still help mentor students in the MIMS Calculator Applications team and attend UIL competitions for this event.</p>
                                         <p>I was able to take Algebra 1 in 7th grade, which allowed me to take Geometry in 8th grade, and Algebra 2 in 9th grade.</p>
                                     </div>
                                 </div>
@@ -3610,11 +3707,15 @@
                                         <span class="timeline-year">2025</span>
                                         <button class="timeline-toggle" data-detail="detail-10" aria-expanded="false" aria-controls="detail-10">View details</button>
                                     </div>
-                                    <p class="timeline-summary">I began to attend Carngie Vanguard High School</p>
+                                    <p class="timeline-summary">I began to attend Carnegie Vanguard High School</p>
                                     <div class="timeline-detail" id="detail-10" hidden>
-                                        <p>During March, I attended TMSCA state for Calculator Applications.</p>
-                                        <p>I started my career at Carnegie Vanguard High School. Though it was, and still be, challenging, it is still a place that helps develop my academics with a supporting environment.</p>
-                                        <p>2025 was also my first time attending EMSI during the summer.</p>
+                                        
+                                        <p>After graduating at MIMS, I started my career at Carnegie Vanguard High School. Though it was, and still be, challenging, it is still a place that helps develop my academics with a supporting environment.</p>
+                                        <p>Also during 2025:</p>
+                                        <ul>
+                                            <li>During March, I attended TMSCA state for Calculator Applications.</li>
+                                            <li>I attended EMSI during the summer and had lots of fun!</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </li>
@@ -3630,7 +3731,7 @@
                                     <p class="timeline-summary">I achieved high ranks in debate and art</p>
                                     <div class="timeline-detail" id="detail-11" hidden>
                                         <p>During February, I attended HUDL's City Championship at Bob Casey Federal Courthouse and reached semi-finals.</p>
-                                        <p>I obtain both a silver and a gold key in the Scholastic Art and Writing contest.</p>
+                                        <p>I obtained both a silver and a gold key in the Scholastic Art and Writing contest.</p>
                                     </div>
                                 </div>
                             </li>
@@ -3966,11 +4067,6 @@
         const HOUSTON_LON = -95.3698;
         const HOUSTON_TZ = 'America/Chicago';
         const TEMP_WEATHER_OVERRIDE = null;
-        const CHATBOT_API_KEY_STORAGE_KEY = 'chatbotApiKey';
-        const CHATBOT_API_ENDPOINT_STORAGE_KEY = 'chatbotApiEndpoint';
-        const CHATBOT_MODEL_STORAGE_KEY = 'chatbotModel';
-        const CHATBOT_DEFAULT_API_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
-        const CHATBOT_DEFAULT_MODEL = 'openai/gpt-4o-mini';
         const CHATBOT_MAX_HISTORY_MESSAGES = 10;
         const chatbotConversation = [];
 
@@ -3991,7 +4087,8 @@
         const favoriteColorThemes = ['blue', 'gold', 'green', 'maroon'];
         const personalQuotes = [
             'If you ever stop learning, you have just given up.',
-            'Always keep a positive mindset. Mindset determines everything you do.'
+            'Always keep a positive mindset. Mindset determines everything you do.',
+            'Part of the fun in life is having something to do. Don\'t wish to have nothing to do!'
         ];
         let currentThemeMode = 'light';
         let currentTemperatureUnit = 'f';
@@ -4477,18 +4574,6 @@
             return `The timeline includes these years: ${listedYears}. Ask about a specific year, like 2022 or 2025, and I will share what happened.`;
         }
 
-        function getChatbotApiConfig() {
-            const apiKey = (localStorage.getItem(CHATBOT_API_KEY_STORAGE_KEY) || '').trim();
-            const endpoint = (localStorage.getItem(CHATBOT_API_ENDPOINT_STORAGE_KEY) || CHATBOT_DEFAULT_API_ENDPOINT).trim();
-            const model = (localStorage.getItem(CHATBOT_MODEL_STORAGE_KEY) || CHATBOT_DEFAULT_MODEL).trim();
-
-            return {
-                apiKey,
-                endpoint,
-                model
-            };
-        }
-
         function buildWebsiteKnowledgeContext() {
             const aboutText = document.querySelector('#about .content-block p')?.textContent?.trim() || '';
             const goalsText = document.querySelector('#goals .content-block p')?.textContent?.trim() || '';
@@ -4573,74 +4658,10 @@
             return `${continuationTone}${scoredChunks.join(' ')} Ask a follow-up if you want more detail.`;
         }
 
-        async function fetchLLMAnswer(question) {
-            const { apiKey, endpoint, model } = getChatbotApiConfig();
-            if (!apiKey) return null;
-
-            const systemPrompt = [
-                'You are a helpful, concise website assistant for Andrew Yin\'s personal page.',
-                'Prioritize facts from the provided website context.',
-                'If asked something unrelated to the website, answer generally but briefly, then offer to help with Andrew-specific details.',
-                'Do not invent personal facts that are not in the context.',
-                '',
-                'Website context:',
-                buildWebsiteKnowledgeContext()
-            ].join('\n');
-
-            const messages = [
-                { role: 'system', content: systemPrompt },
-                ...chatbotConversation,
-                { role: 'user', content: question }
-            ];
-
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model,
-                        messages,
-                        temperature: 0.7,
-                        max_tokens: 240
-                    })
-                });
-
-                if (!response.ok) {
-                    return null;
-                }
-
-                const data = await response.json();
-                const text = data?.choices?.[0]?.message?.content;
-                if (!text || typeof text !== 'string') {
-                    return null;
-                }
-
-                chatbotConversation.push({ role: 'user', content: question });
-                chatbotConversation.push({ role: 'assistant', content: text.trim() });
-
-                if (chatbotConversation.length > CHATBOT_MAX_HISTORY_MESSAGES) {
-                    chatbotConversation.splice(0, chatbotConversation.length - CHATBOT_MAX_HISTORY_MESSAGES);
-                }
-
-                return text.trim();
-            } catch (error) {
-                console.error('Unable to fetch LLM answer:', error);
-                return null;
-            }
-        }
-
         async function chatbotReplyFor(question) {
             const q = question.toLowerCase();
             const favoriteSpecific = q.match(/favorite\s+(food|color|sport|book|song|music|game|subject)/);
             const isGreeting = /^(hi|hello|hey|yo|good\s(morning|afternoon|evening))\b[!.\s]*$/i.test(question.trim());
-
-            const llmReply = await fetchLLMAnswer(question);
-            if (llmReply) {
-                return llmReply;
-            }
 
             if (isGreeting) {
                 return 'Hello! I can help you learn about Andrew, his timeline, achievements, goals, and more.';
@@ -5308,12 +5329,33 @@
         function initializeHeroLetterEasterEgg() {
             const heroName = document.getElementById('heroName');
             if (!heroName) return;
+            const heroHeaderBox = heroName.closest('.hero-content') || heroName.parentElement;
+            if (!heroHeaderBox) return;
+
+            const anagramLayer = document.createElement('div');
+            anagramLayer.className = 'hero-anagram-layer';
+            heroHeaderBox.appendChild(anagramLayer);
 
             const originalName = heroName.textContent || '';
             heroName.textContent = '';
 
             const letters = [];
+            const letterStates = new Map();
+            const gravity = 1900;
+            const bounceLoss = 0.74;
+            const slideFriction = 0.996;
+            const spinFriction = 0.992;
+            const dragThresholdPx = 6;
+            let animationFrameId = null;
+            let previousFrameTime = 0;
             let heroAnimationLocked = false;
+
+            const resetButton = document.createElement('button');
+            resetButton.type = 'button';
+            resetButton.className = 'hero-reset-button';
+            resetButton.textContent = 'Reset';
+            resetButton.setAttribute('aria-label', 'Reset hero letters');
+            document.body.appendChild(resetButton);
 
             for (const character of originalName) {
                 if (character === ' ') {
@@ -5330,14 +5372,28 @@
                 letter.textContent = character;
                 letter.setAttribute('role', 'button');
                 letter.setAttribute('tabindex', '0');
-                letter.setAttribute('aria-label', `Animate letter ${character}`);
+                letter.setAttribute('aria-label', `Drag letter ${character}`);
                 heroName.appendChild(letter);
                 letters.push(letter);
             }
 
-            const restoreLetter = (letter, extraClasses = []) => {
+            const syncHeroLetterTypographyVars = () => {
+                const headingStyle = window.getComputedStyle(heroName);
+                document.documentElement.style.setProperty('--hero-letter-font-family', headingStyle.fontFamily);
+                document.documentElement.style.setProperty('--hero-letter-font-size', headingStyle.fontSize);
+                document.documentElement.style.setProperty('--hero-letter-font-weight', headingStyle.fontWeight);
+                document.documentElement.style.setProperty('--hero-letter-font-style', headingStyle.fontStyle);
+                document.documentElement.style.setProperty('--hero-letter-line-height', headingStyle.lineHeight);
+                document.documentElement.style.setProperty('--hero-letter-letter-spacing', headingStyle.letterSpacing);
+                document.documentElement.style.setProperty('--hero-letter-color', headingStyle.color);
+                document.documentElement.style.setProperty('--hero-letter-text-shadow', headingStyle.textShadow);
+                document.documentElement.style.setProperty('--hero-letter-text-transform', headingStyle.textTransform);
+            };
+
+            syncHeroLetterTypographyVars();
+
+            const restoreLetter = (letter) => {
                 letter.classList.remove('is-hidden', 'is-animating', 'hero-letter-bouncing', 'hero-letter-dancing', 'hero-letter-dance-follow', 'hero-letter-dance-wake');
-                extraClasses.forEach((className) => letter.classList.remove(className));
                 letter.style.removeProperty('animation-delay');
                 letter.style.removeProperty('--spark-x');
                 letter.style.removeProperty('--spark-y');
@@ -5393,12 +5449,17 @@
 
                 letters.forEach((otherLetter, index) => {
                     if (otherLetter === letter) return;
+                    const otherState = letterStates.get(otherLetter);
+                    if (otherState?.isFloating) return;
+
                     const distance = Math.abs(index - activeIndex);
                     if (distance > 4 && Math.random() < 0.65) return;
 
                     const delay = Math.min(distance * 110 + Math.random() * 80, 480);
                     window.setTimeout(() => {
                         if (!otherLetter.isConnected) return;
+                        const stateAtRun = letterStates.get(otherLetter);
+                        if (stateAtRun?.isFloating) return;
                         otherLetter.classList.add('hero-letter-dance-follow');
                         otherLetter.style.animationDelay = `${delay}ms`;
                     }, delay);
@@ -5415,6 +5476,8 @@
             };
 
             const animateLetter = (letter) => {
+                const state = letterStates.get(letter);
+                if (state?.isFloating) return;
                 if (heroAnimationLocked || letter.classList.contains('is-animating')) return;
 
                 heroAnimationLocked = true;
@@ -5431,15 +5494,524 @@
                 startDanceSequence(letter);
             };
 
-            letters.forEach((letter) => {
-                letter.addEventListener('click', () => animateLetter(letter));
-                letter.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        animateLetter(letter);
+            const showResetButton = () => {
+                resetButton.classList.add('is-visible');
+            };
+
+            const hideResetButton = () => {
+                const hasFloatingLetter = letters.some((letter) => {
+                    const state = letterStates.get(letter);
+                    return state?.isFloating;
+                });
+                if (!hasFloatingLetter) {
+                    resetButton.classList.remove('is-visible');
+                }
+            };
+
+            const applyLetterPosition = (state) => {
+                state.letter.style.left = `${state.x}px`;
+                state.letter.style.top = `${state.y}px`;
+                state.letter.style.transform = `rotate(${state.rotation}deg)`;
+            };
+
+            const applyDockedPosition = (state) => {
+                state.letter.style.left = `${state.dockX}px`;
+                state.letter.style.top = `${state.dockY}px`;
+                state.letter.style.transform = `rotate(${state.rotation}deg)`;
+            };
+
+            const pointInsideHeaderBox = (clientX, clientY) => {
+                const boxRect = heroHeaderBox.getBoundingClientRect();
+                return clientX >= boxRect.left && clientX <= boxRect.right && clientY >= boxRect.top && clientY <= boxRect.bottom;
+            };
+
+            const undockLetterToFloating = (state) => {
+                if (!state.isDocked) return;
+
+                const rect = state.letter.getBoundingClientRect();
+                document.body.appendChild(state.letter);
+                state.letter.classList.remove('hero-letter-docked');
+                state.letter.classList.add('hero-letter-free');
+                state.x = rect.left;
+                state.y = rect.top;
+                state.isDocked = false;
+                applyLetterPosition(state);
+            };
+
+            const dockLetterIntoHeader = (state, clientX, clientY) => {
+                const layerRect = anagramLayer.getBoundingClientRect();
+                const nextDockX = Math.min(
+                    Math.max(clientX - layerRect.left - state.width * 0.5, 0),
+                    Math.max(0, layerRect.width - state.width)
+                );
+                const nextDockY = Math.min(
+                    Math.max(clientY - layerRect.top - state.height * 0.5, 0),
+                    Math.max(0, layerRect.height - state.height)
+                );
+
+                if (state.letter.parentNode !== anagramLayer) {
+                    anagramLayer.appendChild(state.letter);
+                }
+
+                state.letter.classList.remove('hero-letter-free');
+                state.letter.classList.add('hero-letter-docked');
+                state.dockX = nextDockX;
+                state.dockY = nextDockY;
+                state.rotation = 0;
+                state.vx = 0;
+                state.vy = 0;
+                state.vr = 0;
+                state.isDocked = true;
+                applyDockedPosition(state);
+            };
+
+            const getVisibleRect = (element) => {
+                if (!element) return null;
+                const rect = element.getBoundingClientRect();
+                if (rect.width <= 0 || rect.height <= 0) return null;
+
+                const style = window.getComputedStyle(element);
+                if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+                    return null;
+                }
+
+                return rect;
+            };
+
+            const getButtonObstacles = () => {
+                const selectors = ['#contactCircle', '#chatbotCircle'];
+                return selectors
+                    .map((selector) => document.querySelector(selector))
+                    .map((element) => getVisibleRect(element))
+                    .filter((rect) => Boolean(rect));
+            };
+
+            const resolveLetterButtonCollision = (state, obstacleRect) => {
+                const radius = Math.min(state.width, state.height) * 0.45;
+                const centerX = state.x + state.width * 0.5;
+                const centerY = state.y + state.height * 0.5;
+                const closestX = Math.max(obstacleRect.left, Math.min(centerX, obstacleRect.right));
+                const closestY = Math.max(obstacleRect.top, Math.min(centerY, obstacleRect.bottom));
+                const dx = centerX - closestX;
+                const dy = centerY - closestY;
+                const distanceSq = dx * dx + dy * dy;
+
+                if (distanceSq >= radius * radius) return;
+
+                const distance = Math.sqrt(distanceSq) || 0.0001;
+                const nx = dx / distance;
+                const ny = dy / distance;
+                const penetration = radius - distance;
+
+                state.x += nx * penetration;
+                state.y += ny * penetration;
+
+                const velocityAlongNormal = state.vx * nx + state.vy * ny;
+                if (velocityAlongNormal < 0) {
+                    const restitution = 0.74;
+                    state.vx -= (1 + restitution) * velocityAlongNormal * nx;
+                    state.vy -= (1 + restitution) * velocityAlongNormal * ny;
+                    const tangentialVelocity = state.vx * -ny + state.vy * nx;
+                    state.vr += tangentialVelocity * 0.03;
+                }
+            };
+
+            const resolveLetterPairCollisions = (activeStates) => {
+                for (let i = 0; i < activeStates.length; i += 1) {
+                    for (let j = i + 1; j < activeStates.length; j += 1) {
+                        const a = activeStates[i];
+                        const b = activeStates[j];
+                        const ax = a.x + a.width * 0.5;
+                        const ay = a.y + a.height * 0.5;
+                        const bx = b.x + b.width * 0.5;
+                        const by = b.y + b.height * 0.5;
+                        const dx = bx - ax;
+                        const dy = by - ay;
+                        const distanceSq = dx * dx + dy * dy;
+                        const radiusA = Math.min(a.width, a.height) * 0.45;
+                        const radiusB = Math.min(b.width, b.height) * 0.45;
+                        const minDistance = radiusA + radiusB;
+
+                        if (distanceSq >= minDistance * minDistance) continue;
+
+                        const distance = Math.sqrt(distanceSq) || 0.0001;
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+                        const overlap = minDistance - distance;
+                        const aMovable = !a.isDragging;
+                        const bMovable = !b.isDragging;
+
+                        if (aMovable && bMovable) {
+                            a.x -= nx * (overlap * 0.5);
+                            a.y -= ny * (overlap * 0.5);
+                            b.x += nx * (overlap * 0.5);
+                            b.y += ny * (overlap * 0.5);
+                        } else if (aMovable) {
+                            a.x -= nx * overlap;
+                            a.y -= ny * overlap;
+                        } else if (bMovable) {
+                            b.x += nx * overlap;
+                            b.y += ny * overlap;
+                        }
+
+                        const relativeVelocityX = b.vx - a.vx;
+                        const relativeVelocityY = b.vy - a.vy;
+                        const relativeNormalVelocity = relativeVelocityX * nx + relativeVelocityY * ny;
+                        if (relativeNormalVelocity >= 0) continue;
+
+                        const restitution = 0.72;
+                        const invMassA = aMovable ? 1 : 0;
+                        const invMassB = bMovable ? 1 : 0;
+                        const invMassTotal = invMassA + invMassB;
+                        if (invMassTotal === 0) continue;
+
+                        const impulse = (-(1 + restitution) * relativeNormalVelocity) / invMassTotal;
+                        if (aMovable) {
+                            a.vx -= impulse * nx * invMassA;
+                            a.vy -= impulse * ny * invMassA;
+                            a.vr += (a.vx * ny - a.vy * nx) * 0.01;
+                        }
+                        if (bMovable) {
+                            b.vx += impulse * nx * invMassB;
+                            b.vy += impulse * ny * invMassB;
+                            b.vr += (b.vx * -ny + b.vy * nx) * 0.01;
+                        }
+                    }
+                }
+            };
+
+            const ensureFloating = (state) => {
+                if (state.isFloating) return;
+
+                const rect = state.letter.getBoundingClientRect();
+                state.homeRect = rect;
+                state.width = rect.width;
+                state.height = rect.height;
+                state.x = rect.left;
+                state.y = rect.top;
+                state.vx = 0;
+                state.vy = 0;
+                state.rotation = 0;
+                state.vr = 0;
+                state.isFloating = true;
+
+                const placeholder = document.createElement('span');
+                placeholder.className = 'hero-letter-space';
+                placeholder.setAttribute('aria-hidden', 'true');
+                placeholder.style.display = 'inline-block';
+                placeholder.style.width = `${rect.width}px`;
+                placeholder.style.height = `${rect.height}px`;
+                placeholder.style.verticalAlign = 'baseline';
+                state.placeholder = placeholder;
+
+                const parent = state.letter.parentNode;
+                if (parent) {
+                    parent.insertBefore(placeholder, state.letter);
+                }
+                document.body.appendChild(state.letter);
+
+                restoreLetter(state.letter);
+                state.letter.classList.add('hero-letter-free');
+                state.letter.style.width = `${rect.width}px`;
+                state.letter.style.height = `${rect.height}px`;
+                applyLetterPosition(state);
+
+                showResetButton();
+            };
+
+            const beginPhysicsLoop = () => {
+                if (animationFrameId !== null) return;
+
+                const update = (timestamp) => {
+                    if (!letters.some((letter) => letterStates.get(letter)?.isFloating)) {
+                        animationFrameId = null;
+                        previousFrameTime = 0;
+                        return;
+                    }
+
+                    if (!previousFrameTime) previousFrameTime = timestamp;
+                    const deltaTime = Math.min((timestamp - previousFrameTime) / 1000, 0.033);
+                    previousFrameTime = timestamp;
+
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    const buttonObstacles = getButtonObstacles();
+                    const activeStates = [];
+
+                    letters.forEach((letter) => {
+                        const state = letterStates.get(letter);
+                        if (!state || !state.isFloating || state.isDocked) return;
+                        activeStates.push(state);
+                    });
+
+                    letters.forEach((letter) => {
+                        const state = letterStates.get(letter);
+                        if (!state || !state.isFloating || state.isDragging || state.isDocked) return;
+
+                        state.vy += gravity * deltaTime;
+                        state.x += state.vx * deltaTime;
+                        state.y += state.vy * deltaTime;
+                        state.rotation += state.vr * deltaTime;
+                        state.vr *= spinFriction;
+
+                        if (state.x <= 0) {
+                            state.x = 0;
+                            state.vx = Math.abs(state.vx) * bounceLoss;
+                            state.vr *= 0.85;
+                        } else if (state.x + state.width >= viewportWidth) {
+                            state.x = Math.max(0, viewportWidth - state.width);
+                            state.vx = -Math.abs(state.vx) * bounceLoss;
+                            state.vr *= 0.85;
+                        }
+
+                        if (state.y <= 0) {
+                            state.y = 0;
+                            state.vy = Math.abs(state.vy) * bounceLoss;
+                            state.vr *= 0.9;
+                        } else if (state.y + state.height >= viewportHeight) {
+                            state.y = Math.max(0, viewportHeight - state.height);
+                            state.vy = -Math.abs(state.vy) * bounceLoss;
+                            state.vx *= slideFriction;
+                            if (Math.abs(state.vy) < 18) state.vy = 0;
+                            if (Math.abs(state.vx) < 4) state.vx = 0;
+                            if (Math.abs(state.vr) < 3) state.vr = 0;
+                        }
+
+                        buttonObstacles.forEach((obstacleRect) => {
+                            resolveLetterButtonCollision(state, obstacleRect);
+                        });
+                    });
+
+                    resolveLetterPairCollisions(activeStates);
+
+                    activeStates.forEach((state) => {
+                        applyLetterPosition(state);
+                    });
+
+                    animationFrameId = window.requestAnimationFrame(update);
+                };
+
+                animationFrameId = window.requestAnimationFrame(update);
+            };
+
+            const dragStateByPointerId = new Map();
+
+            const onPointerMove = (event) => {
+                const state = dragStateByPointerId.get(event.pointerId);
+                if (!state) return;
+
+                const moveX = event.clientX - state.pointerDownX;
+                const moveY = event.clientY - state.pointerDownY;
+                const movedEnough = Math.hypot(moveX, moveY) >= dragThresholdPx;
+
+                if (!state.isDragging) {
+                    if (!movedEnough && !state.isFloating) return;
+                    ensureFloating(state);
+                    state.isDragging = true;
+                    state.dragOffsetX = event.clientX - state.x;
+                    state.dragOffsetY = event.clientY - state.y;
+                    state.lastPointerTime = performance.now();
+                }
+
+                const now = performance.now();
+                const elapsed = Math.max((now - state.lastPointerTime) / 1000, 0.001);
+                const nextX = event.clientX - state.dragOffsetX;
+                const nextY = event.clientY - state.dragOffsetY;
+
+                state.vx = (nextX - state.x) / elapsed;
+                state.vy = (nextY - state.y) / elapsed;
+                state.x = nextX;
+                state.y = nextY;
+                state.lastPointerClientX = event.clientX;
+                state.lastPointerClientY = event.clientY;
+                state.lastPointerTime = now;
+                applyLetterPosition(state);
+            };
+
+            const endDrag = (pointerId) => {
+                const state = dragStateByPointerId.get(pointerId);
+                if (!state) return;
+
+                state.isDragging = false;
+                state.pointerId = null;
+                dragStateByPointerId.delete(pointerId);
+
+                if (state.isFloating && pointInsideHeaderBox(state.lastPointerClientX, state.lastPointerClientY)) {
+                    dockLetterIntoHeader(state, state.lastPointerClientX, state.lastPointerClientY);
+                    return;
+                }
+
+                if (state.isFloating) {
+                    state.vr = Math.max(-180, Math.min(180, state.vx * 0.12));
+                }
+                beginPhysicsLoop();
+            };
+
+            const onPointerUp = (event) => {
+                endDrag(event.pointerId);
+            };
+
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+            window.addEventListener('pointercancel', onPointerUp);
+
+            const updateHomePositions = () => {
+                letters.forEach((letter) => {
+                    const state = letterStates.get(letter);
+                    if (!state || state.isFloating) return;
+                    state.homeRect = letter.getBoundingClientRect();
+                });
+            };
+
+            const resetLetters = () => {
+                dragStateByPointerId.forEach((state, pointerId) => {
+                    if (state.pointerId !== null) {
+                        endDrag(pointerId);
                     }
                 });
+
+                letters.forEach((letter) => {
+                    const state = letterStates.get(letter);
+                    if (!state) return;
+
+                    state.isFloating = false;
+                    state.isDragging = false;
+                    state.pointerId = null;
+                    state.vx = 0;
+                    state.vy = 0;
+                    state.rotation = 0;
+                    state.vr = 0;
+                    state.isDocked = false;
+
+                    letter.classList.remove('hero-letter-free');
+                    letter.classList.remove('hero-letter-docked');
+                    letter.style.removeProperty('left');
+                    letter.style.removeProperty('top');
+                    letter.style.removeProperty('width');
+                    letter.style.removeProperty('height');
+                    letter.style.removeProperty('transform');
+
+                    if (state.placeholder?.isConnected) {
+                        state.placeholder.replaceWith(letter);
+                    }
+                    state.placeholder = null;
+                    restoreLetter(letter);
+                });
+
+                hideResetButton();
+
+                if (animationFrameId !== null) {
+                    window.cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+                previousFrameTime = 0;
+
+                window.requestAnimationFrame(updateHomePositions);
+            };
+
+            resetButton.addEventListener('click', resetLetters);
+
+            letters.forEach((letter) => {
+                const state = {
+                    letter,
+                    isFloating: false,
+                    isDragging: false,
+                    pointerId: null,
+                    pointerDownX: 0,
+                    pointerDownY: 0,
+                    dragOffsetX: 0,
+                    dragOffsetY: 0,
+                    x: 0,
+                    y: 0,
+                    dockX: 0,
+                    dockY: 0,
+                    vx: 0,
+                    vy: 0,
+                    rotation: 0,
+                    vr: 0,
+                    width: 0,
+                    height: 0,
+                    isDocked: false,
+                    placeholder: null,
+                    homeRect: null,
+                    lastPointerTime: 0,
+                    lastPointerClientX: 0,
+                    lastPointerClientY: 0
+                };
+                letterStates.set(letter, state);
+                state.homeRect = letter.getBoundingClientRect();
+
+                letter.addEventListener('pointerdown', (event) => {
+                    if (event.pointerType === 'mouse' && event.button !== 0) return;
+                    event.preventDefault();
+
+                    state.pointerDownX = event.clientX;
+                    state.pointerDownY = event.clientY;
+                    state.pointerId = event.pointerId;
+                    state.lastPointerTime = performance.now();
+                    state.lastPointerClientX = event.clientX;
+                    state.lastPointerClientY = event.clientY;
+                    state.isDragging = false;
+                    dragStateByPointerId.set(event.pointerId, state);
+
+                    if (state.isDocked) {
+                        undockLetterToFloating(state);
+                    }
+
+                    if (state.isFloating) {
+                        state.isDragging = true;
+                        state.dragOffsetX = event.clientX - state.x;
+                        state.dragOffsetY = event.clientY - state.y;
+                        beginPhysicsLoop();
+                    }
+                });
+
+                letter.addEventListener('pointerup', (event) => {
+                    const activeState = dragStateByPointerId.get(event.pointerId);
+                    if (!activeState) return;
+
+                    if (!activeState.isDragging && !activeState.isFloating) {
+                        animateLetter(letter);
+                    }
+                    endDrag(event.pointerId);
+                });
+
+                letter.addEventListener('pointercancel', (event) => {
+                    endDrag(event.pointerId);
+                });
+
+                letter.addEventListener('keydown', (event) => {
+                    if (event.key !== 'Enter' && event.key !== ' ') return;
+                    event.preventDefault();
+                    animateLetter(letter);
+                });
             });
+
+            window.addEventListener('resize', () => {
+                syncHeroLetterTypographyVars();
+
+                letters.forEach((letter) => {
+                    const state = letterStates.get(letter);
+                    if (!state || !state.isFloating || state.isDragging) return;
+
+                    if (state.isDocked) {
+                        const layerRect = anagramLayer.getBoundingClientRect();
+                        state.dockX = Math.min(Math.max(state.dockX, 0), Math.max(0, layerRect.width - state.width));
+                        state.dockY = Math.min(Math.max(state.dockY, 0), Math.max(0, layerRect.height - state.height));
+                        applyDockedPosition(state);
+                        return;
+                    }
+
+                    state.x = Math.min(Math.max(state.x, 0), Math.max(0, window.innerWidth - state.width));
+                    state.y = Math.min(Math.max(state.y, 0), Math.max(0, window.innerHeight - state.height));
+                    applyLetterPosition(state);
+                });
+                if (!letters.some((letter) => letterStates.get(letter)?.isFloating)) {
+                    window.requestAnimationFrame(updateHomePositions);
+                }
+            });
+
+            window.requestAnimationFrame(updateHomePositions);
         }
 
         function initializeImageLightbox() {
@@ -5690,9 +6262,7 @@
             const reply = await chatbotReplyFor(question);
             appendChatMessage('bot', reply);
 
-            if (!getChatbotApiConfig().apiKey) {
-                rememberChatTurn(question, reply);
-            }
+            rememberChatTurn(question, reply);
 
             if (chatbotInput) chatbotInput.value = '';
         });
