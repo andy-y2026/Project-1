@@ -3966,6 +3966,13 @@
         const HOUSTON_LON = -95.3698;
         const HOUSTON_TZ = 'America/Chicago';
         const TEMP_WEATHER_OVERRIDE = null;
+        const CHATBOT_API_KEY_STORAGE_KEY = 'chatbotApiKey';
+        const CHATBOT_API_ENDPOINT_STORAGE_KEY = 'chatbotApiEndpoint';
+        const CHATBOT_MODEL_STORAGE_KEY = 'chatbotModel';
+        const CHATBOT_DEFAULT_API_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+        const CHATBOT_DEFAULT_MODEL = 'openai/gpt-4o-mini';
+        const CHATBOT_MAX_HISTORY_MESSAGES = 10;
+        const chatbotConversation = [];
 
         const weatherState = {
             label: TEMP_WEATHER_OVERRIDE || 'clear',
@@ -4494,9 +4501,113 @@
             return `The timeline includes these years: ${listedYears}. Ask about a specific year, like 2022 or 2025, and I will share what happened.`;
         }
 
+        function getChatbotApiConfig() {
+            const apiKey = (localStorage.getItem(CHATBOT_API_KEY_STORAGE_KEY) || '').trim();
+            const endpoint = (localStorage.getItem(CHATBOT_API_ENDPOINT_STORAGE_KEY) || CHATBOT_DEFAULT_API_ENDPOINT).trim();
+            const model = (localStorage.getItem(CHATBOT_MODEL_STORAGE_KEY) || CHATBOT_DEFAULT_MODEL).trim();
+
+            return {
+                apiKey,
+                endpoint,
+                model
+            };
+        }
+
+        function buildWebsiteKnowledgeContext() {
+            const aboutText = document.querySelector('#about .content-block p')?.textContent?.trim() || '';
+            const goalsText = document.querySelector('#goals .content-block p')?.textContent?.trim() || '';
+            const favoritesText = Array.from(document.querySelectorAll('#favorites .content-block p'))
+                .map((p) => p.textContent?.trim() || '')
+                .filter(Boolean)
+                .join(' ');
+
+            const timelineSummary = Array.from(document.querySelectorAll('#timeline .timeline-card'))
+                .map((card) => {
+                    const year = card.querySelector('.timeline-year')?.textContent?.trim() || '';
+                    const summary = card.querySelector('.timeline-summary')?.textContent?.trim() || '';
+                    return year && summary ? `${year}: ${summary}` : null;
+                })
+                .filter(Boolean)
+                .join(' | ');
+
+            const weatherSummary = `Current Houston weather: ${weatherState.label || 'clear'}, ${formatTemperature(weatherState.temperatureC, currentTemperatureUnit).replace('&deg;', ' degrees ')}`;
+
+            return [
+                `About Andrew: ${aboutText}`,
+                `Goals: ${goalsText}`,
+                `Favorites: ${favoritesText}`,
+                `Timeline: ${timelineSummary}`,
+                weatherSummary
+            ].filter(Boolean).join('\n');
+        }
+
+        async function fetchLLMAnswer(question) {
+            const { apiKey, endpoint, model } = getChatbotApiConfig();
+            if (!apiKey) return null;
+
+            const systemPrompt = [
+                'You are a helpful, concise website assistant for Andrew Yin\'s personal page.',
+                'Prioritize facts from the provided website context.',
+                'If asked something unrelated to the website, answer generally but briefly, then offer to help with Andrew-specific details.',
+                'Do not invent personal facts that are not in the context.',
+                '',
+                'Website context:',
+                buildWebsiteKnowledgeContext()
+            ].join('\n');
+
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...chatbotConversation,
+                { role: 'user', content: question }
+            ];
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model,
+                        messages,
+                        temperature: 0.7,
+                        max_tokens: 240
+                    })
+                });
+
+                if (!response.ok) {
+                    return null;
+                }
+
+                const data = await response.json();
+                const text = data?.choices?.[0]?.message?.content;
+                if (!text || typeof text !== 'string') {
+                    return null;
+                }
+
+                chatbotConversation.push({ role: 'user', content: question });
+                chatbotConversation.push({ role: 'assistant', content: text.trim() });
+
+                if (chatbotConversation.length > CHATBOT_MAX_HISTORY_MESSAGES) {
+                    chatbotConversation.splice(0, chatbotConversation.length - CHATBOT_MAX_HISTORY_MESSAGES);
+                }
+
+                return text.trim();
+            } catch (error) {
+                console.error('Unable to fetch LLM answer:', error);
+                return null;
+            }
+        }
+
         async function chatbotReplyFor(question) {
             const q = question.toLowerCase();
             const favoriteSpecific = q.match(/favorite\s+(food|color|sport|book|song|music|game|subject)/);
+
+            const llmReply = await fetchLLMAnswer(question);
+            if (llmReply) {
+                return llmReply;
+            }
 
             const siteHowToReply = getSiteHowToReply(q);
             if (siteHowToReply) {
@@ -4598,7 +4709,7 @@
                 return `${internetAnswer} For Andrew-specific details, ask me about his school, goals, timeline, achievements, or favorites listed on this site.`;
             }
 
-            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget.';
+            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget. For more open-ended LLM-style replies, set localStorage.chatbotApiKey to your API key (optional: localStorage.chatbotApiEndpoint and localStorage.chatbotModel).';
         }
 
         function clearGuidedTourTarget() {
