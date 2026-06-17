@@ -5200,12 +5200,14 @@
 
         function filterSemanticTokens(tokens) {
             const stopWords = new Set([
-                'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'to', 'of', 'and', 'or', 'in', 'on', 'for', 'with',
-                'what', 'who', 'when', 'where', 'why', 'how', 'does', 'do', 'did', 'can', 'you', 'me', 'about', 'his',
-                'her', 'their', 'favorite', 'thing', 'things', 'tell', 'more', 'please'
+                'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'to', 'of', 'and', 'or', 'in', 'on', 'for', 'with',
+                'what', 'who', 'when', 'where', 'why', 'how', 'does', 'do', 'did', 'can', 'could', 'would', 'should', 'you', 'me', 'i',
+                'he', 'she', 'it', 'we', 'they', 'about', 'his', 'her', 'their', 'that', 'this', 'these', 'those',
+                'favorite', 'thing', 'things', 'tell', 'more', 'please', 'thanks', 'thank', 'by', 'at', 'from', 'as', 'like',
+                'so', 'if', 'then', 'but', 'my', 'your', 'us', 'them', 'him', 'has', 'have', 'had', 'having', 'am'
             ]);
 
-            return tokens.filter((token) => !stopWords.has(token));
+            return tokens.filter((token) => token.length > 1 && !stopWords.has(token));
         }
 
         function bestKnowledgeMatch(question, knowledgeBase) {
@@ -5216,11 +5218,13 @@
             let bestScore = 0;
 
             knowledgeBase.forEach((item) => {
-                const haystackTokens = new Set(filterSemanticTokens(normalizeChatTokens(`${item.topic} ${item.answer}`)));
+                const topicTokens = new Set(filterSemanticTokens(normalizeChatTokens(item.topic)));
+                const answerTokens = new Set(filterSemanticTokens(normalizeChatTokens(item.answer)));
                 let score = 0;
 
                 questionTokens.forEach((token) => {
-                    if (haystackTokens.has(token)) score += 1;
+                    if (topicTokens.has(token)) score += 2;
+                    else if (answerTokens.has(token)) score += 1;
                 });
 
                 if (score > bestScore) {
@@ -5363,9 +5367,10 @@
                 .filter(Boolean)
                 .join(' ');
 
-            const companyMatch = favoritesText.match(/favorite company is\s+([^\.]+)/i);
-            const movieMatch = favoritesText.match(/favorite movie is\s+([^\.]+)/i);
-            const foodMatch = favoritesText.match(/favorite food is\s+([^\.]+)/i);
+            const companyMatch = favoritesText.match(/favorite company\s+(?:is|:)?\s*([^\.]+)/i);
+            const movieMatch = favoritesText.match(/favorite movie\s+(?:is|:)?\s*([^\.]+)/i);
+            const foodMatch = favoritesText.match(/(?:favorite\s+)?food(?:\s+preference)?\s*(?:is|:)?\s*([^\.]+)/i) ||
+                            favoritesText.match(/(?:likes?|enjoys?|anything and everything)\s+(?:and\s+)?(?:everything\s+)?(?:that\s+)?(?:is\s+)?([^\.\,]+)/i);
 
             return {
                 company: companyMatch?.[1]?.trim() || 'Apple',
@@ -5550,12 +5555,22 @@
                 return `I do not see Andrew's favorite ${favoriteSpecific[1]} listed on this site yet. I can answer his favorite movie, company, food, goals, school, timeline, and achievements.`;
             }
 
-            if (/\bfood\b|eat|meal|hungry|snack/.test(q)) {
+            if (/\b(food|eat|meal|hungry|snack)\b/.test(q)) {
                 return pickChatResponse([
                     `Andrew says his favorite food is ${favorites.food}.`,
                     `On the site, he says he likes ${favorites.food}.`,
                     `For food preferences, he mentions ${favorites.food}.`
                 ]);
+            }
+
+            if (/weather|temperature|temp|forecast|rain|cloud|sun|storm|snow|fog|wind/.test(q)) {
+                const weatherLabel = weatherState.label || 'clear';
+                const tempText = formatTemperature(weatherState.temperatureC, currentTemperatureUnit)
+                    .replace('&deg;', ' degrees ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                const unitWord = currentTemperatureUnit === 'c' ? 'Celsius' : 'Fahrenheit';
+                return `Right now in Houston, it looks ${weatherLabel}. The latest temperature is about ${tempText} (${unitWord}).`;
             }
 
             if (/favorite\s+company|company|apple/.test(q)) {
@@ -5622,16 +5637,6 @@
                 ]);
             }
 
-            if (/weather|temperature|temp|forecast|rain|cloud|sun|storm|snow|fog|wind/.test(q)) {
-                const weatherLabel = weatherState.label || 'clear';
-                const tempText = formatTemperature(weatherState.temperatureC, currentTemperatureUnit)
-                    .replace('&deg;', ' degrees ')
-                    .replace(/\s+/g, ' ')
-                    .trim();
-                const unitWord = currentTemperatureUnit === 'c' ? 'Celsius' : 'Fahrenheit';
-                return `Right now in Houston, it looks ${weatherLabel}. The latest temperature is about ${tempText} (${unitWord}).`;
-            }
-
             if (/quote|mindset|learning|inspiration/.test(q)) {
                 return pickChatResponse([
                     'One of Andrew\'s quotes is: "If you ever stop learning, you have just given up." He also emphasizes keeping a positive mindset.',
@@ -5642,35 +5647,55 @@
 
             const knowledgeBase = [
                 {
-                    topic: 'favorite company',
+                    topic: 'favorite company apple',
                     answer: 'His favorite company is Apple because of its design choices and software-hardware quality.'
                 },
                 {
-                    topic: 'favorite hobbies and interests',
+                    topic: 'hobbies interests debate calculator art learning',
                     answer: 'He enjoys debate, calculator applications, art, and learning across subjects.'
                 },
                 {
-                    topic: 'favorite movie',
+                    topic: 'favorite movie wallee hoppers zootopia',
                     answer: 'His favorite movie listed on the site is Wall-E, and he mentions Hoppers and Zootopia 2 as strong contenders.'
                 },
                 {
-                    topic: 'timeline 2025',
+                    topic: 'food preference edible',
+                    answer: 'For food preferences, he mentions anything and everything that is edible.'
+                },
+                {
+                    topic: 'school carnegie vanguard houston',
+                    answer: 'Andrew attends Carnegie Vanguard High School in Houston, Texas.'
+                },
+                {
+                    topic: 'goals career neuroradiologist lawyer',
+                    answer: 'Andrew goals include becoming either a neuroradiologist or lawyer, combining his passions for science and debate.'
+                },
+                {
+                    topic: 'achievement debate competition hudl semifinals',
+                    answer: 'He achieved a semifinal finish at HUDL City Championships and maintains strong debate results.'
+                },
+                {
+                    topic: 'achievement scholastic art writing recognition',
+                    answer: 'He earned both Silver Key and Gold Key honors in Scholastic Art and Writing contests.'
+                },
+                {
+                    topic: 'timeline 2025 tmsca calculator applications vanguard',
                     answer: 'In 2025, he attended TMSCA state for Calculator Applications and started at Carnegie Vanguard High School.'
                 },
                 {
-                    topic: 'timeline 2026',
+                    topic: 'timeline 2026 debate art hudl scholastic',
                     answer: 'In 2026, he achieved high ranks in debate and art, including HUDL semifinal success and Scholastic recognition.'
                 },
                 {
-                    topic: 'contact',
+                    topic: 'contact reach out message form',
                     answer: 'You can contact Andrew through the Contact Me button near the lower right side of the page.'
                 },
                 {
-                    topic: 'seasonal december lights',
+                    topic: 'seasonal december lights christmas',
                     answer: 'During December, the site can show glowing multicolored christmas lights around the page edges.'
                 },
                 {
-                    topic: 'new year fireworks',
+                    topic: 'new year fireworks chinese new year scroll',
                     answer: 'Fireworks can trigger on first scroll during New Year and Chinese New Year periods.'
                 },
                 {
@@ -6316,8 +6341,7 @@
             const restLinearSpeedThreshold = 46;
             const restAngularSpeedThreshold = 36;
             const sideRestAspectRatioThreshold = 0.92;
-            const contactSlop = 1.15;
-            const normalVelocitySleepThreshold = 18;
+            const contactSlop = 0.3;
             const letterRestAngleOffsets = {
                 Y: [-15, 15],
                 W: [-11, 11]
@@ -6577,38 +6601,28 @@
                     const nx = stateCenterX < obstacleCenterX ? -1 : 1;
                     const correction = Math.max(0, overlapX - contactSlop);
                     if (correction > 0) {
-                        state.x += nx * correction;
+                        state.x += nx * correction * 0.8;
                     }
-                    if ((nx < 0 && state.vx > 0) || (nx > 0 && state.vx < 0)) {
-                        if (Math.abs(state.vx) < normalVelocitySleepThreshold) {
-                            state.vx = 0;
-                        } else {
-                            state.vx *= -0.45;
-                        }
+                    const velocityAlongNormal = state.vx * nx;
+                    if (velocityAlongNormal < 0) {
+                        const restitution = 0.56;
+                        state.vx -= (1 + restitution) * velocityAlongNormal * nx;
                     }
-                    if (Math.abs(state.vy) < 10) state.vy = 0;
-                    state.vr += state.vy * nx * 0.006;
+                    state.vr += state.vy * nx * 0.012;
                     return;
                 }
 
                 const ny = stateCenterY < obstacleCenterY ? -1 : 1;
                 const correction = Math.max(0, overlapY - contactSlop);
                 if (correction > 0) {
-                    state.y += ny * correction;
+                    state.y += ny * correction * 0.8;
                 }
-                if ((ny < 0 && state.vy > 0) || (ny > 0 && state.vy < 0)) {
-                    if (Math.abs(state.vy) < normalVelocitySleepThreshold) {
-                        state.vy = 0;
-                    } else {
-                        state.vy *= -0.4;
-                    }
+                const velocityAlongNormal = state.vy * ny;
+                if (velocityAlongNormal < 0) {
+                    const restitution = 0.54;
+                    state.vy -= (1 + restitution) * velocityAlongNormal * ny;
                 }
-                if (Math.abs(state.vx) < 10) {
-                    state.vx = 0;
-                } else {
-                    state.vx *= 0.95;
-                }
-                state.vr += state.vx * ny * 0.006;
+                state.vr += state.vx * ny * 0.01;
             };
 
             const resolveLetterPairCollisions = (activeStates) => {
@@ -6628,23 +6642,23 @@
                         const bx = b.x + b.width * 0.5;
                         const by = b.y + b.height * 0.5;
                         const xAxis = overlapX < overlapY;
-                        const nx = xAxis ? (ax < bx ? -1 : 1) : 0;
-                        const ny = xAxis ? 0 : (ay < by ? -1 : 1);
+                        const nx = xAxis ? (ax < bx ? 1 : -1) : 0;
+                        const ny = xAxis ? 0 : (ay < by ? 1 : -1);
                         const overlap = xAxis ? overlapX : overlapY;
                         const correction = Math.max(0, overlap - contactSlop);
                         if (correction <= 0) continue;
 
                         if (aMovable && bMovable) {
-                            a.x -= nx * (correction * 0.5);
-                            a.y -= ny * (correction * 0.5);
-                            b.x += nx * (correction * 0.5);
-                            b.y += ny * (correction * 0.5);
+                            a.x -= nx * (correction * 0.65);
+                            a.y -= ny * (correction * 0.65);
+                            b.x += nx * (correction * 0.65);
+                            b.y += ny * (correction * 0.65);
                         } else if (aMovable) {
-                            a.x -= nx * correction;
-                            a.y -= ny * correction;
+                            a.x -= nx * correction * 0.8;
+                            a.y -= ny * correction * 0.8;
                         } else if (bMovable) {
-                            b.x += nx * correction;
-                            b.y += ny * correction;
+                            b.x += nx * correction * 0.8;
+                            b.y += ny * correction * 0.8;
                         }
 
                         const relativeVelocityX = b.vx - a.vx;
@@ -6652,34 +6666,22 @@
                         const relativeNormalVelocity = relativeVelocityX * nx + relativeVelocityY * ny;
                         if (relativeNormalVelocity >= 0) continue;
 
-                        const restitution = 0.56;
+                        const restitution = 0.58;
                         const invMassA = aMovable ? 1 : 0;
                         const invMassB = bMovable ? 1 : 0;
                         const invMassTotal = invMassA + invMassB;
                         if (invMassTotal === 0) continue;
 
-                        if (Math.abs(relativeNormalVelocity) < normalVelocitySleepThreshold) {
-                            if (aMovable) {
-                                if (xAxis) a.vx = 0;
-                                else a.vy = 0;
-                            }
-                            if (bMovable) {
-                                if (xAxis) b.vx = 0;
-                                else b.vy = 0;
-                            }
-                            continue;
-                        }
-
                         const impulse = (-(1 + restitution) * relativeNormalVelocity) / invMassTotal;
                         if (aMovable) {
                             a.vx -= impulse * nx * invMassA;
                             a.vy -= impulse * ny * invMassA;
-                            a.vr += (a.vx * ny - a.vy * nx) * 0.01;
+                            a.vr += (a.vx * ny - a.vy * nx) * 0.015;
                         }
                         if (bMovable) {
                             b.vx += impulse * nx * invMassB;
                             b.vy += impulse * ny * invMassB;
-                            b.vr += (b.vx * -ny + b.vy * nx) * 0.01;
+                            b.vr += (b.vx * -ny + b.vy * nx) * 0.015;
                         }
                     }
                 }
