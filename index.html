@@ -1265,7 +1265,7 @@
             font-weight: var(--hero-letter-font-weight, 700);
             font-style: var(--hero-letter-font-style, normal);
             line-height: var(--hero-letter-line-height, 1.1);
-            letter-spacing: var(--hero-letter-letter-spacing, 8px);
+            letter-spacing: 0;
             color: var(--hero-letter-color, #f4f8ff);
             text-shadow: var(--hero-letter-text-shadow, 0 4px 24px rgba(0, 0, 0, 0.62), 0 1px 0 rgba(255, 255, 255, 0.22));
             text-transform: var(--hero-letter-text-transform, none);
@@ -1284,7 +1284,7 @@
             font-weight: var(--hero-letter-font-weight, 700);
             font-style: var(--hero-letter-font-style, normal);
             line-height: var(--hero-letter-line-height, 1.1);
-            letter-spacing: var(--hero-letter-letter-spacing, 8px);
+            letter-spacing: 0;
             color: var(--hero-letter-color, #f4f8ff);
             text-shadow: var(--hero-letter-text-shadow, 0 4px 24px rgba(0, 0, 0, 0.62), 0 1px 0 rgba(255, 255, 255, 0.22));
             text-transform: var(--hero-letter-text-transform, none);
@@ -1632,8 +1632,8 @@
             .mobile-nav-backdrop {
                 position: fixed;
                 inset: 0;
-                height: 100vh;
-                height: 100svh;
+                min-height: 100vh;
+                min-height: 100dvh;
                 z-index: 1390;
                 background: linear-gradient(135deg, #536A9C 0%, #063574 100%);
                 opacity: 0;
@@ -1719,20 +1719,13 @@
                 display: block;
             }
 
-            .main-content.mobile-scroll-locked {
-                position: fixed;
-                inset: 0;
-                top: var(--mobile-nav-lock-top, 0px);
-                width: 100%;
-                overflow: hidden;
-            }
-
             .sidebar {
                 width: min(86vw, 340px);
-                height: 100vh;
-                height: 100svh;
-                position: fixed;
                 top: 0;
+                bottom: 0;
+                min-height: 100vh;
+                min-height: 100dvh;
+                position: fixed;
                 left: 0;
                 padding: 20px;
                 padding-bottom: calc(20px + env(safe-area-inset-bottom));
@@ -1747,6 +1740,11 @@
 
             body.mobile-nav-open {
                 overscroll-behavior: none;
+                position: fixed;
+                inset: 0;
+                top: var(--mobile-nav-lock-top, 0px);
+                width: 100%;
+                overflow: hidden;
             }
 
             body.mobile-nav-open .sidebar {
@@ -5005,17 +5003,11 @@
 
             if (isOpen && !wasOpen) {
                 mobileNavScrollY = window.scrollY || window.pageYOffset || 0;
-                if (mainContent) {
-                    mainContent.style.setProperty('--mobile-nav-lock-top', `-${mobileNavScrollY}px`);
-                    mainContent.classList.add('mobile-scroll-locked');
-                }
+                body.style.setProperty('--mobile-nav-lock-top', `-${mobileNavScrollY}px`);
             }
 
             if (!isOpen && wasOpen) {
-                if (mainContent) {
-                    mainContent.classList.remove('mobile-scroll-locked');
-                    mainContent.style.removeProperty('--mobile-nav-lock-top');
-                }
+                body.style.removeProperty('--mobile-nav-lock-top');
                 window.scrollTo(0, mobileNavScrollY);
             }
 
@@ -6806,8 +6798,12 @@
 
                 restoreLetter(state.letter);
                 state.letter.classList.add('hero-letter-free');
-                state.letter.style.width = `${rect.width}px`;
-                state.letter.style.height = `${rect.height}px`;
+                applyLetterPosition(state);
+
+                // Re-measure after switching to floating mode so collision bounds match visible glyphs.
+                const floatingRect = state.letter.getBoundingClientRect();
+                state.width = floatingRect.width;
+                state.height = floatingRect.height;
                 applyLetterPosition(state);
 
                 showResetButton();
