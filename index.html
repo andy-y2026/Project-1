@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Website</title>
+    <meta name="theme-color" id="themeColorMeta" content="#EFF1F5">
+    <title>Andrew Yin - Personal Website</title>
+    <link rel="icon" id="siteFavicon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23536A9C'/%3E%3Ccircle cx='32' cy='32' r='29' fill='none' stroke='%23DCE6F7' stroke-width='2'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Montserrat,Arial,sans-serif' font-size='23' font-weight='700' letter-spacing='1' fill='%23FFFFFF'%3EAY%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -12,14 +14,26 @@
             box-sizing: border-box;
         }
 
+        html {
+            min-height: 100%;
+            background-color: #EFF1F5;
+        }
+
+        html.dark-mode {
+            background-color: #1a1a1a;
+        }
+
         body {
             font-family: 'Raleway', sans-serif;
             background-color: #EFF1F5;
             color: #333;
             line-height: 1.6;
+            min-height: 100vh;
+            min-height: 100dvh;
             --theme-primary: #536A9C;
             --theme-deep: #082B56;
             --theme-accent-rgb: 83, 106, 156;
+            --chatbot-keyboard-offset: 0px;
         }
 
         body.color-theme-blue {
@@ -44,6 +58,13 @@
             --theme-primary: #7E2A3A;
             --theme-deep: #541724;
             --theme-accent-rgb: 126, 42, 58;
+        }
+
+        /* Raise contrast for maroon while in dark mode so themed text, icons, and controls stay readable. */
+        body.dark-mode.color-theme-maroon {
+            --theme-primary: #B85A6A;
+            --theme-deep: #7A263A;
+            --theme-accent-rgb: 184, 90, 106;
         }
 
         /* Sidebar Navigation */
@@ -486,6 +507,124 @@
             z-index: 1150;
             pointer-events: none;
             animation: star-twinkle 3s ease-in-out forwards;
+        }
+
+        .seasonal-lights-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1600;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .seasonal-lights-overlay.active {
+            opacity: 1;
+        }
+
+        .seasonal-light {
+            --light-size: 15px;
+            --twinkle-duration: 2.4s;
+            position: absolute;
+            width: var(--light-size);
+            height: var(--light-size);
+            border-radius: 50%;
+            background: #ff5f6d;
+            box-shadow:
+                0 0 8px #ff5f6d,
+                0 0 18px #ff5f6d,
+                0 0 30px rgba(255, 255, 255, 0.72);
+            animation: holiday-light-twinkle var(--twinkle-duration) ease-in-out infinite,
+                       holiday-light-color-shift 6.2s linear infinite;
+            will-change: transform, opacity, filter;
+        }
+
+        @keyframes holiday-light-twinkle {
+            0%, 100% {
+                opacity: 0.55;
+                transform: scale(0.9);
+                filter: saturate(0.95);
+            }
+
+            48% {
+                opacity: 1;
+                transform: scale(1.18);
+                filter: saturate(1.15);
+            }
+        }
+
+        @keyframes holiday-light-color-shift {
+            0% {
+                background: #ff5f6d;
+                box-shadow: 0 0 8px #ff5f6d, 0 0 18px #ff5f6d, 0 0 30px rgba(255, 196, 204, 0.76);
+            }
+
+            20% {
+                background: #f7ce46;
+                box-shadow: 0 0 8px #f7ce46, 0 0 18px #f7ce46, 0 0 30px rgba(255, 235, 171, 0.78);
+            }
+
+            40% {
+                background: #45d483;
+                box-shadow: 0 0 8px #45d483, 0 0 18px #45d483, 0 0 30px rgba(184, 255, 212, 0.78);
+            }
+
+            60% {
+                background: #4fc3ff;
+                box-shadow: 0 0 8px #4fc3ff, 0 0 18px #4fc3ff, 0 0 30px rgba(187, 232, 255, 0.78);
+            }
+
+            80% {
+                background: #be77ff;
+                box-shadow: 0 0 8px #be77ff, 0 0 18px #be77ff, 0 0 30px rgba(226, 202, 255, 0.78);
+            }
+
+            100% {
+                background: #ff5f6d;
+                box-shadow: 0 0 8px #ff5f6d, 0 0 18px #ff5f6d, 0 0 30px rgba(255, 196, 204, 0.76);
+            }
+        }
+
+        .fireworks-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2100;
+            overflow: hidden;
+        }
+
+        .firework-particle {
+            position: absolute;
+            left: var(--origin-x, 50vw);
+            top: var(--origin-y, 50vh);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 32%, #ffffff 0 20%, var(--particle-color, #ffd166) 28% 100%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            box-shadow:
+                0 0 10px var(--particle-color, #ffd166),
+                0 0 22px var(--particle-color, #ffd166),
+                0 0 36px rgba(255, 255, 255, 0.8);
+            animation: firework-pop var(--firework-duration, 1100ms) cubic-bezier(0.11, 0.62, 0.24, 1) forwards;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes firework-pop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.22);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0.06);
+                opacity: 0;
+            }
         }
 
         section {
@@ -1354,16 +1493,21 @@
             .mobile-nav-backdrop {
                 position: fixed;
                 inset: 0;
+                height: 100vh;
+                height: 100svh;
                 z-index: 1390;
                 background: linear-gradient(135deg, #536A9C 0%, #063574 100%);
                 opacity: 0;
+                visibility: hidden;
                 pointer-events: none;
-                transition: opacity 0.28s ease;
+                transition: opacity 0.28s ease, visibility 0s linear 0.28s;
             }
 
             .mobile-nav-backdrop.active {
                 opacity: 1;
+                visibility: visible;
                 pointer-events: auto;
+                transition-delay: 0s;
             }
 
             .daily-widget {
@@ -1436,13 +1580,23 @@
                 display: block;
             }
 
+            .main-content.mobile-scroll-locked {
+                position: fixed;
+                inset: 0;
+                top: var(--mobile-nav-lock-top, 0px);
+                width: 100%;
+                overflow: hidden;
+            }
+
             .sidebar {
                 width: min(86vw, 340px);
                 height: 100vh;
+                height: 100svh;
                 position: fixed;
                 top: 0;
                 left: 0;
                 padding: 20px;
+                padding-bottom: calc(20px + env(safe-area-inset-bottom));
                 transform: translateX(-103%);
                 opacity: 0.86;
                 transition: transform 0.34s cubic-bezier(0.22, 0.84, 0.24, 1), opacity 0.24s ease;
@@ -1453,7 +1607,7 @@
             }
 
             body.mobile-nav-open {
-                overflow: hidden;
+                overscroll-behavior: none;
             }
 
             body.mobile-nav-open .sidebar {
@@ -2490,7 +2644,7 @@
 
         body.dark-mode .clock-center,
         body.dark-mode .clock-hand.hour {
-            background: var(--theme-deep);
+            background: #D4E3FA;
         }
 
         body.dark-mode .clock-hand.minute {
@@ -2838,6 +2992,16 @@
         @media (max-width: 640px) {
             .footer-content {
                 justify-content: center;
+                text-align: center;
+            }
+
+            .footer-info {
+                min-width: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-info p {
                 text-align: center;
             }
 
@@ -3395,17 +3559,17 @@
         @media (max-width: 768px) {
             .chatbot-button {
                 right: 30px;
-                bottom: calc(104px + env(safe-area-inset-bottom));
+                bottom: calc(104px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
             }
 
             .chatbot-circle {
                 right: 30px;
-                bottom: calc(104px + env(safe-area-inset-bottom));
+                bottom: calc(104px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
             }
 
             .chatbot-panel {
                 right: 30px;
-                bottom: calc(104px + env(safe-area-inset-bottom));
+                bottom: calc(104px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
             }
 
             .chatbot-panel.active {
@@ -3422,17 +3586,17 @@
 
             .chatbot-button {
                 right: 20px;
-                bottom: calc(80px + env(safe-area-inset-bottom));
+                bottom: calc(80px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
             }
 
             .chatbot-circle {
                 right: 20px;
-                bottom: calc(80px + env(safe-area-inset-bottom));
+                bottom: calc(80px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
             }
 
             .chatbot-panel {
                 right: 20px;
-                bottom: calc(80px + env(safe-area-inset-bottom));
+                bottom: calc(80px + env(safe-area-inset-bottom) + var(--chatbot-keyboard-offset, 0px));
                 width: 50px;
                 height: 50px;
             }
@@ -3445,6 +3609,9 @@
     </style>
 </head>
 <body>
+    <div class="seasonal-lights-overlay" id="seasonalLightsOverlay" aria-hidden="true"></div>
+    <div class="fireworks-overlay" id="fireworksOverlay" aria-hidden="true"></div>
+
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
         <div class="hero-content">
@@ -3463,7 +3630,7 @@
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="mobileSidebar">
             <div class="sidebar-header">
-                <h1>About Me</h1>
+                <h1>Personal Website</h1>
                 <p>Andrew Yin</p>
             </div>
             <nav>
@@ -3548,7 +3715,7 @@
                 <p>
                     I am Andrew Yin, a passionate, respectful, and creative student who is both shy and confident at the same time. 
                     I like to make people laugh by making big, funny speeches, but I am surprisingly less outgoing with people during everyday interactions. 
-                    I enjoy learning all subjects (my least favorite question is "What is your favorite subject!").
+                    I enjoy learning all subjects (my least favorite question is "What is your favorite subject?").
                 </p>
             </div>
         </section>
@@ -3565,21 +3732,21 @@
                             <rect x="7" y="5" width="4" height="3" rx="1"></rect>
                             <rect x="13" y="5" width="4" height="3" rx="1"></rect>
                         </svg>
-                        <span>LEGOs are my favorite passtime because of the infinite number of designs and builds possible</span>
+                        <span>LEGOs are my favorite passtime because of the infinite number of designs and builds possible. LEGO sets with fun play features and easter eggs are also very enjoyable.</span>
                     </li>
                     <li class="interest-item">
                         <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M4 20l4.5-1 10-10a1.8 1.8 0 0 0 0-2.5l-1-1a1.8 1.8 0 0 0-2.5 0l-10 10L4 20z"></path>
                             <path d="M13.5 6.5l4 4"></path>
                         </svg>
-                        <span>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings.</span>
+                        <span>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings. I also enjoy experimenting with colors in the color theory and creating fun color combinations.</span>
                     </li>
                     <li class="interest-item">
                         <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H11v14H6.5A2.5 2.5 0 0 0 4 20.5V6.5z"></path>
                             <path d="M20 6.5A2.5 2.5 0 0 0 17.5 4H13v14h4.5a2.5 2.5 0 0 1 2.5 2.5V6.5z"></path>
                         </svg>
-                        <span>A good book is always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson</span>
+                        <span>A good book, movie, and other sources of story-telling are always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson, which I read at school. <i>Zootopia 2</i> and <i>Hoppers</i>, as mentioned before, were also brilliant movies.</span>
                     </li>
                 </ul>
             </div>
@@ -3591,15 +3758,15 @@
             <h2>Favorite Things</h2>
             <div class="content-block">
                 <p>
-                    My favorite company is Apple because of their amazing design choices and excellent software and hardware (it appears that Kinkaid agrees with me!). Apple stores are also very enjoyable because of their minimalistic design and the ability to test out all of their products in-store.
+                    My favorite company is Apple because of their amazing design choices and excellent software and hardware. Apple stores are also very enjoyable because of their minimalistic design and the ability to test out all of their products in-store.
                 </p>
                 <p>
-                    My favorite movie is Wall-E because of its message about enjoying life and its visually stunning animation.
+                    My favorite movie is <i>Wall-E</i> because of its message about enjoying life and its visually stunning animation.
 
-                    <em>Note: During the making of this website, I discovered 2 amazing new movies that are giving Wall-E some competition for my number 1 spot - Hoppers and Zootopia 2 were extremely engaging movies that had fun plots, characters, and action-packed scenes.</em>
+                    <em>Note: During the making of this website, I discovered 2 amazing new movies that are giving <i>Wall-E</i> some competition for my number 1 spot - <i>Hoppers</i> and <i>Zootopia 2</i> were extremely engaging movies that had fun plots, characters, and action-packed scenes.</em>
                 </p>
                 <p>
-                    I enjoy talking with friends and family, especially conversations in which we get to learn more about each others interests.
+                    I enjoy talking with friends and family, especially conversations in which we get to learn more about each others interests. I also enjoy watching movies with my family, especially if the movie contains a good plot.
                 </p>
                 <p>
                     My favorite food is anything and everything that is edible. I always find something delicious to eat and it is so hard to pick favorites!
@@ -4094,12 +4261,18 @@
         const guidedTourResumeButton = document.getElementById('guidedTourResumeButton');
         const mobileNavToggle = document.getElementById('mobileNavToggle');
         const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+        const mainContent = document.querySelector('.main-content');
+        const rootElement = document.documentElement;
+        const themeColorMeta = document.getElementById('themeColorMeta');
+        const faviconLink = document.getElementById('siteFavicon');
         const chatbotCircle = document.getElementById('chatbotCircle');
         const chatbotPanel = document.getElementById('chatbotPanel');
         const chatbotClose = document.getElementById('chatbotClose');
         const chatbotForm = document.getElementById('chatbotForm');
         const chatbotInput = document.getElementById('chatbotInput');
         const chatbotMessages = document.getElementById('chatbotMessages');
+        const seasonalLightsOverlay = document.getElementById('seasonalLightsOverlay');
+        const fireworksOverlay = document.getElementById('fireworksOverlay');
         const body = document.body;
         const footer = document.querySelector('.site-footer');
         const footerWeatherLayer = document.querySelector('.footer-weather-layer');
@@ -4151,8 +4324,24 @@
         let guidedTourCurrentTarget = null;
         let guidedTourStepTimer = null;
         let guidedTourFollowTimer = null;
-        let mobileNavBackdropHideTimer = null;
+        let mobileNavScrollY = 0;
+        let holidayFireworksTriggered = false;
+        let seasonalLightsResizeTimer = null;
         const GUIDED_TOUR_PROMPT_KEY = 'guidedTourPromptSeen';
+
+        const HOLIDAY_DEBUG_DATE_PARAM = 'pretendDate';
+        // Leave null for normal behavior. Query param `?pretendDate=YYYY-MM-DD` still works for manual testing.
+        const HOLIDAY_TEMPORARY_OVERRIDE_DATE = null;
+        const CHINESE_NEW_YEAR_BY_YEAR = {
+            2025: '2025-01-29',
+            2026: '2026-02-17',
+            2027: '2027-02-06',
+            2028: '2028-01-26',
+            2029: '2029-02-13',
+            2030: '2030-02-03',
+            2031: '2031-01-23',
+            2032: '2032-02-11'
+        };
 
         const guidedTourSteps = [
             {
@@ -4329,8 +4518,184 @@
             return 'windy';
         }
 
+        function parseDebugDateFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const value = params.get(HOLIDAY_DEBUG_DATE_PARAM);
+            if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+            const parsed = new Date(`${value}T12:00:00`);
+            if (Number.isNaN(parsed.getTime())) return null;
+            return parsed;
+        }
+
+        function parseDebugDateFromValue(value) {
+            if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+            const parsed = new Date(`${value}T12:00:00`);
+            if (Number.isNaN(parsed.getTime())) return null;
+            return parsed;
+        }
+
+        function getSeasonalDateNow() {
+            const debugDate = parseDebugDateFromQuery();
+            if (debugDate) return new Date(debugDate);
+            const temporaryOverrideDate = parseDebugDateFromValue(HOLIDAY_TEMPORARY_OVERRIDE_DATE);
+            if (temporaryOverrideDate) return new Date(temporaryOverrideDate);
+            return new Date();
+        }
+
+        function startOfDay(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+
+        function diffInDays(a, b) {
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const aDay = startOfDay(a).getTime();
+            const bDay = startOfDay(b).getTime();
+            return Math.round((aDay - bDay) / msPerDay);
+        }
+
+        function isDecemberLightsPeriod(date) {
+            return date.getMonth() === 11;
+        }
+
+        function isRegularNewYearPeriod(date) {
+            const month = date.getMonth();
+            const day = date.getDate();
+            return (month === 11 && day === 31) || (month === 0 && day <= 2);
+        }
+
+        function isChineseNewYearPeriod(date) {
+            const year = date.getFullYear();
+            const yearsToCheck = [year - 1, year, year + 1];
+
+            return yearsToCheck.some((candidateYear) => {
+                const chineseNewYearDate = CHINESE_NEW_YEAR_BY_YEAR[candidateYear];
+                if (!chineseNewYearDate) return false;
+                const holidayDate = new Date(`${chineseNewYearDate}T12:00:00`);
+                const delta = Math.abs(diffInDays(date, holidayDate));
+                return delta <= 1;
+            });
+        }
+
+        function shouldTriggerHolidayFireworks(date) {
+            return isRegularNewYearPeriod(date) || isChineseNewYearPeriod(date);
+        }
+
+        function createSeasonalLightBulb(x, y) {
+            const light = document.createElement('span');
+            light.className = 'seasonal-light';
+            light.style.left = `${x}px`;
+            light.style.top = `${y}px`;
+            light.style.setProperty('--light-size', `${(10 + Math.random() * 5).toFixed(1)}px`);
+            light.style.setProperty('--twinkle-duration', `${(1.7 + Math.random() * 1.9).toFixed(2)}s`);
+            light.style.animationDelay = `${(-Math.random() * 6).toFixed(2)}s`;
+            return light;
+        }
+
+        function rebuildSeasonalLights() {
+            if (!seasonalLightsOverlay) return;
+
+            const now = getSeasonalDateNow();
+            const isActive = isDecemberLightsPeriod(now);
+            seasonalLightsOverlay.classList.toggle('active', isActive);
+            seasonalLightsOverlay.innerHTML = '';
+
+            if (!isActive) return;
+
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const offset = 8;
+            const spacing = Math.max(28, Math.min(48, Math.round(viewportWidth / 20)));
+
+            for (let x = offset; x <= viewportWidth - offset; x += spacing) {
+                seasonalLightsOverlay.appendChild(createSeasonalLightBulb(x, offset));
+                seasonalLightsOverlay.appendChild(createSeasonalLightBulb(x, viewportHeight - offset));
+            }
+
+            for (let y = spacing; y <= viewportHeight - spacing; y += spacing) {
+                seasonalLightsOverlay.appendChild(createSeasonalLightBulb(offset, y));
+                seasonalLightsOverlay.appendChild(createSeasonalLightBulb(viewportWidth - offset, y));
+            }
+        }
+
+        function launchFireworkBurst(originX, originY, particleCount = 30) {
+            if (!fireworksOverlay) return;
+            const palette = ['#ff5f6d', '#f7ce46', '#4fd3ff', '#8dff87', '#be77ff', '#ff9f5c'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'firework-particle';
+
+                const angle = (Math.PI * 2 * i) / particleCount + (Math.random() * 0.2 - 0.1);
+                const distance = 90 + Math.random() * 180;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--origin-x', `${originX}px`);
+                particle.style.setProperty('--origin-y', `${originY}px`);
+                particle.style.setProperty('--dx', `${dx.toFixed(1)}px`);
+                particle.style.setProperty('--dy', `${dy.toFixed(1)}px`);
+                particle.style.setProperty('--particle-color', palette[Math.floor(Math.random() * palette.length)]);
+                particle.style.setProperty('--firework-duration', `${(1100 + Math.random() * 600).toFixed(0)}ms`);
+                fireworksOverlay.appendChild(particle);
+
+                particle.addEventListener('animationend', () => particle.remove(), { once: true });
+            }
+        }
+
+        function triggerHolidayFireworks() {
+            if (!fireworksOverlay) return;
+
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const burstCount = isMobile ? 7 : 10;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            for (let i = 0; i < burstCount; i++) {
+                window.setTimeout(() => {
+                    const x = width * (0.12 + Math.random() * 0.76);
+                    const y = height * (0.08 + Math.random() * 0.54);
+                    launchFireworkBurst(x, y, 36 + Math.floor(Math.random() * 22));
+                }, i * 160);
+            }
+
+            window.setTimeout(() => {
+                const secondWaveCount = isMobile ? 4 : 6;
+                for (let i = 0; i < secondWaveCount; i++) {
+                    window.setTimeout(() => {
+                        const x = width * (0.1 + Math.random() * 0.8);
+                        const y = height * (0.06 + Math.random() * 0.5);
+                        launchFireworkBurst(x, y, 28 + Math.floor(Math.random() * 16));
+                    }, i * 180);
+                }
+            }, 1050);
+        }
+
+        function buildFaviconDataUri(backgroundColor, textColor, ringColor) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="${backgroundColor}"/><circle cx="32" cy="32" r="29" fill="none" stroke="${ringColor}" stroke-width="2"/><text x="32" y="39" text-anchor="middle" font-family="Montserrat,Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="1" fill="${textColor}">AY</text></svg>`;
+            return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+        }
+
+        function updateBrandingVisuals() {
+            const computed = getComputedStyle(body);
+            const themePrimary = computed.getPropertyValue('--theme-primary').trim() || '#536A9C';
+            const isDarkMode = body.classList.contains('dark-mode');
+            const ringColor = isDarkMode ? '#BFD2F2' : '#DCE6F7';
+            const textColor = '#FFFFFF';
+
+            if (faviconLink) {
+                faviconLink.setAttribute('href', buildFaviconDataUri(themePrimary, textColor, ringColor));
+            }
+
+            if (themeColorMeta) {
+                themeColorMeta.setAttribute('content', isDarkMode ? '#1a1a1a' : '#EFF1F5');
+            }
+        }
+
         function applyTheme(isDarkMode, persist = true) {
             body.classList.toggle('dark-mode', isDarkMode);
+            rootElement.classList.toggle('dark-mode', isDarkMode);
+            updateBrandingVisuals();
             if (persist) {
                 localStorage.setItem('darkMode', String(isDarkMode));
             }
@@ -4405,6 +4770,8 @@
                 swatch.setAttribute('aria-pressed', String(isActive));
             });
 
+            updateBrandingVisuals();
+
             if (persist) {
                 localStorage.setItem('colorTheme', theme);
             }
@@ -4416,13 +4783,29 @@
         }
 
         function setMobileNavOpen(isOpen) {
-            clearTimeout(mobileNavBackdropHideTimer);
+            const wasOpen = body.classList.contains('mobile-nav-open');
+
+            if (isOpen && !wasOpen) {
+                mobileNavScrollY = window.scrollY || window.pageYOffset || 0;
+                if (mainContent) {
+                    mainContent.style.setProperty('--mobile-nav-lock-top', `-${mobileNavScrollY}px`);
+                    mainContent.classList.add('mobile-scroll-locked');
+                }
+            }
+
+            if (!isOpen && wasOpen) {
+                if (mainContent) {
+                    mainContent.classList.remove('mobile-scroll-locked');
+                    mainContent.style.removeProperty('--mobile-nav-lock-top');
+                }
+                window.scrollTo(0, mobileNavScrollY);
+            }
 
             body.classList.toggle('mobile-nav-open', isOpen);
+            rootElement.classList.toggle('mobile-nav-open', isOpen);
 
             if (mobileNavBackdrop) {
                 if (isOpen) {
-                    mobileNavBackdrop.style.display = 'block';
                     mobileNavBackdrop.setAttribute('aria-hidden', 'false');
                     window.requestAnimationFrame(() => {
                         mobileNavBackdrop.classList.add('active');
@@ -4430,9 +4813,6 @@
                 } else {
                     mobileNavBackdrop.classList.remove('active');
                     mobileNavBackdrop.setAttribute('aria-hidden', 'true');
-                    mobileNavBackdropHideTimer = window.setTimeout(() => {
-                        mobileNavBackdrop.style.display = 'none';
-                    }, 300);
                 }
             }
 
@@ -4466,16 +4846,42 @@
             guidedTourResume.setAttribute('aria-hidden', String(!isOpen));
         }
 
+        function setChatbotKeyboardOffset(valuePx = 0) {
+            rootElement.style.setProperty('--chatbot-keyboard-offset', `${Math.max(0, Math.round(valuePx))}px`);
+        }
+
+        function updateChatbotKeyboardOffset() {
+            if (!chatbotPanel || !chatbotPanel.classList.contains('active') || !window.matchMedia('(max-width: 768px)').matches) {
+                setChatbotKeyboardOffset(0);
+                return;
+            }
+
+            if (!window.visualViewport) {
+                setChatbotKeyboardOffset(0);
+                return;
+            }
+
+            const viewport = window.visualViewport;
+            const keyboardOffset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+            setChatbotKeyboardOffset(keyboardOffset);
+
+            if (chatbotMessages) {
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+        }
+
         function closeChatbotPanel() {
             if (!chatbotPanel || !chatbotCircle) return;
             if (!chatbotPanel.classList.contains('active')) {
                 chatbotCircle.classList.remove('morphing');
                 chatbotPanel.setAttribute('aria-hidden', 'true');
+                setChatbotKeyboardOffset(0);
                 return;
             }
 
             chatbotPanel.classList.remove('active');
             chatbotPanel.setAttribute('aria-hidden', 'true');
+            setChatbotKeyboardOffset(0);
 
             const onMorphBack = (event) => {
                 if (event.target !== chatbotPanel || event.propertyName !== 'transform') return;
@@ -4492,6 +4898,7 @@
             chatbotPanel.classList.add('active');
             chatbotPanel.setAttribute('aria-hidden', 'false');
             chatbotInput?.focus();
+            window.setTimeout(updateChatbotKeyboardOffset, 120);
         }
 
         function appendChatMessage(role, text) {
@@ -4501,6 +4908,68 @@
             message.textContent = text;
             chatbotMessages.appendChild(message);
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function pickChatResponse(options) {
+            if (!Array.isArray(options) || !options.length) return '';
+            const index = Math.floor(Math.random() * options.length);
+            return options[index];
+        }
+
+        function getConversationalReply(question) {
+            const trimmed = String(question || '').trim();
+            if (!trimmed) return null;
+            const q = trimmed.toLowerCase();
+
+            if (/^(hi|hello|hey|yo|sup|what'?s up|good\s(morning|afternoon|evening))\b/.test(q)) {
+                return pickChatResponse([
+                    'Hey! I can help with Andrew\'s timeline, achievements, hobbies, goals, weather widget, and site features.',
+                    'Hello! Ask me anything about Andrew Yin or how to use this website.',
+                    'Hi there. I can answer questions about Andrew\'s story, school, achievements, and current Houston weather.'
+                ]);
+            }
+
+            if (/^(thanks|thank\s*you|thx|tysm)\b/.test(q)) {
+                return pickChatResponse([
+                    'You are welcome. Happy to help!',
+                    'Anytime. Ask another question whenever you want.',
+                    'Glad to help. I can keep going if you want more details.'
+                ]);
+            }
+
+            if (/^how\s+are\s+you\b|^how'?s\s+it\s+going\b/.test(q)) {
+                return pickChatResponse([
+                    'Doing great and ready to help. What do you want to explore about Andrew?',
+                    'I am doing well. Want timeline highlights, achievements, or hobbies?',
+                    'All good here. Ask me about Andrew\'s goals, school, or favorite things.'
+                ]);
+            }
+
+            if (/\b(bye|goodbye|see\s*ya|see\s*you|later)\b/.test(q)) {
+                return pickChatResponse([
+                    'See you later.',
+                    'Goodbye. Come back anytime.',
+                    'Bye for now. I\'m here whenever you need me.'
+                ]);
+            }
+
+            if (/\b(who\s+are\s+you|what\s+are\s+you|what\s+can\s+you\s+do|help)\b/.test(q)) {
+                return pickChatResponse([
+                    'I am the site assistant. I can answer questions about Andrew Yin and guide you through features like timeline, settings, weather, and contact.',
+                    'I am the built-in chatbot for this website. I can help with Andrew\'s background, achievements, goals, timeline, and navigation tips.',
+                    'I can help with both content and controls: timeline years, interests, achievements, contact, weather, and theme settings.'
+                ]);
+            }
+
+            if (/\b(haha|lol|lmao|nice|cool)\b/.test(q)) {
+                return pickChatResponse([
+                    'Glad you liked that.',
+                    'Nice. Want another fun fact about Andrew?',
+                    'Love it. Ask me something else and I\'ll keep it going.'
+                ]);
+            }
+
+            return null;
         }
 
         function normalizeChatTokens(text) {
@@ -4558,23 +5027,43 @@
             if (!isHowTo) return null;
 
             if (/(change|set|pick|choose|switch).*(color|theme)|color.*(change|set|pick|choose|switch)/.test(q)) {
-                return 'To change color: open Settings using the gear button, then choose a color from the palette swatches. You can also use Guided Tour to see this flow highlighted.';
+                return pickChatResponse([
+                    'To change colors, open Settings with the gear and pick a swatch in Andrew\'s Favorite Colors.',
+                    'Use the gear Settings button, then tap a color swatch to switch theme colors.',
+                    'Open Settings and choose a palette swatch to update the site color theme.'
+                ]);
             }
 
             if (/(dark|light|theme mode|mode)/.test(q)) {
-                return 'To switch light, dark, or auto mode: open Settings and click the theme mode button to cycle through the modes.';
+                return pickChatResponse([
+                    'To switch light, dark, or auto mode, open Settings and click the Theme Mode button to cycle.',
+                    'Use Settings -> Theme Mode and keep clicking to rotate through Light, Dark, and Auto.',
+                    'Open Settings and tap Theme Mode to cycle light/dark/auto.'
+                ]);
             }
 
             if (/(temperature|temp|fahrenheit|celsius|f\/?c|c\/?f)/.test(q)) {
-                return 'To change temperature units, open Settings and tap the temperature toggle to switch between Fahrenheit and Celsius.';
+                return pickChatResponse([
+                    'Open Settings and tap Temperature to switch between Fahrenheit and Celsius.',
+                    'Use the Temperature control in Settings to toggle F/C.',
+                    'In Settings, press the Temperature button to change units.'
+                ]);
             }
 
             if (/(contact|email|message)/.test(q)) {
-                return 'To contact Andrew, click the Contact button at the lower-right corner, fill in the form, and submit.';
+                return pickChatResponse([
+                    'Click Contact at the lower-right, fill out the form, and submit to reach Andrew.',
+                    'Use the Contact button in the lower-right corner to open the form and send a message.',
+                    'Tap Contact near the bottom-right, complete the form fields, then send.'
+                ]);
             }
 
             if (/(chatbot|ask|question)/.test(q)) {
-                return 'Use the chatbot button at the lower-left corner to open the chat panel and ask questions.';
+                return pickChatResponse([
+                    'Use the chatbot bubble on the lower-right area to open chat and ask anything about Andrew.',
+                    'Click the chatbot icon near the bottom-right to open this Q&A panel.',
+                    'Open the chatbot from the floating chat button and type your question.'
+                ]);
             }
 
             if (/(timeline|year|milestone)/.test(q)) {
@@ -4589,7 +5078,7 @@
                 return 'Click any section image to open it in the lightbox view, and press Escape or click outside to close it.';
             }
 
-            return 'A quick way to learn the site is to start the Guided Tour from Settings. It walks through navigation, chatbot, timeline, contact, and settings controls.';
+            return 'A quick way to learn the site is to press Guided Tour in the sidebar menu. It walks through navigation, chatbot, timeline, contact, and settings controls.';
         }
 
         function getTimelineReply(question) {
@@ -4650,13 +5139,65 @@
             return `The timeline includes these years: ${listedYears}. Ask about a specific year, like 2022 or 2025, and I will share what happened.`;
         }
 
-        function buildWebsiteKnowledgeContext() {
-            const aboutText = document.querySelector('#about .content-block p')?.textContent?.trim() || '';
-            const goalsText = document.querySelector('#goals .content-block p')?.textContent?.trim() || '';
+        function getFavoriteDetails() {
             const favoritesText = Array.from(document.querySelectorAll('#favorites .content-block p'))
                 .map((p) => p.textContent?.trim() || '')
                 .filter(Boolean)
                 .join(' ');
+
+            const companyMatch = favoritesText.match(/favorite company is\s+([^\.]+)/i);
+            const movieMatch = favoritesText.match(/favorite movie is\s+([^\.]+)/i);
+            const foodMatch = favoritesText.match(/favorite food is\s+([^\.]+)/i);
+
+            return {
+                company: companyMatch?.[1]?.trim() || 'Apple',
+                movie: movieMatch?.[1]?.trim() || 'Wall-E',
+                food: foodMatch?.[1]?.trim() || 'anything and everything that is edible'
+            };
+        }
+
+        function summarizeKnowledgeChunk(chunk) {
+            const text = String(chunk || '').trim();
+            if (!text) return '';
+
+            if (/^About Andrew:/i.test(text)) {
+                return 'Andrew describes himself as creative, respectful, and curious across many subjects.';
+            }
+
+            if (/^Goals:/i.test(text)) {
+                return 'His long-term career goals include neuroradiology or law, while also being a positive influence on others.';
+            }
+
+            if (/^Favorites:/i.test(text)) {
+                const favorites = getFavoriteDetails();
+                return `His favorites include ${favorites.company} as a company, ${favorites.movie} as a movie, and he says he enjoys almost any food.`;
+            }
+
+            if (/^Timeline:/i.test(text)) {
+                return 'His timeline covers milestones from childhood through high school, including progress in debate, art, and academics.';
+            }
+
+            if (/Current Houston weather:/i.test(text)) {
+                return text.replace(/^Current Houston weather:\s*/i, 'Right now in Houston, ');
+            }
+
+            return text.length > 150 ? `${text.slice(0, 147).trim()}...` : text;
+        }
+
+        function buildWebsiteKnowledgeContext() {
+            const aboutText = document.querySelector('#about .content-block p')?.textContent?.trim() || '';
+            const goalsText = document.querySelector('#goals .content-block p')?.textContent?.trim() || '';
+            const favorites = getFavoriteDetails();
+
+            const aboutSummary = aboutText
+                ? 'Andrew describes himself as passionate, respectful, creative, and eager to keep learning.'
+                : '';
+
+            const goalsSummary = goalsText
+                ? 'He hopes to become a neuroradiologist or a lawyer and aims to be kind and respectful to everyone.'
+                : '';
+
+            const favoritesSummary = `Favorite company: ${favorites.company}. Favorite movie: ${favorites.movie}. Favorite food: ${favorites.food}.`;
 
             const timelineSummary = Array.from(document.querySelectorAll('#timeline .timeline-card'))
                 .map((card) => {
@@ -4670,9 +5211,9 @@
             const weatherSummary = `Current Houston weather: ${weatherState.label || 'clear'}, ${formatTemperature(weatherState.temperatureC, currentTemperatureUnit).replace('&deg;', ' degrees ')}`;
 
             return [
-                `About Andrew: ${aboutText}`,
-                `Goals: ${goalsText}`,
-                `Favorites: ${favoritesText}`,
+                aboutSummary ? `About Andrew: ${aboutSummary}` : '',
+                goalsSummary ? `Goals: ${goalsSummary}` : '',
+                `Favorites: ${favoritesSummary}`,
                 `Timeline: ${timelineSummary}`,
                 weatherSummary
             ].filter(Boolean).join('\n');
@@ -4690,14 +5231,6 @@
         function buildLocalLLMReply(question) {
             const trimmedQuestion = String(question || '').trim();
             if (!trimmedQuestion) return null;
-
-            if (/^(thanks|thank\s*you|thx)\b/i.test(trimmedQuestion)) {
-                return 'You are welcome. Ask me anything else about Andrew and I can keep going.';
-            }
-
-            if (/^how\s+are\s+you\b|^how\'?s\s+it\s+going\b/i.test(trimmedQuestion)) {
-                return 'I am doing well and ready to help. What would you like to know about Andrew?';
-            }
 
             const websiteContext = buildWebsiteKnowledgeContext();
             const contextChunks = websiteContext
@@ -4723,7 +5256,11 @@
                 .map((item) => item.chunk);
 
             if (!scoredChunks.length) {
-                return 'I can answer questions about Andrew\'s school, goals, achievements, timeline, favorites, and Houston weather from this page.';
+                return pickChatResponse([
+                    'I can answer questions about Andrew\'s school, goals, achievements, timeline, favorites, and Houston weather from this page.',
+                    'I can help with Andrew\'s background, goals, milestones, favorites, and the live weather widget.',
+                    'Try asking about timeline years, achievements, interests, goals, or site features like settings and guided tour.'
+                ]);
             }
 
             const previousUserTurn = [...chatbotConversation].reverse().find((turn) => turn.role === 'user');
@@ -4731,17 +5268,20 @@
                 ? 'Building on that, '
                 : '';
 
-            return `${continuationTone}${scoredChunks.join(' ')} Ask a follow-up if you want more detail.`;
+            const paraphrased = scoredChunks
+                .map((chunk) => summarizeKnowledgeChunk(chunk))
+                .filter(Boolean)
+                .join(' ');
+
+            return `${continuationTone}${paraphrased} ${pickChatResponse(['Ask a follow-up if you want more detail.', 'I can expand on that if you want.', 'Ask a specific follow-up and I can go deeper.'])}`;
         }
 
         async function chatbotReplyFor(question) {
             const q = question.toLowerCase();
             const favoriteSpecific = q.match(/favorite\s+(food|color|sport|book|song|music|game|subject)/);
-            const isGreeting = /^(hi|hello|hey|yo|good\s(morning|afternoon|evening))\b[!.\s]*$/i.test(question.trim());
-
-            if (isGreeting) {
-                return 'Hello! I can help you learn about Andrew, his timeline, achievements, goals, and more.';
-            }
+            const favorites = getFavoriteDetails();
+            const conversationalReply = getConversationalReply(question);
+            if (conversationalReply) return conversationalReply;
 
             const siteHowToReply = getSiteHowToReply(q);
             if (siteHowToReply) {
@@ -4749,11 +5289,63 @@
             }
 
             if (isGuidedTourHelpQuestion(q)) {
-                return 'For how to use this site, try the Guided Tour. Use the Guided Tour button in settings (or the tour prompt when it appears) and it will walk you through each key area.';
+                return pickChatResponse([
+                    'For how to use the site, try Guided Tour from the sidebar menu. It walks through each key area.',
+                    'Use Guided Tour in the sidebar and it will step through navigation, timeline, chatbot, contact, and settings.',
+                    'Guided Tour is the fastest way to learn the page flow. Start it from the sidebar button.'
+                ]);
+            }
+
+            if (/gravity\s*mode|gravity/.test(q)) {
+                return pickChatResponse([
+                    'Gravity mode is not enabled on this version of the website.',
+                    'That feature is currently removed. I can help with theme, weather, timeline, and guided-tour features instead.',
+                    'Gravity mode is not active right now, but the rest of the interactive features are available.'
+                ]);
+            }
+
+            if (/christmas|lights|holiday\s*lights|december\s*lights/.test(q)) {
+                return pickChatResponse([
+                    'There is a seasonal easter egg: during December, glowing multicolored lights line the edge of the site.',
+                    'In December, the page can show animated holiday lights around the screen border.',
+                    'Yes, the site includes December border lights as a seasonal effect.'
+                ]);
+            }
+
+            if (/firework|new\s*year|chinese\s*new\s*year|lunar\s*new\s*year/.test(q)) {
+                return pickChatResponse([
+                    'During New Year and Chinese New Year windows, fireworks can trigger when the user starts scrolling.',
+                    'The site includes holiday fireworks that erupt on first scroll for New Year and Chinese New Year periods.',
+                    'Yes, fireworks are a seasonal effect tied to New Year and Chinese New Year scroll triggers.'
+                ]);
             }
 
             if (favoriteSpecific && !/favorite\s+movie/.test(q)) {
-                return `I do not see Andrew's favorite ${favoriteSpecific[1]} listed on this site yet. I can answer his favorite movie, company, goals, school, timeline, and achievements.`;
+                if (favoriteSpecific[1] === 'food') {
+                    return pickChatResponse([
+                        `Andrew says his favorite food is ${favorites.food}.`,
+                        `For food, he says he enjoys ${favorites.food}.`,
+                        `He describes his food preference as ${favorites.food}.`
+                    ]);
+                }
+
+                return `I do not see Andrew's favorite ${favoriteSpecific[1]} listed on this site yet. I can answer his favorite movie, company, food, goals, school, timeline, and achievements.`;
+            }
+
+            if (/\bfood\b|eat|meal|hungry|snack/.test(q)) {
+                return pickChatResponse([
+                    `Andrew says his favorite food is ${favorites.food}.`,
+                    `On the site, he says he likes ${favorites.food}.`,
+                    `For food preferences, he mentions ${favorites.food}.`
+                ]);
+            }
+
+            if (/favorite\s+company|company|apple/.test(q)) {
+                return pickChatResponse([
+                    `His favorite company is ${favorites.company}, mainly for design choices and strong software/hardware quality.`,
+                    `He lists ${favorites.company} as his favorite company and enjoys its product design and ecosystem.`,
+                    `On this site, he says ${favorites.company} is his favorite company.`
+                ]);
             }
 
             if (/favorite movie|movie|favorite song|favorite music/.test(q)) {
@@ -4768,19 +5360,35 @@
             }
 
             if (/school|carnegie|high school/.test(q)) {
-                return 'Andrew attends Carnegie Vanguard High School in Houston, Texas.';
+                return pickChatResponse([
+                    'Andrew attends Carnegie Vanguard High School in Houston, Texas.',
+                    'He is a student at Carnegie Vanguard High School.',
+                    'Andrew currently goes to Carnegie Vanguard High School in Houston.'
+                ]);
             }
 
             if (/goal|future|career|dream/.test(q)) {
-                return 'Andrew\'s goals include becoming either a neuroradiologist or a lawyer.';
+                return pickChatResponse([
+                    'Andrew\'s goals include becoming either a neuroradiologist or a lawyer.',
+                    'His future career interests include neuroradiology and law.',
+                    'He hopes to pursue a path as either a neuroradiologist or a lawyer.'
+                ]);
             }
 
             if (/debate|accomplishment|achievement|proud/.test(q)) {
-                return 'One of his biggest accomplishments is debate success, including reaching semifinals at HUDL City Championships.';
+                return pickChatResponse([
+                    'One of his biggest accomplishments is debate success, including reaching semifinals at HUDL City Championships.',
+                    'He is especially proud of his debate results, including a semifinal run at HUDL City Championships.',
+                    'Debate is a standout achievement area for him, including strong finishes at HUDL City Championships.'
+                ]);
             }
 
             if (/art|scholastic/.test(q)) {
-                return 'He earned both a silver and a gold key in the Scholastic Art and Writing contest.';
+                return pickChatResponse([
+                    'He earned both a silver and a gold key in the Scholastic Art and Writing contest.',
+                    'In art, he received both Silver Key and Gold Key honors in Scholastic.',
+                    'He has notable art achievements, including both silver and gold Scholastic keys.'
+                ]);
             }
 
             const timelineReply = getTimelineReply(q);
@@ -4789,7 +5397,11 @@
             }
 
             if (/hobbies|interest|favorite thing|likes/.test(q)) {
-                return 'His interests include debate, calculator applications, art, and continuous learning.';
+                return pickChatResponse([
+                    'His interests include debate, calculator applications, art, and continuous learning.',
+                    'He enjoys debate, calculator competitions, drawing, and learning across subjects.',
+                    'His hobbies and interests include art, debate, calculator applications, and reading.'
+                ]);
             }
 
             if (/weather|temperature|temp|forecast|rain|cloud|sun|storm|snow|fog|wind/.test(q)) {
@@ -4803,7 +5415,11 @@
             }
 
             if (/quote|mindset|learning|inspiration/.test(q)) {
-                return 'One of Andrew\'s quotes is: "If you ever stop learning, you have just given up." Another is about keeping a positive mindset because mindset determines everything you do.';
+                return pickChatResponse([
+                    'One of Andrew\'s quotes is: "If you ever stop learning, you have just given up." He also emphasizes keeping a positive mindset.',
+                    'A key quote on the site is: "If you ever stop learning, you have just given up." Another message is that mindset determines everything you do.',
+                    'He shares motivational quotes focused on lifelong learning and positive mindset.'
+                ]);
             }
 
             const knowledgeBase = [
@@ -4830,6 +5446,22 @@
                 {
                     topic: 'contact',
                     answer: 'You can contact Andrew through the Contact Me button near the lower right side of the page.'
+                },
+                {
+                    topic: 'seasonal december lights',
+                    answer: 'During December, the site can show glowing multicolored christmas lights around the page edges.'
+                },
+                {
+                    topic: 'new year fireworks',
+                    answer: 'Fireworks can trigger on first scroll during New Year and Chinese New Year periods.'
+                },
+                {
+                    topic: 'settings controls',
+                    answer: 'Settings includes theme mode, temperature units, and color theme swatches.'
+                },
+                {
+                    topic: 'guided tour',
+                    answer: 'A guided tour can be started from the sidebar guided tour button to walk through major features.'
                 }
             ];
 
@@ -4843,7 +5475,11 @@
                 return localLLMReply;
             }
 
-            return 'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, favorite things, and live Houston weather from the widget.';
+            return pickChatResponse([
+                'Good question. I may not have that exact detail listed, but I can help with Andrew\'s school, goals, interests, achievements, timeline, quotes, and live Houston weather.',
+                'I might not have that exact detail, but I can help with timeline years, achievements, hobbies, goals, settings, and weather info on this site.',
+                'I do not have that exact item yet. Try asking about achievements, timeline, favorite movie, goals, weather, contact, or site features.'
+            ]);
         }
 
         function clearGuidedTourTarget() {
@@ -6312,7 +6948,11 @@
         });
 
         if (chatbotMessages) {
-            appendChatMessage('bot', 'Hi! Ask me anything about Andrew Yin based on this website.');
+            appendChatMessage('bot', pickChatResponse([
+                'Hi! Ask me anything about Andrew Yin and this website.',
+                'Hello! I can answer questions about Andrew\'s timeline, achievements, goals, and site features.',
+                'Welcome! Ask about Andrew, Houston weather, the timeline, or how to use the site.'
+            ]));
         }
 
         chatbotCircle?.addEventListener('click', () => {
@@ -6329,6 +6969,21 @@
         chatbotClose?.addEventListener('click', () => {
             closeChatbotPanel();
         });
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', updateChatbotKeyboardOffset);
+            window.visualViewport.addEventListener('scroll', updateChatbotKeyboardOffset);
+        }
+
+        chatbotInput?.addEventListener('focus', () => {
+            window.setTimeout(updateChatbotKeyboardOffset, 120);
+        });
+
+        chatbotInput?.addEventListener('blur', () => {
+            window.setTimeout(updateChatbotKeyboardOffset, 120);
+        });
+
+        window.addEventListener('resize', updateChatbotKeyboardOffset);
 
         chatbotForm?.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -6375,8 +7030,36 @@
             window.addEventListener('scroll', handleFirstScrollForTourPrompt, { passive: true });
         }
 
+        const initialHolidayScrollY = window.scrollY;
+        const handleFirstScrollForHolidayFireworks = () => {
+            if (holidayFireworksTriggered) return;
+            if (Math.abs(window.scrollY - initialHolidayScrollY) < 8) return;
+
+            const now = getSeasonalDateNow();
+            if (!shouldTriggerHolidayFireworks(now)) {
+                window.removeEventListener('scroll', handleFirstScrollForHolidayFireworks);
+                return;
+            }
+
+            holidayFireworksTriggered = true;
+            triggerHolidayFireworks();
+            window.removeEventListener('scroll', handleFirstScrollForHolidayFireworks);
+        };
+
+        window.addEventListener('scroll', handleFirstScrollForHolidayFireworks, { passive: true });
+
+        window.addEventListener('resize', () => {
+            if (seasonalLightsResizeTimer) {
+                window.clearTimeout(seasonalLightsResizeTimer);
+            }
+            seasonalLightsResizeTimer = window.setTimeout(() => {
+                rebuildSeasonalLights();
+            }, 130);
+        });
+
         initializeHeroLetterEasterEgg();
         initializeImageLightbox();
+        rebuildSeasonalLights();
         fetchHoustonWeatherAndSun();
         setInterval(fetchHoustonWeatherAndSun, 15 * 60 * 1000);
         updateDailyWidget();
