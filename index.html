@@ -798,6 +798,10 @@
             background: rgba(141, 184, 232, 0.95);
         }
 
+        body.dark-mode .lego-gallery-title {
+            color: #D7E3F6;
+        }
+
         .content-block {
             width: min(100%, 1200px);
             max-width: none;
@@ -854,12 +858,77 @@
             flex: 1;
         }
 
+        .interests-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .interests-copy {
+            min-width: 0;
+        }
+
+        .lego-gallery {
+            order: 2;
+            float: none;
+            width: min(100%, 420px);
+            max-width: none;
+            justify-self: center;
+            margin: 4px auto 0;
+            align-self: start;
+            gap: 12px;
+        }
+
+        .lego-gallery-title {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            line-height: 1.2;
+            color: #1F2E47;
+        }
+
+        .lego-gallery-frame {
+            position: relative;
+            width: 100%;
+        }
+
+        .lego-gallery-frame .section-photo {
+            margin: 0;
+        }
+
+        .lego-gallery .section-photo img {
+            height: 320px;
+        }
+
+        .lego-slide[hidden] {
+            display: none;
+        }
+
+        .lego-gallery-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .favorites-photo {
+            max-width: 360px;
+        }
+
         .section-media {
             float: right;
             width: min(42%, 320px);
             margin: 0 0 18px 28px;
             display: grid;
             gap: 16px;
+        }
+
+        .section-media.lego-gallery {
+            float: none;
+            width: 100%;
+            margin: 0;
+            max-width: none;
         }
 
         .achievement-gallery {
@@ -985,6 +1054,14 @@
             object-fit: contain;
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.15);
+            transition: transform 0.22s ease;
+            transform-origin: center center;
+            cursor: zoom-in;
+        }
+
+        .image-lightbox-image.is-zoomed {
+            transform: scale(1.9);
+            cursor: zoom-out;
         }
 
         .image-lightbox-caption {
@@ -1010,10 +1087,64 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            z-index: 2;
         }
 
         .image-lightbox-close:hover {
             background: rgba(7, 20, 46, 0.95);
+        }
+
+        .image-lightbox-zoom {
+            position: absolute;
+            top: 8px;
+            right: 52px;
+            height: 36px;
+            min-width: 64px;
+            padding: 0 10px;
+            border: none;
+            border-radius: 999px;
+            background: rgba(7, 20, 46, 0.75);
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .image-lightbox-zoom:hover {
+            background: rgba(7, 20, 46, 0.95);
+        }
+
+        .image-lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(7, 20, 46, 0.75);
+            color: #FFFFFF;
+            font-size: 28px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .image-lightbox-nav:hover {
+            background: rgba(7, 20, 46, 0.95);
+        }
+
+        .image-lightbox-nav.prev {
+            left: 8px;
+        }
+
+        .image-lightbox-nav.next {
+            right: 8px;
         }
 
         .highlight {
@@ -1213,6 +1344,14 @@
         .hero-letter-space {
             display: inline-block;
             width: 0.45em;
+        }
+
+        .hero-letter-placeholder {
+            visibility: hidden;
+            pointer-events: none;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .hero-letter.is-animating {
@@ -1680,6 +1819,29 @@
                 float: none;
                 width: 100%;
                 max-width: 420px;
+                margin: 0 auto 20px;
+            }
+
+            .interests-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .lego-gallery {
+                order: 2;
+                width: min(100%, 420px);
+                justify-self: center;
+                margin-top: 4px;
+            }
+
+            .lego-gallery-title {
+                text-align: center;
+                font-size: 20px;
+            }
+
+            .favorites-photo {
+                float: none;
+                width: min(100%, 420px);
                 margin: 0 auto 20px;
             }
         }
@@ -3725,30 +3887,57 @@
             <div class="accent-line"></div>
             <h2>Interests & Hobbies</h2>
             <div class="content-block">
-                <ul class="icon-list">
-                    <li class="interest-item">
-                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="8" width="18" height="11" rx="2"></rect>
-                            <rect x="7" y="5" width="4" height="3" rx="1"></rect>
-                            <rect x="13" y="5" width="4" height="3" rx="1"></rect>
-                        </svg>
-                        <span>LEGOs are my favorite passtime because of the infinite number of designs and builds possible. LEGO sets with fun play features and easter eggs are also very enjoyable.</span>
-                    </li>
-                    <li class="interest-item">
-                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 20l4.5-1 10-10a1.8 1.8 0 0 0 0-2.5l-1-1a1.8 1.8 0 0 0-2.5 0l-10 10L4 20z"></path>
-                            <path d="M13.5 6.5l4 4"></path>
-                        </svg>
-                        <span>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings. I also enjoy experimenting with colors in the color theory and creating fun color combinations.</span>
-                    </li>
-                    <li class="interest-item">
-                        <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H11v14H6.5A2.5 2.5 0 0 0 4 20.5V6.5z"></path>
-                            <path d="M20 6.5A2.5 2.5 0 0 0 17.5 4H13v14h4.5a2.5 2.5 0 0 1 2.5 2.5V6.5z"></path>
-                        </svg>
-                        <span>A good book, movie, and other sources of story-telling are always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson, which I read at school. <i>Zootopia 2</i> and <i>Hoppers</i>, as mentioned before, were also brilliant movies.</span>
-                    </li>
-                </ul>
+                <div class="interests-layout">
+                    <div class="interests-copy">
+                        <ul class="icon-list">
+                            <li class="interest-item">
+                                <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="8" width="18" height="11" rx="2"></rect>
+                                    <rect x="7" y="5" width="4" height="3" rx="1"></rect>
+                                    <rect x="13" y="5" width="4" height="3" rx="1"></rect>
+                                </svg>
+                                <span>LEGOs are my favorite passtime because of the infinite number of designs and builds possible. LEGO sets with fun play features and easter eggs are also very enjoyable.</span>
+                            </li>
+                            <li class="interest-item">
+                                <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 20l4.5-1 10-10a1.8 1.8 0 0 0 0-2.5l-1-1a1.8 1.8 0 0 0-2.5 0l-10 10L4 20z"></path>
+                                    <path d="M13.5 6.5l4 4"></path>
+                                </svg>
+                                <span>I enjoy sketching and drawing, especially large, futuristic and glassy buildings. In fact, some of my sketches resemble Kinkaid's glassy buildings. I also enjoy experimenting with colors in the color theory and creating fun color combinations.</span>
+                            </li>
+                            <li class="interest-item">
+                                <svg class="interest-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H11v14H6.5A2.5 2.5 0 0 0 4 20.5V6.5z"></path>
+                                    <path d="M20 6.5A2.5 2.5 0 0 0 17.5 4H13v14h4.5a2.5 2.5 0 0 1 2.5 2.5V6.5z"></path>
+                                </svg>
+                                <span>A good book, movie, and other sources of story-telling are always welcome. A new book I just discovered is <i>Ghost Map</i> by Steven Johnson, which I read at school. <i>Zootopia 2</i> and <i>Hoppers</i>, as mentioned before, were also brilliant movies.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="section-media lego-gallery" aria-label="My Lego Creations gallery">
+                        <h3 class="lego-gallery-title">My Lego Creations</h3>
+                        <div class="lego-gallery-frame">
+                            <figure class="section-photo lego-slide" data-lego-index="0">
+                                <img src="Photos/IMG_1485.jpeg" alt="Lego creation by Andrew" data-caption="My Lego Creations">
+                            </figure>
+                            <figure class="section-photo lego-slide" data-lego-index="1" hidden>
+                                <img src="Photos/IMG_3454.jpeg" alt="Lego creation by Andrew" data-caption="My Lego Creations">
+                            </figure>
+                            <figure class="section-photo lego-slide" data-lego-index="2" hidden>
+                                <img src="Photos/IMG_5524.jpeg" alt="Lego creation by Andrew" data-caption="My Lego Creations">
+                            </figure>
+                        </div>
+                        <div class="lego-gallery-controls">
+                            <button type="button" class="quote-btn" id="legoPrevBtn" aria-label="Show previous Lego creation">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"></path></svg>
+                            </button>
+                            <span class="quote-dots" id="legoDots" aria-label="Lego gallery position indicators"></span>
+                            <button type="button" class="quote-btn" id="legoNextBtn" aria-label="Show next Lego creation">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -3757,6 +3946,14 @@
             <div class="accent-line"></div>
             <h2>Favorite Things</h2>
             <div class="content-block">
+                <div class="section-media favorites-photo" aria-label="Favorite Things photo gallery">
+                    <figure class="section-photo">
+                        <img src="Photos/IMG_4218.jpeg" alt="Andrew having fun at the Apple store" data-caption="Andrew having fun at the Apple store">
+                    </figure>
+                    <figure class="section-photo">
+                        <img src="Photos/IMG_4205.JPG" alt="Andrew eating with his family" data-caption="Andrew eating with his family">
+                    </figure>
+                </div>
                 <p>
                     My favorite company is Apple because of their amazing design choices and excellent software and hardware. Apple stores are also very enjoyable because of their minimalistic design and the ability to test out all of their products in-store.
                 </p>
@@ -3865,6 +4062,7 @@
                                     <p class="timeline-summary">I started elementary school at Mark Twain Elementary school</p>
                                     <div class="timeline-detail" id="detail-4" hidden>
                                         <p>Mark Twain Elementary gave me a very strong foundation for higher education. I will forever be a Twain Tiger.</p>
+                                        <p>Thank you Mr. Nguyen, Ms. Leishman, Ms. Morrison, Mr. Rush, Ms. Arnone, Ms. Stein, Ms. Wrigglesworth, and Ms. Cowan.</p>
                                     </div>
                                 </div>
                             </li>
@@ -3895,7 +4093,8 @@
                                     </div>
                                     <p class="timeline-summary">I went to Mandarin Immersion Magnet School</p>
                                     <div class="timeline-detail" id="detail-8" hidden>
-                                        <p>In order for me to improve my mandarin skills, my parents sent me to Mandarin Immersion Magnet School, or MIMS, a choice that I am very grateful for.</p>
+                                        <p>In order for me to improve my mandarin skills, my parents sent me to Mandarin Immersion Magnet School, or MIMS, a choice that I am very grateful for. I was able to immerse myself in Chinese language and culture and make a lot of friends.</p>
+                                        <p>Thank you Ms. Wang, Ms. Wei, Mr. Wang, Ms. Sharma, Ms. Muralee, Ms. Martinez, Ms. Zheng, and Mr. Liu.</p>
                                     </div>
                                 </div>
                             </li>
@@ -3932,7 +4131,7 @@
                                         <p>Also during 2025:</p>
                                         <ul>
                                             <li>During March, I attended TMSCA state for Calculator Applications.</li>
-                                            <li>I attended EMSI during the summer and had lots of fun!</li>
+                                            <li>I attended EMSI during the summer and had lots of fun! EMSI always provides an environment that reignites my love for learning even after tiring school years.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -4154,25 +4353,39 @@
             }
         });
 
+        function smoothScrollToNavSection(targetSection) {
+            if (!targetSection) return;
+            const targetCard = targetSection.querySelector('.content-block');
+            if (targetCard) {
+                targetCard.classList.add('revealed');
+            }
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         // Smooth scrolling for navigation links
         document.querySelectorAll('a.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+
                 // Remove active class from all links
                 document.querySelectorAll('a.nav-link').forEach(l => l.classList.remove('active'));
-                
+
                 // Add active class to clicked link
                 this.classList.add('active');
-                
-                // Scroll to section
+
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
-                const targetCard = targetSection?.querySelector('.content-block');
-                if (targetCard) {
-                    targetCard.classList.add('revealed');
+                if (!targetSection) return;
+
+                if (window.matchMedia('(max-width: 768px)').matches && body.classList.contains('mobile-nav-open')) {
+                    setMobileNavOpen(false);
+                    window.setTimeout(() => {
+                        smoothScrollToNavSection(targetSection);
+                    }, 280);
+                    return;
                 }
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+
+                smoothScrollToNavSection(targetSection);
             });
         });
 
@@ -4287,6 +4500,10 @@
         const quotePrevBtn = document.getElementById('quotePrevBtn');
         const quoteNextBtn = document.getElementById('quoteNextBtn');
         const quoteDots = document.getElementById('quoteDots');
+        const legoPrevBtn = document.getElementById('legoPrevBtn');
+        const legoNextBtn = document.getElementById('legoNextBtn');
+        const legoDots = document.getElementById('legoDots');
+        const legoSlides = Array.from(document.querySelectorAll('.lego-slide'));
 
         const HOUSTON_LAT = 29.7604;
         const HOUSTON_LON = -95.3698;
@@ -4319,6 +4536,7 @@
         let currentTemperatureUnit = 'f';
         let currentColorTheme = 'blue';
         let currentQuoteIndex = 0;
+        let currentLegoIndex = 0;
         let guidedTourIndex = 0;
         let guidedTourPausedIndex = null;
         let guidedTourCurrentTarget = null;
@@ -5685,6 +5903,43 @@
             });
         }
 
+        function renderLegoGallery() {
+            if (!legoSlides.length || !legoDots) return;
+
+            legoSlides.forEach((slide, index) => {
+                slide.hidden = index !== currentLegoIndex;
+            });
+
+            Array.from(legoDots.children).forEach((dot, index) => {
+                const isActive = index === currentLegoIndex;
+                dot.classList.toggle('active', isActive);
+                dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+        }
+
+        function rotateLegoGallery(direction) {
+            if (!legoSlides.length) return;
+            currentLegoIndex = (currentLegoIndex + direction + legoSlides.length) % legoSlides.length;
+            renderLegoGallery();
+        }
+
+        function initializeLegoDots() {
+            if (!legoDots || !legoSlides.length) return;
+            legoDots.innerHTML = '';
+
+            legoSlides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'quote-dot';
+                dot.setAttribute('aria-label', `Show Lego photo ${index + 1}`);
+                dot.addEventListener('click', () => {
+                    currentLegoIndex = index;
+                    renderLegoGallery();
+                });
+                legoDots.appendChild(dot);
+            });
+        }
+
         function applyAutoThemeIfEnabled(now) {
             if (currentThemeMode !== 'auto') return;
             const useDark = shouldUseDarkTheme(now);
@@ -6057,6 +6312,16 @@
             const bounceLoss = 0.74;
             const slideFriction = 0.996;
             const spinFriction = 0.992;
+            const restAngleThreshold = 14;
+            const restLinearSpeedThreshold = 46;
+            const restAngularSpeedThreshold = 36;
+            const sideRestAspectRatioThreshold = 0.92;
+            const contactSlop = 1.15;
+            const normalVelocitySleepThreshold = 18;
+            const letterRestAngleOffsets = {
+                Y: [-15, 15],
+                W: [-11, 11]
+            };
             const dragThresholdPx = 6;
             let animationFrameId = null;
             let previousFrameTime = 0;
@@ -6299,33 +6564,51 @@
             };
 
             const resolveLetterButtonCollision = (state, obstacleRect) => {
-                const radius = Math.min(state.width, state.height) * 0.45;
-                const centerX = state.x + state.width * 0.5;
-                const centerY = state.y + state.height * 0.5;
-                const closestX = Math.max(obstacleRect.left, Math.min(centerX, obstacleRect.right));
-                const closestY = Math.max(obstacleRect.top, Math.min(centerY, obstacleRect.bottom));
-                const dx = centerX - closestX;
-                const dy = centerY - closestY;
-                const distanceSq = dx * dx + dy * dy;
+                const overlapX = Math.min(state.x + state.width, obstacleRect.right) - Math.max(state.x, obstacleRect.left);
+                const overlapY = Math.min(state.y + state.height, obstacleRect.bottom) - Math.max(state.y, obstacleRect.top);
+                if (overlapX <= 0 || overlapY <= 0) return;
 
-                if (distanceSq >= radius * radius) return;
+                const stateCenterX = state.x + state.width * 0.5;
+                const stateCenterY = state.y + state.height * 0.5;
+                const obstacleCenterX = obstacleRect.left + obstacleRect.width * 0.5;
+                const obstacleCenterY = obstacleRect.top + obstacleRect.height * 0.5;
 
-                const distance = Math.sqrt(distanceSq) || 0.0001;
-                const nx = dx / distance;
-                const ny = dy / distance;
-                const penetration = radius - distance;
-
-                state.x += nx * penetration;
-                state.y += ny * penetration;
-
-                const velocityAlongNormal = state.vx * nx + state.vy * ny;
-                if (velocityAlongNormal < 0) {
-                    const restitution = 0.74;
-                    state.vx -= (1 + restitution) * velocityAlongNormal * nx;
-                    state.vy -= (1 + restitution) * velocityAlongNormal * ny;
-                    const tangentialVelocity = state.vx * -ny + state.vy * nx;
-                    state.vr += tangentialVelocity * 0.03;
+                if (overlapX < overlapY) {
+                    const nx = stateCenterX < obstacleCenterX ? -1 : 1;
+                    const correction = Math.max(0, overlapX - contactSlop);
+                    if (correction > 0) {
+                        state.x += nx * correction;
+                    }
+                    if ((nx < 0 && state.vx > 0) || (nx > 0 && state.vx < 0)) {
+                        if (Math.abs(state.vx) < normalVelocitySleepThreshold) {
+                            state.vx = 0;
+                        } else {
+                            state.vx *= -0.45;
+                        }
+                    }
+                    if (Math.abs(state.vy) < 10) state.vy = 0;
+                    state.vr += state.vy * nx * 0.006;
+                    return;
                 }
+
+                const ny = stateCenterY < obstacleCenterY ? -1 : 1;
+                const correction = Math.max(0, overlapY - contactSlop);
+                if (correction > 0) {
+                    state.y += ny * correction;
+                }
+                if ((ny < 0 && state.vy > 0) || (ny > 0 && state.vy < 0)) {
+                    if (Math.abs(state.vy) < normalVelocitySleepThreshold) {
+                        state.vy = 0;
+                    } else {
+                        state.vy *= -0.4;
+                    }
+                }
+                if (Math.abs(state.vx) < 10) {
+                    state.vx = 0;
+                } else {
+                    state.vx *= 0.95;
+                }
+                state.vr += state.vx * ny * 0.006;
             };
 
             const resolveLetterPairCollisions = (activeStates) => {
@@ -6333,37 +6616,35 @@
                     for (let j = i + 1; j < activeStates.length; j += 1) {
                         const a = activeStates[i];
                         const b = activeStates[j];
+                        const overlapX = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+                        const overlapY = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+                        if (overlapX <= 0 || overlapY <= 0) continue;
+
+                        const aMovable = !a.isDragging;
+                        const bMovable = !b.isDragging;
+
                         const ax = a.x + a.width * 0.5;
                         const ay = a.y + a.height * 0.5;
                         const bx = b.x + b.width * 0.5;
                         const by = b.y + b.height * 0.5;
-                        const dx = bx - ax;
-                        const dy = by - ay;
-                        const distanceSq = dx * dx + dy * dy;
-                        const radiusA = Math.min(a.width, a.height) * 0.45;
-                        const radiusB = Math.min(b.width, b.height) * 0.45;
-                        const minDistance = radiusA + radiusB;
-
-                        if (distanceSq >= minDistance * minDistance) continue;
-
-                        const distance = Math.sqrt(distanceSq) || 0.0001;
-                        const nx = dx / distance;
-                        const ny = dy / distance;
-                        const overlap = minDistance - distance;
-                        const aMovable = !a.isDragging;
-                        const bMovable = !b.isDragging;
+                        const xAxis = overlapX < overlapY;
+                        const nx = xAxis ? (ax < bx ? -1 : 1) : 0;
+                        const ny = xAxis ? 0 : (ay < by ? -1 : 1);
+                        const overlap = xAxis ? overlapX : overlapY;
+                        const correction = Math.max(0, overlap - contactSlop);
+                        if (correction <= 0) continue;
 
                         if (aMovable && bMovable) {
-                            a.x -= nx * (overlap * 0.5);
-                            a.y -= ny * (overlap * 0.5);
-                            b.x += nx * (overlap * 0.5);
-                            b.y += ny * (overlap * 0.5);
+                            a.x -= nx * (correction * 0.5);
+                            a.y -= ny * (correction * 0.5);
+                            b.x += nx * (correction * 0.5);
+                            b.y += ny * (correction * 0.5);
                         } else if (aMovable) {
-                            a.x -= nx * overlap;
-                            a.y -= ny * overlap;
+                            a.x -= nx * correction;
+                            a.y -= ny * correction;
                         } else if (bMovable) {
-                            b.x += nx * overlap;
-                            b.y += ny * overlap;
+                            b.x += nx * correction;
+                            b.y += ny * correction;
                         }
 
                         const relativeVelocityX = b.vx - a.vx;
@@ -6371,11 +6652,23 @@
                         const relativeNormalVelocity = relativeVelocityX * nx + relativeVelocityY * ny;
                         if (relativeNormalVelocity >= 0) continue;
 
-                        const restitution = 0.72;
+                        const restitution = 0.56;
                         const invMassA = aMovable ? 1 : 0;
                         const invMassB = bMovable ? 1 : 0;
                         const invMassTotal = invMassA + invMassB;
                         if (invMassTotal === 0) continue;
+
+                        if (Math.abs(relativeNormalVelocity) < normalVelocitySleepThreshold) {
+                            if (aMovable) {
+                                if (xAxis) a.vx = 0;
+                                else a.vy = 0;
+                            }
+                            if (bMovable) {
+                                if (xAxis) b.vx = 0;
+                                else b.vy = 0;
+                            }
+                            continue;
+                        }
 
                         const impulse = (-(1 + restitution) * relativeNormalVelocity) / invMassTotal;
                         if (aMovable) {
@@ -6392,6 +6685,93 @@
                 }
             };
 
+            const normalizeRotationDelta = (angle) => {
+                let normalized = ((angle % 360) + 360) % 360;
+                if (normalized > 180) normalized -= 360;
+                return normalized;
+            };
+
+            const buildLetterRestAngles = (state) => {
+                const ratio = state.width / Math.max(1, state.height);
+                const preferSide = ratio < sideRestAspectRatioThreshold;
+                const primaryBaseAngles = preferSide ? [90, -90] : [0, 180];
+                const secondaryBaseAngles = preferSide ? [0, 180] : [90, -90];
+                const customOffsets = letterRestAngleOffsets[state.glyph] || [];
+                const angles = [];
+
+                const pushAngle = (angle) => {
+                    const normalized = normalizeRotationDelta(angle);
+                    const alreadyExists = angles.some((existing) => {
+                        return Math.abs(normalizeRotationDelta(existing - normalized)) < 0.5;
+                    });
+                    if (!alreadyExists) {
+                        angles.push(normalized);
+                    }
+                };
+
+                primaryBaseAngles.forEach(pushAngle);
+                customOffsets.forEach((offset) => {
+                    primaryBaseAngles.forEach((baseAngle) => {
+                        pushAngle(baseAngle + offset);
+                    });
+                });
+                secondaryBaseAngles.forEach(pushAngle);
+
+                return angles;
+            };
+
+            const nearestRestAngle = (rotation, candidates) => {
+                if (!Array.isArray(candidates) || !candidates.length) return 0;
+
+                let nearest = candidates[0];
+                let nearestDelta = Math.abs(normalizeRotationDelta(candidates[0] - rotation));
+
+                for (let index = 1; index < candidates.length; index += 1) {
+                    const candidate = candidates[index];
+                    const delta = Math.abs(normalizeRotationDelta(candidate - rotation));
+                    if (delta < nearestDelta) {
+                        nearest = candidate;
+                        nearestDelta = delta;
+                    }
+                }
+
+                return nearest;
+            };
+
+            const stabilizeLetterOnGround = (state, floorY, deltaTime) => {
+                const bottom = state.y + state.height;
+                if (bottom < floorY - 0.5) return;
+
+                const targetRotation = nearestRestAngle(
+                    state.rotation,
+                    state.restAngles && state.restAngles.length ? state.restAngles : [0, 90, 180, -90]
+                );
+                const angleDelta = normalizeRotationDelta(targetRotation - state.rotation);
+                const speed = Math.hypot(state.vx, state.vy);
+
+                // As letters touch the floor, bias them toward lying on a side, not balancing on a corner.
+                if (
+                    Math.abs(angleDelta) < 26
+                    || speed < restLinearSpeedThreshold
+                    || Math.abs(state.vr) < restAngularSpeedThreshold
+                ) {
+                    const alignmentStrength = 10 + Math.min(14, Math.abs(angleDelta) * 0.22);
+                    state.vr += angleDelta * alignmentStrength * deltaTime;
+                    state.vr *= 0.87;
+                }
+
+                if (
+                    speed < restLinearSpeedThreshold
+                    && Math.abs(angleDelta) < restAngleThreshold
+                    && Math.abs(state.vr) < restAngularSpeedThreshold
+                ) {
+                    state.rotation = targetRotation;
+                    state.vr = 0;
+                    state.vx *= 0.82;
+                    if (Math.abs(state.vx) < 3) state.vx = 0;
+                }
+            };
+
             const ensureFloating = (state) => {
                 if (state.isFloating) return;
 
@@ -6405,15 +6785,15 @@
                 state.vy = 0;
                 state.rotation = 0;
                 state.vr = 0;
+                state.restAngles = buildLetterRestAngles(state);
                 state.isFloating = true;
 
-                const placeholder = document.createElement('span');
-                placeholder.className = 'hero-letter-space';
+                const placeholder = state.letter.cloneNode(true);
+                placeholder.className = 'hero-letter hero-letter-placeholder';
                 placeholder.setAttribute('aria-hidden', 'true');
-                placeholder.style.display = 'inline-block';
-                placeholder.style.width = `${rect.width}px`;
-                placeholder.style.height = `${rect.height}px`;
-                placeholder.style.verticalAlign = 'baseline';
+                placeholder.removeAttribute('role');
+                placeholder.removeAttribute('tabindex');
+                placeholder.removeAttribute('aria-label');
                 state.placeholder = placeholder;
 
                 const parent = state.letter.parentNode;
@@ -6447,6 +6827,7 @@
 
                     const viewportWidth = window.innerWidth;
                     const viewportHeight = window.innerHeight;
+                    const floorY = viewportHeight;
                     const buttonObstacles = getButtonObstacles();
                     const activeStates = [];
 
@@ -6482,8 +6863,11 @@
                             state.vr *= 0.9;
                         } else if (state.y + state.height >= viewportHeight) {
                             state.y = Math.max(0, viewportHeight - state.height);
+                            const impactSpeed = Math.abs(state.vy);
                             state.vy = -Math.abs(state.vy) * bounceLoss;
                             state.vx *= slideFriction;
+                            state.vr += state.vx * Math.min(0.18, impactSpeed / 1800);
+                            state.vr *= 0.92;
                             if (Math.abs(state.vy) < 18) state.vy = 0;
                             if (Math.abs(state.vx) < 4) state.vx = 0;
                             if (Math.abs(state.vr) < 3) state.vr = 0;
@@ -6492,6 +6876,8 @@
                         buttonObstacles.forEach((obstacleRect) => {
                             resolveLetterButtonCollision(state, obstacleRect);
                         });
+
+                        stabilizeLetterOnGround(state, floorY, deltaTime);
                     });
 
                     resolveLetterPairCollisions(activeStates);
@@ -6641,6 +7027,8 @@
                     vy: 0,
                     rotation: 0,
                     vr: 0,
+                    glyph: (letter.textContent || '').trim().toUpperCase(),
+                    restAngles: null,
                     width: 0,
                     height: 0,
                     isDocked: false,
@@ -6735,7 +7123,10 @@
             lightbox.hidden = true;
             lightbox.innerHTML = `
                 <div class="image-lightbox-panel" role="dialog" aria-modal="true" aria-label="Expanded image view">
+                    <button class="image-lightbox-nav prev" type="button" aria-label="Previous image">&#8249;</button>
+                    <button class="image-lightbox-nav next" type="button" aria-label="Next image">&#8250;</button>
                     <button class="image-lightbox-close" type="button" aria-label="Close image">&times;</button>
+                    <button class="image-lightbox-zoom" type="button" aria-label="Toggle image zoom" aria-pressed="false">Zoom</button>
                     <img class="image-lightbox-image" alt="">
                     <p class="image-lightbox-caption"></p>
                 </div>
@@ -6745,25 +7136,85 @@
             const lightboxImage = lightbox.querySelector('.image-lightbox-image');
             const lightboxCaption = lightbox.querySelector('.image-lightbox-caption');
             const closeButton = lightbox.querySelector('.image-lightbox-close');
+            const zoomButton = lightbox.querySelector('.image-lightbox-zoom');
+            const prevButton = lightbox.querySelector('.image-lightbox-nav.prev');
+            const nextButton = lightbox.querySelector('.image-lightbox-nav.next');
+            let activeLightboxImages = [];
+            let activeLightboxIndex = -1;
+            let lightboxZoomed = false;
+
+            const setLightboxZoom = (isZoomed) => {
+                lightboxZoomed = Boolean(isZoomed);
+                lightboxImage.classList.toggle('is-zoomed', lightboxZoomed);
+                zoomButton.setAttribute('aria-pressed', String(lightboxZoomed));
+                zoomButton.textContent = lightboxZoomed ? 'Fit' : 'Zoom';
+            };
+
+            const updateLegoGalleryFromLightboxImage = (image) => {
+                const legoSlide = image?.closest('.lego-slide');
+                if (!legoSlide) return;
+                const legoIndex = Number(legoSlide.dataset.legoIndex);
+                if (!Number.isFinite(legoIndex) || !legoSlides.length) return;
+                currentLegoIndex = ((legoIndex % legoSlides.length) + legoSlides.length) % legoSlides.length;
+                renderLegoGallery();
+            };
+
+            const resolveLightboxGroup = (image) => {
+                if (!image) return [];
+                const legoGallery = image.closest('.lego-gallery');
+                if (legoGallery) {
+                    return Array.from(legoGallery.querySelectorAll('.section-photo img'));
+                }
+                const sectionMedia = image.closest('.section-media');
+                if (sectionMedia) {
+                    return Array.from(sectionMedia.querySelectorAll('.section-photo img'));
+                }
+                return [image];
+            };
+
+            const showLightboxImageAtIndex = (index) => {
+                if (!activeLightboxImages.length) return;
+
+                const length = activeLightboxImages.length;
+                activeLightboxIndex = ((index % length) + length) % length;
+                const image = activeLightboxImages[activeLightboxIndex];
+                const captionText = image.dataset.caption || image.alt || 'Photo';
+
+                lightboxImage.src = image.src;
+                lightboxImage.alt = image.alt || captionText || 'Expanded photo';
+                lightboxCaption.textContent = captionText;
+                updateLegoGalleryFromLightboxImage(image);
+            };
 
             const closeLightbox = () => {
                 if (lightbox.hidden) return;
                 lightbox.classList.remove('active');
                 document.body.classList.remove('no-scroll');
+                setLightboxZoom(false);
+                activeLightboxImages = [];
+                activeLightboxIndex = -1;
                 window.setTimeout(() => {
                     lightbox.hidden = true;
                 }, 250);
             };
 
             const openLightbox = (image, captionText) => {
-                lightboxImage.src = image.src;
-                lightboxImage.alt = image.alt || captionText || 'Expanded photo';
-                lightboxCaption.textContent = captionText || image.alt || 'Photo';
+                activeLightboxImages = resolveLightboxGroup(image);
+                const nextIndex = activeLightboxImages.indexOf(image);
+                setLightboxZoom(false);
+                showLightboxImageAtIndex(nextIndex >= 0 ? nextIndex : 0);
                 lightbox.hidden = false;
                 document.body.classList.add('no-scroll');
                 window.requestAnimationFrame(() => {
                     lightbox.classList.add('active');
                 });
+            };
+
+            const rotateLightbox = (direction) => {
+                if (lightbox.hidden || !activeLightboxImages.length) return;
+                const keepZoom = lightboxZoomed;
+                showLightboxImageAtIndex(activeLightboxIndex + direction);
+                setLightboxZoom(keepZoom);
             };
 
             photoFigures.forEach((figure) => {
@@ -6793,6 +7244,15 @@
             });
 
             closeButton.addEventListener('click', closeLightbox);
+            prevButton.addEventListener('click', () => rotateLightbox(-1));
+            nextButton.addEventListener('click', () => rotateLightbox(1));
+            zoomButton.addEventListener('click', () => {
+                setLightboxZoom(!lightboxZoomed);
+            });
+            lightboxImage.addEventListener('click', (event) => {
+                event.stopPropagation();
+                setLightboxZoom(!lightboxZoomed);
+            });
             lightbox.addEventListener('click', (event) => {
                 if (event.target === lightbox) {
                     closeLightbox();
@@ -6802,6 +7262,26 @@
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
                     closeLightbox();
+                    return;
+                }
+
+                if (lightbox.hidden) return;
+
+                if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    rotateLightbox(-1);
+                    return;
+                }
+
+                if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    rotateLightbox(1);
+                    return;
+                }
+
+                if (event.key.toLowerCase() === 'z') {
+                    event.preventDefault();
+                    setLightboxZoom(!lightboxZoomed);
                 }
             });
         }
@@ -6890,14 +7370,6 @@
                 setMobileNavOpen(false);
             });
 
-            document.querySelectorAll('a.nav-link').forEach((link) => {
-                link.addEventListener('click', () => {
-                    if (window.matchMedia('(max-width: 768px)').matches) {
-                        setMobileNavOpen(false);
-                    }
-                });
-            });
-
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
                     setMobileNavOpen(false);
@@ -6916,6 +7388,13 @@
             quoteNextBtn.addEventListener('click', () => rotateQuote(1));
             initializeQuoteDots();
             renderQuote();
+        }
+
+        if (legoPrevBtn && legoNextBtn && legoDots && legoSlides.length) {
+            legoPrevBtn.addEventListener('click', () => rotateLegoGallery(-1));
+            legoNextBtn.addEventListener('click', () => rotateLegoGallery(1));
+            initializeLegoDots();
+            renderLegoGallery();
         }
 
         guidedTourNavButton.addEventListener('click', () => {
